@@ -21,7 +21,11 @@ internal class FirebaseAuthRepository(
 
     override fun observeCurrentUser(): Flow<User?> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { auth ->
-            trySend(auth.currentUser?.toDomainUser())
+            val firebaseUser = auth.currentUser
+            if (firebaseUser != null) {
+                ensureUserDocuments(firebaseUser)
+            }
+            trySend(firebaseUser?.toDomainUser())
         }
         firebaseAuth.addAuthStateListener(listener)
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
@@ -86,11 +90,49 @@ internal class FirebaseAuthRepository(
 
     // ── Private helpers ────────────────────────────────────────────────────
 
+    private fun ensureUserDocuments(firebaseUser: FirebaseUser) {
+        val user = firebaseUser.toDomainUser(
+            name = firebaseUser.displayName
+                ?: firebaseUser.email
+                ?: "EzTech Learner",
+        )
+        val userDocument = firestore.collection(USERS_COLLECTION).document(user.uid)
+        userDocument.get().addOnSuccessListener { snapshot ->
+            if (!snapshot.exists()) {
+                userDocument.set(user.toFirestoreMap())
+            }
+        }
+
+        val leaderboardDocument = firestore.collection(LEADERBOARD_COLLECTION).document(user.uid)
+        leaderboardDocument.get().addOnSuccessListener { snapshot ->
+            if (!snapshot.exists()) {
+                leaderboardDocument.set(user.toLeaderboardMap())
+            }
+        }
+    }
+
     private suspend fun loadUser(firebaseUser: FirebaseUser): User {
         val snapshot = firestore.collection(USERS_COLLECTION)
             .document(firebaseUser.uid)
             .get()
             .await()
+
+        if (!snapshot.exists()) {
+            val user = firebaseUser.toDomainUser(
+                name = firebaseUser.displayName
+                    ?: firebaseUser.email
+                    ?: "EzTech Learner",
+            )
+            firestore.collection(USERS_COLLECTION)
+                .document(user.uid)
+                .set(user.toFirestoreMap())
+                .await()
+            firestore.collection(LEADERBOARD_COLLECTION)
+                .document(user.uid)
+                .set(user.toLeaderboardMap())
+                .await()
+            return user
+        }
 
         val exp = snapshot.getLong("exp")?.toInt() ?: 0
         return firebaseUser.toDomainUser(
@@ -99,6 +141,7 @@ internal class FirebaseAuthRepository(
             exp = exp,
             level = computeLevel(exp),
             solvedCount = snapshot.getLong("solvedCount")?.toInt() ?: 0,
+            hardSolvedCount = snapshot.getLong("hardSolvedCount")?.toInt() ?: 0,
             currentStreak = snapshot.getLong("currentStreak")?.toInt() ?: 0,
             lastLoginDate = snapshot.getString("lastLoginDate") ?: "",
         )
@@ -110,6 +153,7 @@ internal class FirebaseAuthRepository(
         exp: Int = 0,
         level: Int = 1,
         solvedCount: Int = 0,
+        hardSolvedCount: Int = 0,
         currentStreak: Int = 0,
         lastLoginDate: String = "",
     ) = User(
@@ -120,6 +164,7 @@ internal class FirebaseAuthRepository(
         exp = exp,
         level = level,
         solvedCount = solvedCount,
+        hardSolvedCount = hardSolvedCount,
         currentStreak = currentStreak,
         lastLoginDate = lastLoginDate,
     )
@@ -132,6 +177,7 @@ internal class FirebaseAuthRepository(
         "exp" to 0,
         "level" to 1,
         "solvedCount" to 0,
+        "hardSolvedCount" to 0,
         "solvedProblemIds" to emptyList<String>(),
         "watchedLessonIds" to emptyList<String>(),
         "currentStreak" to 0,
@@ -144,6 +190,7 @@ internal class FirebaseAuthRepository(
         "avatarUrl" to avatarUrl,
         "totalExp" to 0,
         "solvedCount" to 0,
+        "hardSolvedCount" to 0,
         "level" to 1,
         "currentStreak" to 0,
         "updatedAt" to Timestamp.now(),

@@ -3,100 +3,3775 @@
     {
       "id": "python",
       "name": "Python",
-      "description": "Learn Python fundamentals through concise video lessons.",
+      "description": "Learn Python with Corey Schafer videos, written tutorials, and practice problems.",
       "order": 1,
       "isEnabled": true
     }
   ],
   "categories": [
     {
+      "id": "corey_schafer_python_videos",
+      "languageId": "python",
+      "name": "Corey Schafer Videos",
+      "description": "A curated 160-video programming track from Corey Schafer.",
+      "type": "VIDEO",
+      "order": 1
+    },
+    {
       "id": "python_getting_started",
       "languageId": "python",
       "name": "Getting Started",
-      "description": "Install Python and write your first programs.",
-      "order": 1
+      "description": "Install Python and write your first scripts.",
+      "type": "TUTORIAL",
+      "order": 2
+    },
+    {
+      "id": "python_syntax_basics",
+      "languageId": "python",
+      "name": "Syntax",
+      "description": "Read Python statements, indentation, and errors.",
+      "type": "TUTORIAL",
+      "order": 3
+    },
+    {
+      "id": "python_variables",
+      "languageId": "python",
+      "name": "Variables",
+      "description": "Store values with clear names and convert user input.",
+      "type": "TUTORIAL",
+      "order": 4
     },
     {
       "id": "python_data_types",
       "languageId": "python",
-      "name": "Core Data Types",
-      "description": "Work with numbers, text, collections, and dictionaries.",
-      "order": 2
+      "name": "Data Types",
+      "description": "Understand numbers, text, booleans, and None.",
+      "type": "TUTORIAL",
+      "order": 5
+    },
+    {
+      "id": "python_numbers",
+      "languageId": "python",
+      "name": "Numbers",
+      "description": "Use arithmetic, rounding, and math helpers.",
+      "type": "TUTORIAL",
+      "order": 6
+    },
+    {
+      "id": "python_strings",
+      "languageId": "python",
+      "name": "Strings",
+      "description": "Work with text, slicing, formatting, and methods.",
+      "type": "TUTORIAL",
+      "order": 7
+    },
+    {
+      "id": "python_lists",
+      "languageId": "python",
+      "name": "Lists (Arrays)",
+      "description": "Use Python's array-like list collection.",
+      "type": "TUTORIAL",
+      "order": 8
+    },
+    {
+      "id": "python_tuples_sets",
+      "languageId": "python",
+      "name": "Tuples and Sets",
+      "description": "Model fixed records and unique values.",
+      "type": "TUTORIAL",
+      "order": 9
+    },
+    {
+      "id": "python_dictionaries",
+      "languageId": "python",
+      "name": "Dictionaries",
+      "description": "Map keys to values for lookup and counting.",
+      "type": "TUTORIAL",
+      "order": 10
+    },
+    {
+      "id": "python_control_flow",
+      "languageId": "python",
+      "name": "If...Else",
+      "description": "Choose different paths with conditions.",
+      "type": "TUTORIAL",
+      "order": 11
+    },
+    {
+      "id": "python_loops",
+      "languageId": "python",
+      "name": "Loops",
+      "description": "Repeat work with for loops and while loops.",
+      "type": "TUTORIAL",
+      "order": 12
     },
     {
       "id": "python_functions",
       "languageId": "python",
       "name": "Functions",
-      "description": "Organize reusable logic with Python functions.",
-      "order": 3
+      "description": "Package logic into testable reusable blocks.",
+      "type": "TUTORIAL",
+      "order": 13
+    },
+    {
+      "id": "python_oop",
+      "languageId": "python",
+      "name": "Classes and Objects",
+      "description": "Model data and behavior with objects.",
+      "type": "TUTORIAL",
+      "order": 14
+    },
+    {
+      "id": "python_files_modules",
+      "languageId": "python",
+      "name": "Files and Modules",
+      "description": "Read files and split code across modules.",
+      "type": "TUTORIAL",
+      "order": 15
+    },
+    {
+      "id": "python_exceptions",
+      "languageId": "python",
+      "name": "Exceptions",
+      "description": "Handle expected failures clearly.",
+      "type": "TUTORIAL",
+      "order": 16
+    },
+    {
+      "id": "python_json",
+      "languageId": "python",
+      "name": "JSON",
+      "description": "Read and write structured JSON data.",
+      "type": "TUTORIAL",
+      "order": 17
+    },
+    {
+      "id": "python_datetime",
+      "languageId": "python",
+      "name": "Date and Time",
+      "description": "Use dates, times, and formatting.",
+      "type": "TUTORIAL",
+      "order": 18
+    },
+    {
+      "id": "python_testing",
+      "languageId": "python",
+      "name": "Testing",
+      "description": "Check code with asserts and unit tests.",
+      "type": "TUTORIAL",
+      "order": 19
+    },
+    {
+      "id": "python_problem_solving",
+      "languageId": "python",
+      "name": "Problem Solving",
+      "description": "Turn coding prompts into small steps.",
+      "type": "TUTORIAL",
+      "order": 20
     }
   ],
   "lessons": [
     {
-      "id": "python_install_setup",
+      "id": "corey_video_YYXdXT2l-Gg",
       "languageId": "python",
-      "categoryId": "python_getting_started",
-      "title": "Install and set up Python",
-      "description": "Set up Python on Windows or macOS and run a first script.",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 1: Install and Setup for Mac and Windows",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
       "sourceName": "Corey Schafer",
       "videoId": "YYXdXT2l-Gg",
-      "durationSeconds": 923,
-      "order": 1
+      "durationSeconds": 929,
+      "order": 1,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=YYXdXT2l-Gg"
+      ]
     },
     {
-      "id": "python_strings",
+      "id": "corey_video_k9TUPpGqYTo",
       "languageId": "python",
-      "categoryId": "python_getting_started",
-      "title": "Strings and textual data",
-      "description": "Create, transform, and format strings in Python.",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 2: Strings - Working with Textual Data",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
       "sourceName": "Corey Schafer",
       "videoId": "k9TUPpGqYTo",
-      "durationSeconds": 1260,
-      "order": 2
+      "durationSeconds": 1272,
+      "order": 2,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=k9TUPpGqYTo"
+      ]
     },
     {
-      "id": "python_numbers",
+      "id": "corey_video_khKv-8q7YmY",
       "languageId": "python",
-      "categoryId": "python_data_types",
-      "title": "Integers and floating-point numbers",
-      "description": "Use numeric types, operators, and common built-in functions.",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 3: Integers and Floats - Working with Numeric Data",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
       "sourceName": "Corey Schafer",
       "videoId": "khKv-8q7YmY",
-      "durationSeconds": 734,
-      "order": 1
+      "durationSeconds": 715,
+      "order": 3,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=khKv-8q7YmY"
+      ]
     },
     {
-      "id": "python_collections",
+      "id": "corey_video_W8KRzm-HUcc",
       "languageId": "python",
-      "categoryId": "python_data_types",
-      "title": "Lists, tuples, and sets",
-      "description": "Choose and manipulate Python's core collection types.",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 4: Lists, Tuples, and Sets",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
       "sourceName": "Corey Schafer",
       "videoId": "W8KRzm-HUcc",
-      "durationSeconds": 1776,
-      "order": 2
+      "durationSeconds": 1745,
+      "order": 4,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=W8KRzm-HUcc"
+      ]
     },
     {
-      "id": "python_dictionaries",
+      "id": "corey_video_daefaLgNkw0",
       "languageId": "python",
-      "categoryId": "python_data_types",
-      "title": "Dictionaries and key-value data",
-      "description": "Store and access structured values using dictionaries.",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 5: Dictionaries - Working with Key-Value Pairs",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
       "sourceName": "Corey Schafer",
       "videoId": "daefaLgNkw0",
-      "durationSeconds": 587,
-      "order": 3
+      "durationSeconds": 599,
+      "order": 5,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=daefaLgNkw0"
+      ]
     },
     {
-      "id": "python_functions_basics",
+      "id": "corey_video_DZwmZ8Usvnk",
       "languageId": "python",
-      "categoryId": "python_functions",
-      "title": "Functions",
-      "description": "Define functions, pass arguments, and return values.",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 6: Conditionals and Booleans - If, Else, and Elif Statements",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "DZwmZ8Usvnk",
+      "durationSeconds": 988,
+      "order": 6,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=DZwmZ8Usvnk"
+      ]
+    },
+    {
+      "id": "corey_video_6iF8Xb7Z3wQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 7: Loops and Iterations - For/While Loops",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "6iF8Xb7Z3wQ",
+      "durationSeconds": 614,
+      "order": 7,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=6iF8Xb7Z3wQ"
+      ]
+    },
+    {
+      "id": "corey_video_9Os0o3wzS_I",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 8: Functions",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
       "sourceName": "Corey Schafer",
       "videoId": "9Os0o3wzS_I",
-      "durationSeconds": 1273,
-      "order": 1
+      "durationSeconds": 1308,
+      "order": 8,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=9Os0o3wzS_I"
+      ]
+    },
+    {
+      "id": "corey_video_CqvZ3vGoGs0",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial for Beginners 9: Import Modules and Exploring The Standard Library",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "CqvZ3vGoGs0",
+      "durationSeconds": 1317,
+      "order": 9,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=CqvZ3vGoGs0"
+      ]
+    },
+    {
+      "id": "corey_video_xFciV6Ew5r4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Setting up a Python Development Environment in Sublime Text",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "xFciV6Ew5r4",
+      "durationSeconds": 1563,
+      "order": 10,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=xFciV6Ew5r4"
+      ]
+    },
+    {
+      "id": "corey_video_DjEuROpsvp4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Setting up a Python Development Environment in Atom",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "DjEuROpsvp4",
+      "durationSeconds": 1381,
+      "order": 11,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=DjEuROpsvp4"
+      ]
+    },
+    {
+      "id": "corey_video_NDFbXIiqT4o",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Setting up a Python Development Environment in Eclipse",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "NDFbXIiqT4o",
+      "durationSeconds": 995,
+      "order": 12,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=NDFbXIiqT4o"
+      ]
+    },
+    {
+      "id": "corey_video_U2ZN104hIcc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: pip - An in-depth look at the package management system",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "U2ZN104hIcc",
+      "durationSeconds": 546,
+      "order": 13,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=U2ZN104hIcc"
+      ]
+    },
+    {
+      "id": "corey_video_N5vscPTWKOk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: virtualenv and why you should use virtual environments",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "N5vscPTWKOk",
+      "durationSeconds": 585,
+      "order": 14,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=N5vscPTWKOk"
+      ]
+    },
+    {
+      "id": "corey_video_YJC6ldI3hWk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Anaconda - Installation and Using Conda",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "YJC6ldI3hWk",
+      "durationSeconds": 685,
+      "order": 15,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=YJC6ldI3hWk"
+      ]
+    },
+    {
+      "id": "corey_video_cY2NXB_Tqq0",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: How I Manage Multiple Projects, Virtual Environments, and Environment Variables",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "cY2NXB_Tqq0",
+      "durationSeconds": 1249,
+      "order": 16,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=cY2NXB_Tqq0"
+      ]
+    },
+    {
+      "id": "corey_video_HW29067qVWk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Jupyter Notebook Tutorial: Introduction, Setup, and Walkthrough",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "HW29067qVWk",
+      "durationSeconds": 1821,
+      "order": 17,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=HW29067qVWk"
+      ]
+    },
+    {
+      "id": "corey_video_QVdf0LgmICw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Variable Scope - Understanding the LEGB rule and global/nonlocal statements",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "QVdf0LgmICw",
+      "durationSeconds": 1259,
+      "order": 18,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=QVdf0LgmICw"
+      ]
+    },
+    {
+      "id": "corey_video_ajrtAuDg3yw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Slicing Lists and Strings",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "ajrtAuDg3yw",
+      "durationSeconds": 644,
+      "order": 19,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=ajrtAuDg3yw"
+      ]
+    },
+    {
+      "id": "corey_video_3dt4OGnU5sM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Comprehensions - How they work and why you should be using them",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "3dt4OGnU5sM",
+      "durationSeconds": 1109,
+      "order": 20,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=3dt4OGnU5sM"
+      ]
+    },
+    {
+      "id": "corey_video_D3JvDWO-BY4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Sorting Lists, Tuples, and Objects",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "D3JvDWO-BY4",
+      "durationSeconds": 727,
+      "order": 21,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=D3JvDWO-BY4"
+      ]
+    },
+    {
+      "id": "corey_video_vTX3IwquFkc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: String Formatting - Advanced Operations for Dicts, Lists, Numbers, and Dates",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "vTX3IwquFkc",
+      "durationSeconds": 833,
+      "order": 22,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=vTX3IwquFkc"
+      ]
+    },
+    {
+      "id": "corey_video_tJxcKyFMTGo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: OS Module - Use Underlying Operating System Functionality",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "tJxcKyFMTGo",
+      "durationSeconds": 1154,
+      "order": 23,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=tJxcKyFMTGo"
+      ]
+    },
+    {
+      "id": "corey_video_eirjjyP2qcQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Datetime Module - How to work with Dates, Times, Timedeltas, and Timezones",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "eirjjyP2qcQ",
+      "durationSeconds": 1669,
+      "order": 24,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=eirjjyP2qcQ"
+      ]
+    },
+    {
+      "id": "corey_video_Uh2ebFW8OYM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: File Objects - Reading and Writing to Files",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Uh2ebFW8OYM",
+      "durationSeconds": 1473,
+      "order": 25,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Uh2ebFW8OYM"
+      ]
+    },
+    {
+      "id": "corey_video_ve2pmm5JqmI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Automate Parsing and Renaming of Multiple Files",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "ve2pmm5JqmI",
+      "durationSeconds": 754,
+      "order": 26,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=ve2pmm5JqmI"
+      ]
+    },
+    {
+      "id": "corey_video_KzqSDvzOFNA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Generate Random Numbers and Data Using the random Module",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "KzqSDvzOFNA",
+      "durationSeconds": 817,
+      "order": 27,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=KzqSDvzOFNA"
+      ]
+    },
+    {
+      "id": "corey_video_q5uM4VKywbA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: CSV Module - How to Read, Parse, and Write CSV Files",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "q5uM4VKywbA",
+      "durationSeconds": 972,
+      "order": 28,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=q5uM4VKywbA"
+      ]
+    },
+    {
+      "id": "corey_video_bkpLhQd6YQM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Real World Example - Parsing Names From a CSV to an HTML List",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "bkpLhQd6YQM",
+      "durationSeconds": 1128,
+      "order": 29,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=bkpLhQd6YQM"
+      ]
+    },
+    {
+      "id": "corey_video_K8L6KVGG-7o",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: re Module - How to Write and Match Regular Expressions (Regex)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "K8L6KVGG-7o",
+      "durationSeconds": 3198,
+      "order": 30,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=K8L6KVGG-7o"
+      ]
+    },
+    {
+      "id": "corey_video_NIWwJbo-9_8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Using Try/Except Blocks for Error Handling",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "NIWwJbo-9_8",
+      "durationSeconds": 634,
+      "order": 31,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=NIWwJbo-9_8"
+      ]
+    },
+    {
+      "id": "corey_video_x3v9zMX1s4s",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Duck Typing and Asking Forgiveness, Not Permission (EAFP)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "x3v9zMX1s4s",
+      "durationSeconds": 923,
+      "order": 32,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=x3v9zMX1s4s"
+      ]
+    },
+    {
+      "id": "corey_video_OdIHeg4jj2c",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: How to Set the Path and Switch Between Different Versions/Executables (Windows)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "OdIHeg4jj2c",
+      "durationSeconds": 1457,
+      "order": 33,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=OdIHeg4jj2c"
+      ]
+    },
+    {
+      "id": "corey_video_PUIE7CPANfo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: How to Set the Path and Switch Between Different Versions/Executables (Mac & Linux)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "PUIE7CPANfo",
+      "durationSeconds": 1844,
+      "order": 34,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=PUIE7CPANfo"
+      ]
+    },
+    {
+      "id": "corey_video_nghuHvKLhJA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Quick Tip: F-Strings - How to Use Them and Advanced String Formatting",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "nghuHvKLhJA",
+      "durationSeconds": 823,
+      "order": 35,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=nghuHvKLhJA"
+      ]
+    },
+    {
+      "id": "corey_video_bD05uGo_sVI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Generators - How to use them and the benefits you receive",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "bD05uGo_sVI",
+      "durationSeconds": 674,
+      "order": 36,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=bD05uGo_sVI"
+      ]
+    },
+    {
+      "id": "corey_video_FsAPt_9Bf3U",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Decorators - Dynamically Alter The Functionality Of Your Functions",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "FsAPt_9Bf3U",
+      "durationSeconds": 1828,
+      "order": 37,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=FsAPt_9Bf3U"
+      ]
+    },
+    {
+      "id": "corey_video_KlBPCzcQNU8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Decorators With Arguments",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "KlBPCzcQNU8",
+      "durationSeconds": 373,
+      "order": 38,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=KlBPCzcQNU8"
+      ]
+    },
+    {
+      "id": "corey_video_GfxJYp9_nJA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Namedtuple - When and why should you use namedtuples?",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "GfxJYp9_nJA",
+      "durationSeconds": 441,
+      "order": 39,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=GfxJYp9_nJA"
+      ]
+    },
+    {
+      "id": "corey_video_ZDa-Z5JzLYM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python OOP Tutorial 1: Classes and Instances",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "ZDa-Z5JzLYM",
+      "durationSeconds": 924,
+      "order": 40,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=ZDa-Z5JzLYM"
+      ]
+    },
+    {
+      "id": "corey_video_BJ-VvGyQxho",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python OOP Tutorial 2: Class Variables",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "BJ-VvGyQxho",
+      "durationSeconds": 701,
+      "order": 41,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=BJ-VvGyQxho"
+      ]
+    },
+    {
+      "id": "corey_video_rq8cL2XMM5M",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python OOP Tutorial 3: classmethods and staticmethods",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "rq8cL2XMM5M",
+      "durationSeconds": 920,
+      "order": 42,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=rq8cL2XMM5M"
+      ]
+    },
+    {
+      "id": "corey_video_RSl87lqOXDE",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python OOP Tutorial 4: Inheritance - Creating Subclasses",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "RSl87lqOXDE",
+      "durationSeconds": 1180,
+      "order": 43,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=RSl87lqOXDE"
+      ]
+    },
+    {
+      "id": "corey_video_3ohzBxoFHAY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python OOP Tutorial 5: Special (Magic/Dunder) Methods",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "3ohzBxoFHAY",
+      "durationSeconds": 830,
+      "order": 44,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=3ohzBxoFHAY"
+      ]
+    },
+    {
+      "id": "corey_video_jCzT9XFZ5bw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python OOP Tutorial 6: Property Decorators - Getters, Setters, and Deleters",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "jCzT9XFZ5bw",
+      "durationSeconds": 573,
+      "order": 45,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=jCzT9XFZ5bw"
+      ]
+    },
+    {
+      "id": "corey_video_ng2o98k983k",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Web Scraping with BeautifulSoup and Requests",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "ng2o98k983k",
+      "durationSeconds": 2748,
+      "order": 46,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=ng2o98k983k"
+      ]
+    },
+    {
+      "id": "corey_video_9N6a-VLBa2I",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Working with JSON Data using the json Module",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "9N6a-VLBa2I",
+      "durationSeconds": 1234,
+      "order": 47,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=9N6a-VLBa2I"
+      ]
+    },
+    {
+      "id": "corey_video_k8asfUbWbI4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Calculate Number of Days, Weeks, or Months to Reach Specific Goals",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "k8asfUbWbI4",
+      "durationSeconds": 1507,
+      "order": 48,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=k8asfUbWbI4"
+      ]
+    },
+    {
+      "id": "corey_video_-aKFBoZpiqA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Context Managers - Efficiently Managing Resources",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "-aKFBoZpiqA",
+      "durationSeconds": 1237,
+      "order": 49,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=-aKFBoZpiqA"
+      ]
+    },
+    {
+      "id": "corey_video_5cvM-crlDvg",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: str() vs repr()",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "5cvM-crlDvg",
+      "durationSeconds": 465,
+      "order": 50,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=5cvM-crlDvg"
+      ]
+    },
+    {
+      "id": "corey_video_pd-0G0MigUA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python SQLite Tutorial: Complete Overview - Creating a Database, Table, and Running Queries",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "pd-0G0MigUA",
+      "durationSeconds": 1789,
+      "order": 51,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=pd-0G0MigUA"
+      ]
+    },
+    {
+      "id": "corey_video_-ARI4Cz-awo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Logging Basics - Logging to Files, Setting Levels, and Formatting",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "-ARI4Cz-awo",
+      "durationSeconds": 865,
+      "order": 52,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=-ARI4Cz-awo"
+      ]
+    },
+    {
+      "id": "corey_video_jxmzY9soFXg",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Logging Advanced - Loggers, Handlers, and Formatters",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "jxmzY9soFXg",
+      "durationSeconds": 1187,
+      "order": 53,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=jxmzY9soFXg"
+      ]
+    },
+    {
+      "id": "corey_video_5iWhQWVXosU",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Quick Tip: Hiding Passwords and Secret Keys in Environment Variables (Mac & Linux)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "5iWhQWVXosU",
+      "durationSeconds": 272,
+      "order": 54,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=5iWhQWVXosU"
+      ]
+    },
+    {
+      "id": "corey_video_IolxqkL7cD8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Quick Tip: Hiding Passwords and Secret Keys in Environment Variables (Windows)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "IolxqkL7cD8",
+      "durationSeconds": 278,
+      "order": 55,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=IolxqkL7cD8"
+      ]
+    },
+    {
+      "id": "corey_video_sugvnHA7ElY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: if __name__ == '__main__'",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "sugvnHA7ElY",
+      "durationSeconds": 523,
+      "order": 56,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=sugvnHA7ElY"
+      ]
+    },
+    {
+      "id": "corey_video_6tNS--WetLI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Unit Testing Your Code with the unittest Module",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "6tNS--WetLI",
+      "durationSeconds": 2353,
+      "order": 57,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=6tNS--WetLI"
+      ]
+    },
+    {
+      "id": "corey_video_zDYL22QNiWk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Pipenv - Easily Manage Packages and Virtual Environments",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "zDYL22QNiWk",
+      "durationSeconds": 1949,
+      "order": 58,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=zDYL22QNiWk"
+      ]
+    },
+    {
+      "id": "corey_video_DEwgZNC-KyE",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Preparing for a Python Interview: 10 Things You Should Know",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "DEwgZNC-KyE",
+      "durationSeconds": 1375,
+      "order": 59,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=DEwgZNC-KyE"
+      ]
+    },
+    {
+      "id": "corey_video_Dh-0lAyc3Bc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Else Clauses on Loops",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Dh-0lAyc3Bc",
+      "durationSeconds": 424,
+      "order": 60,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Dh-0lAyc3Bc"
+      ]
+    },
+    {
+      "id": "corey_video_6Qs3wObeWwc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Image Manipulation with Pillow",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "6Qs3wObeWwc",
+      "durationSeconds": 948,
+      "order": 61,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=6Qs3wObeWwc"
+      ]
+    },
+    {
+      "id": "corey_video_xqcTfplzr7c",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Custom Sublime Text Build Systems",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "xqcTfplzr7c",
+      "durationSeconds": 476,
+      "order": 62,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=xqcTfplzr7c"
+      ]
+    },
+    {
+      "id": "corey_video_mJokZMWnyGY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python: Ex Machina Easter Egg - Hidden Message within the Code",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "mJokZMWnyGY",
+      "durationSeconds": 123,
+      "order": 63,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=mJokZMWnyGY"
+      ]
+    },
+    {
+      "id": "corey_video_MwZwr5Tvyxo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 1 - Getting Started",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "MwZwr5Tvyxo",
+      "durationSeconds": 1029,
+      "order": 64,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=MwZwr5Tvyxo"
+      ]
+    },
+    {
+      "id": "corey_video_QnDWIZuWYW0",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 2 - Templates",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "QnDWIZuWYW0",
+      "durationSeconds": 1902,
+      "order": 65,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=QnDWIZuWYW0"
+      ]
+    },
+    {
+      "id": "corey_video_UIJKdCIEXUQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 3 - Forms and User Input",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "UIJKdCIEXUQ",
+      "durationSeconds": 2896,
+      "order": 66,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=UIJKdCIEXUQ"
+      ]
+    },
+    {
+      "id": "corey_video_cYWiDiIUxQc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 4 - Database with Flask-SQLAlchemy",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "cYWiDiIUxQc",
+      "durationSeconds": 1798,
+      "order": 67,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=cYWiDiIUxQc"
+      ]
+    },
+    {
+      "id": "corey_video_44PvX0Yv368",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 5 - Package Structure",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "44PvX0Yv368",
+      "durationSeconds": 1238,
+      "order": 68,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=44PvX0Yv368"
+      ]
+    },
+    {
+      "id": "corey_video_CSHx6eCkmv0",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 6 - User Authentication",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "CSHx6eCkmv0",
+      "durationSeconds": 2835,
+      "order": 69,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=CSHx6eCkmv0"
+      ]
+    },
+    {
+      "id": "corey_video_803Ei2Sq-Zs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 7 - User Account and Profile Picture",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "803Ei2Sq-Zs",
+      "durationSeconds": 2535,
+      "order": 70,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=803Ei2Sq-Zs"
+      ]
+    },
+    {
+      "id": "corey_video_u0oDDZrDz9U",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 8 - Create, Update, and Delete Posts",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "u0oDDZrDz9U",
+      "durationSeconds": 2893,
+      "order": 71,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=u0oDDZrDz9U"
+      ]
+    },
+    {
+      "id": "corey_video_PSWf2TjTGNY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 9 - Pagination",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "PSWf2TjTGNY",
+      "durationSeconds": 1882,
+      "order": 72,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=PSWf2TjTGNY"
+      ]
+    },
+    {
+      "id": "corey_video_vutyTx7IaAI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 10 - Email and Password Reset",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "vutyTx7IaAI",
+      "durationSeconds": 2532,
+      "order": 73,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=vutyTx7IaAI"
+      ]
+    },
+    {
+      "id": "corey_video_Wfx4YBzg16s",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 11 - Blueprints and Configuration",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Wfx4YBzg16s",
+      "durationSeconds": 2563,
+      "order": 74,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Wfx4YBzg16s"
+      ]
+    },
+    {
+      "id": "corey_video_uVNfQDohYNI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Full-Featured Web App Part 12 - Custom Error Pages",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "uVNfQDohYNI",
+      "durationSeconds": 765,
+      "order": 75,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=uVNfQDohYNI"
+      ]
+    },
+    {
+      "id": "corey_video_r3R3h5ly_8g",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Sets - Set Methods and Operations to Solve Common Problems",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "r3R3h5ly_8g",
+      "durationSeconds": 1114,
+      "order": 76,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=r3R3h5ly_8g"
+      ]
+    },
+    {
+      "id": "corey_video_UmljXZIypDc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 1 - Getting Started",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "UmljXZIypDc",
+      "durationSeconds": 932,
+      "order": 77,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=UmljXZIypDc"
+      ]
+    },
+    {
+      "id": "corey_video_a48xeeo5Vnk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 2 - Applications and Routes",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "a48xeeo5Vnk",
+      "durationSeconds": 1227,
+      "order": 78,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=a48xeeo5Vnk"
+      ]
+    },
+    {
+      "id": "corey_video_qDwdMDQ8oX4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 3 - Templates",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "qDwdMDQ8oX4",
+      "durationSeconds": 2745,
+      "order": 79,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=qDwdMDQ8oX4"
+      ]
+    },
+    {
+      "id": "corey_video_1PkNiYlkkjo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 4 - Admin Page",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "1PkNiYlkkjo",
+      "durationSeconds": 540,
+      "order": 80,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=1PkNiYlkkjo"
+      ]
+    },
+    {
+      "id": "corey_video_aHC3uTkT9r8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 5 - Database and Migrations",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "aHC3uTkT9r8",
+      "durationSeconds": 2327,
+      "order": 81,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=aHC3uTkT9r8"
+      ]
+    },
+    {
+      "id": "corey_video_q4jPR-M0TAQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 6 - User Registration",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "q4jPR-M0TAQ",
+      "durationSeconds": 2756,
+      "order": 82,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=q4jPR-M0TAQ"
+      ]
+    },
+    {
+      "id": "corey_video_3aVqWaLjqS4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 7 - Login and Logout System",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "3aVqWaLjqS4",
+      "durationSeconds": 1877,
+      "order": 83,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=3aVqWaLjqS4"
+      ]
+    },
+    {
+      "id": "corey_video_FdVuKt_iuSI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 8 - User Profile and Picture",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "FdVuKt_iuSI",
+      "durationSeconds": 2141,
+      "order": 84,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=FdVuKt_iuSI"
+      ]
+    },
+    {
+      "id": "corey_video_CQ90L5jfldw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 9 - Update User Profile",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "CQ90L5jfldw",
+      "durationSeconds": 1567,
+      "order": 85,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=CQ90L5jfldw"
+      ]
+    },
+    {
+      "id": "corey_video_-s7e_Fy6NRU",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 10 - Create, Update, and Delete Posts",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "-s7e_Fy6NRU",
+      "durationSeconds": 3195,
+      "order": 86,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=-s7e_Fy6NRU"
+      ]
+    },
+    {
+      "id": "corey_video_acOktTcTVEQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 11 - Pagination",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "acOktTcTVEQ",
+      "durationSeconds": 2221,
+      "order": 87,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=acOktTcTVEQ"
+      ]
+    },
+    {
+      "id": "corey_video_-tyBEsHSv7w",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 12 - Email and Password Reset",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "-tyBEsHSv7w",
+      "durationSeconds": 1504,
+      "order": 88,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=-tyBEsHSv7w"
+      ]
+    },
+    {
+      "id": "corey_video_Sa_kQheCnds",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Deploying Your Application (Option #1) - Deploy to a Linux Server",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Sa_kQheCnds",
+      "durationSeconds": 4921,
+      "order": 89,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Sa_kQheCnds"
+      ]
+    },
+    {
+      "id": "corey_video_jTYiNjvnHZY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Iterators and Iterables - What Are They and How Do They Work?",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "jTYiNjvnHZY",
+      "durationSeconds": 1388,
+      "order": 90,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=jTYiNjvnHZY"
+      ]
+    },
+    {
+      "id": "corey_video_C3Z9lJXI6Qw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Coding Problem: Creating Your Own Iterators",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "C3Z9lJXI6Qw",
+      "durationSeconds": 827,
+      "order": 91,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=C3Z9lJXI6Qw"
+      ]
+    },
+    {
+      "id": "corey_video_Qu3dThVy6KQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Itertools Module - Iterator Functions for Efficient Looping",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Qu3dThVy6KQ",
+      "durationSeconds": 2749,
+      "order": 92,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Qu3dThVy6KQ"
+      ]
+    },
+    {
+      "id": "corey_video_goToXTC96Co",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: Deploying Your Application (Option #1) - Deploy to a Linux Server",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "goToXTC96Co",
+      "durationSeconds": 4500,
+      "order": 93,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=goToXTC96Co"
+      ]
+    },
+    {
+      "id": "corey_video_LUFn-QVcmB8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: How to Use a Custom Domain Name for Our Application",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "LUFn-QVcmB8",
+      "durationSeconds": 1440,
+      "order": 94,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=LUFn-QVcmB8"
+      ]
+    },
+    {
+      "id": "corey_video_D2lwk1Ukgz0",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: How to Use a Custom Domain Name for Our Application",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "D2lwk1Ukgz0",
+      "durationSeconds": 1638,
+      "order": 95,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=D2lwk1Ukgz0"
+      ]
+    },
+    {
+      "id": "corey_video_Gdys9qPjuKs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Flask Tutorial: How to enable HTTPS with a free SSL/TLS Certificate using Let's Encrypt",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Gdys9qPjuKs",
+      "durationSeconds": 1034,
+      "order": 96,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Gdys9qPjuKs"
+      ]
+    },
+    {
+      "id": "corey_video_NhidVhNHfeU",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: How to enable HTTPS with a free SSL/TLS Certificate using Let's Encrypt",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "NhidVhNHfeU",
+      "durationSeconds": 1247,
+      "order": 97,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=NhidVhNHfeU"
+      ]
+    },
+    {
+      "id": "corey_video_kt3ZtW9MXhw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Full-Featured Web App Part 13 - Using AWS S3 for File Uploads",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "kt3ZtW9MXhw",
+      "durationSeconds": 1595,
+      "order": 98,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=kt3ZtW9MXhw"
+      ]
+    },
+    {
+      "id": "corey_video_6DI_7Zja8Zc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Django Tutorial: Deploying Your Application (Option #2) - Deploy using Heroku",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "6DI_7Zja8Zc",
+      "durationSeconds": 3211,
+      "order": 99,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=6DI_7Zja8Zc"
+      ]
+    },
+    {
+      "id": "corey_video_tb8gHvYlCFs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Requests Tutorial: Request Web Pages, Download Images, POST Data, Read JSON, and More",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "tb8gHvYlCFs",
+      "durationSeconds": 1501,
+      "order": 100,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=tb8gHvYlCFs"
+      ]
+    },
+    {
+      "id": "corey_video_iukOehU5aF4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial: Full Course for Beginners - Build a Full-Stack Web App",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "iukOehU5aF4",
+      "durationSeconds": 51817,
+      "order": 101,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=iukOehU5aF4"
+      ]
+    },
+    {
+      "id": "corey_video_eqjngvKfabg",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 19): Deploy with Docker - Serverless Containers and Custom Domain",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "eqjngvKfabg",
+      "durationSeconds": 4754,
+      "order": 102,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=eqjngvKfabg"
+      ]
+    },
+    {
+      "id": "corey_video_wd1wt2d0eus",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 18): Deploy to a VPS - Security, Nginx, SSL, and Custom Domain",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "wd1wt2d0eus",
+      "durationSeconds": 5525,
+      "order": 103,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=wd1wt2d0eus"
+      ]
+    },
+    {
+      "id": "corey_video_SO7m7nod0ts",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 17): Testing the API - Pytest, Fixtures, and Mocking External Services",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "SO7m7nod0ts",
+      "durationSeconds": 4946,
+      "order": 104,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=SO7m7nod0ts"
+      ]
+    },
+    {
+      "id": "corey_video_zCTJ3AdDym4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 16): AWS S3 and Boto3 - Moving File Uploads to the Cloud",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "zCTJ3AdDym4",
+      "durationSeconds": 2858,
+      "order": 105,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=zCTJ3AdDym4"
+      ]
+    },
+    {
+      "id": "corey_video_e8NnDz8uT7o",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 15): PostgreSQL and Alembic - Database Migrations for Production",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "e8NnDz8uT7o",
+      "durationSeconds": 2874,
+      "order": 106,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=e8NnDz8uT7o"
+      ]
+    },
+    {
+      "id": "corey_video_4HxjBvZMAg8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 14): Password Reset - Email, Tokens, and Background Tasks",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "4HxjBvZMAg8",
+      "durationSeconds": 3535,
+      "order": 107,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=4HxjBvZMAg8"
+      ]
+    },
+    {
+      "id": "corey_video_f1zggIOxmJg",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 13): Pagination - Loading More Data with Query Parameters",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "f1zggIOxmJg",
+      "durationSeconds": 2192,
+      "order": 108,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=f1zggIOxmJg"
+      ]
+    },
+    {
+      "id": "corey_video_AExumWjfbyo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 12): File Uploads - Image Processing, Validation, and Storage",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "AExumWjfbyo",
+      "durationSeconds": 2071,
+      "order": 109,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=AExumWjfbyo"
+      ]
+    },
+    {
+      "id": "corey_video_MY0TFMMm9B0",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 11): Authorization - Protecting Routes and Verifying Current User",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "MY0TFMMm9B0",
+      "durationSeconds": 2304,
+      "order": 110,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=MY0TFMMm9B0"
+      ]
+    },
+    {
+      "id": "corey_video_Go4wYJJhR3k",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 10): Authentication - Registration and Login with JWT",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Go4wYJJhR3k",
+      "durationSeconds": 3450,
+      "order": 111,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Go4wYJJhR3k"
+      ]
+    },
+    {
+      "id": "corey_video_vqjZOyT4QRs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 9): Frontend Forms - Connecting JavaScript to Your API",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "vqjZOyT4QRs",
+      "durationSeconds": 1744,
+      "order": 112,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=vqjZOyT4QRs"
+      ]
+    },
+    {
+      "id": "corey_video_NkgIHa6KtHg",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 8): Routers - Organizing Routes into Modules with APIRouter",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "NkgIHa6KtHg",
+      "durationSeconds": 1213,
+      "order": 113,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=NkgIHa6KtHg"
+      ]
+    },
+    {
+      "id": "corey_video_2JPDt-Jp6fM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 7): Sync vs Async - Converting Your App to Asynchronous",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "2JPDt-Jp6fM",
+      "durationSeconds": 1930,
+      "order": 114,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=2JPDt-Jp6fM"
+      ]
+    },
+    {
+      "id": "corey_video_VyoGAoxQhxM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 6): Completing CRUD - Update and Delete (PUT, PATCH, DELETE)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "VyoGAoxQhxM",
+      "durationSeconds": 2182,
+      "order": 115,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=VyoGAoxQhxM"
+      ]
+    },
+    {
+      "id": "corey_video_NvOV3ig2tGY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 5): Adding a Database - SQLAlchemy Models and Relationships",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "NvOV3ig2tGY",
+      "durationSeconds": 3780,
+      "order": 116,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=NvOV3ig2tGY"
+      ]
+    },
+    {
+      "id": "corey_video_9GHxnttXxrA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 4): Pydantic Schemas - Request and Response Validation",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "9GHxnttXxrA",
+      "durationSeconds": 1463,
+      "order": 117,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=9GHxnttXxrA"
+      ]
+    },
+    {
+      "id": "corey_video_WRjXIA5pMtk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 3): Path Parameters - Validation and Error Handling",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "WRjXIA5pMtk",
+      "durationSeconds": 2216,
+      "order": 118,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=WRjXIA5pMtk"
+      ]
+    },
+    {
+      "id": "corey_video_G4NIB9Rx9Qs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 2): HTML Frontend for Your API - Jinja2 Templates",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "G4NIB9Rx9Qs",
+      "durationSeconds": 2246,
+      "order": 119,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=G4NIB9Rx9Qs"
+      ]
+    },
+    {
+      "id": "corey_video_7AMjmCTumuo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python FastAPI Tutorial (Part 1): Getting Started - Web App + REST API",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "7AMjmCTumuo",
+      "durationSeconds": 1434,
+      "order": 120,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=7AMjmCTumuo"
+      ]
+    },
+    {
+      "id": "corey_video_M81pfi64eeM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pydantic Tutorial: Complete Data Validation Course (Used by FastAPI)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "M81pfi64eeM",
+      "durationSeconds": 5365,
+      "order": 121,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=M81pfi64eeM"
+      ]
+    },
+    {
+      "id": "corey_video_oAkLSJNr5zY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: AsyncIO - Complete Guide to Asynchronous Programming with Animations",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "oAkLSJNr5zY",
+      "durationSeconds": 6161,
+      "order": 122,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=oAkLSJNr5zY"
+      ]
+    },
+    {
+      "id": "corey_video_RwH2UzC2rIo",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Type Hints - From Basic Annotations to Advanced Generics",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "RwH2UzC2rIo",
+      "durationSeconds": 2459,
+      "order": 123,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=RwH2UzC2rIo"
+      ]
+    },
+    {
+      "id": "corey_video_fM4O9bModsE",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Type Hinting vs Type Checking vs Data Validation - What’s the Difference?",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "fM4O9bModsE",
+      "durationSeconds": 1096,
+      "order": 124,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=fM4O9bModsE"
+      ]
+    },
+    {
+      "id": "corey_video_828S-DMQog8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Ruff - A Fast Linter & Formatter to Replace Multiple Tools and Improve Code Quality",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "828S-DMQog8",
+      "durationSeconds": 2147,
+      "order": 125,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=828S-DMQog8"
+      ]
+    },
+    {
+      "id": "corey_video_AMdG7IjgSPM",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: UV - A Faster, All-in-One Package Manager to Replace Pip and Venv",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "AMdG7IjgSPM",
+      "durationSeconds": 1622,
+      "order": 126,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=AMdG7IjgSPM"
+      ]
+    },
+    {
+      "id": "corey_video_4TFQD0ok5Ao",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "I Let Python Pick My March Madness Bracket - Bracket Simulation Tutorial",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "4TFQD0ok5Ao",
+      "durationSeconds": 1445,
+      "order": 127,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=4TFQD0ok5Ao"
+      ]
+    },
+    {
+      "id": "corey_video_ECt0TAl41Zk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Generate a Web Portfolio and Resume from One JSON File",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "ECt0TAl41Zk",
+      "durationSeconds": 1450,
+      "order": 128,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=ECt0TAl41Zk"
+      ]
+    },
+    {
+      "id": "corey_video_AD-3nVI3-_U",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "How to Deploy a Static Website to GitHub Pages - Free Hosting Tutorial",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "AD-3nVI3-_U",
+      "durationSeconds": 1433,
+      "order": 129,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=AD-3nVI3-_U"
+      ]
+    },
+    {
+      "id": "corey_video_yxa-DJuuTBI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Pathlib - The Modern Way to Handle File Paths",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "yxa-DJuuTBI",
+      "durationSeconds": 2091,
+      "order": 130,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=yxa-DJuuTBI"
+      ]
+    },
+    {
+      "id": "corey_video_X5yyKZpZ4vU",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tkinter Tutorial (Part 2): Using Classes for Functionality and Organization",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "X5yyKZpZ4vU",
+      "durationSeconds": 2086,
+      "order": 131,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=X5yyKZpZ4vU"
+      ]
+    },
+    {
+      "id": "corey_video_epDKamC-V-8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tkinter Tutorial (Part 1): Getting Started, Elements, Layouts, and Events",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "epDKamC-V-8",
+      "durationSeconds": 2468,
+      "order": 132,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=epDKamC-V-8"
+      ]
+    },
+    {
+      "id": "corey_video_jNoTEiI2cVU",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Automating My Bill Payments with Python and Selenium",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "jNoTEiI2cVU",
+      "durationSeconds": 4710,
+      "order": 133,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=jNoTEiI2cVU"
+      ]
+    },
+    {
+      "id": "corey_video_PYuTzLswn_Y",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Securely Manage Passwords and API Keys with DotEnv",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "PYuTzLswn_Y",
+      "durationSeconds": 1018,
+      "order": 134,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=PYuTzLswn_Y"
+      ]
+    },
+    {
+      "id": "corey_video_HZ8uXq5VG2w",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Simulate the Powerball Lottery Using Python",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "HZ8uXq5VG2w",
+      "durationSeconds": 2336,
+      "order": 135,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=HZ8uXq5VG2w"
+      ]
+    },
+    {
+      "id": "corey_video_vQQEaSnQ_bs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python YouTube API Tutorial: Using OAuth to Access User Accounts",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "vQQEaSnQ_bs",
+      "durationSeconds": 2601,
+      "order": 136,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=vQQEaSnQ_bs"
+      ]
+    },
+    {
+      "id": "corey_video_1KO_HZtHOWI",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python YouTube API Tutorial: Sort a Playlist by Most Popular Videos",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "1KO_HZtHOWI",
+      "durationSeconds": 1328,
+      "order": 137,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=1KO_HZtHOWI"
+      ]
+    },
+    {
+      "id": "corey_video_coZbOM6E47I",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python YouTube API Tutorial: Calculating the Duration of a Playlist",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "coZbOM6E47I",
+      "durationSeconds": 2258,
+      "order": 138,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=coZbOM6E47I"
+      ]
+    },
+    {
+      "id": "corey_video_th5_9woFJmk",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python YouTube API Tutorial: Getting Started - Creating an API Key and Querying the API",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "th5_9woFJmk",
+      "durationSeconds": 1249,
+      "order": 139,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=th5_9woFJmk"
+      ]
+    },
+    {
+      "id": "corey_video_RO6JxDOVwLQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Real World Example - Using Patreon API and Pillow to Automate Image Creation",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "RO6JxDOVwLQ",
+      "durationSeconds": 3153,
+      "order": 140,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=RO6JxDOVwLQ"
+      ]
+    },
+    {
+      "id": "corey_video_N6hyN6BW6ao",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 11): Reading/Writing Data to Different Sources - Excel, JSON, SQL, Etc",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "N6hyN6BW6ao",
+      "durationSeconds": 1965,
+      "order": 141,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=N6hyN6BW6ao"
+      ]
+    },
+    {
+      "id": "corey_video_UFuo7EHI8zc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 10): Working with Dates and Time Series Data",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "UFuo7EHI8zc",
+      "durationSeconds": 2141,
+      "order": 142,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=UFuo7EHI8zc"
+      ]
+    },
+    {
+      "id": "corey_video_KdmPHEnPJPs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 9): Cleaning Data - Casting Datatypes and Handling Missing Values",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "KdmPHEnPJPs",
+      "durationSeconds": 1914,
+      "order": 143,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=KdmPHEnPJPs"
+      ]
+    },
+    {
+      "id": "corey_video_txMdrV1Ut64",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 8): Grouping and Aggregating - Analyzing and Exploring Your Data",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "txMdrV1Ut64",
+      "durationSeconds": 2946,
+      "order": 144,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=txMdrV1Ut64"
+      ]
+    },
+    {
+      "id": "corey_video_T11QYVfZoD0",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 7): Sorting Data",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "T11QYVfZoD0",
+      "durationSeconds": 940,
+      "order": 145,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=T11QYVfZoD0"
+      ]
+    },
+    {
+      "id": "corey_video_HQ6XO9eT-fc",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 6): Add/Remove Rows and Columns From DataFrames",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "HQ6XO9eT-fc",
+      "durationSeconds": 1015,
+      "order": 146,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=HQ6XO9eT-fc"
+      ]
+    },
+    {
+      "id": "corey_video_DCDe29sIKcE",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 5): Updating Rows and Columns - Modifying Data Within DataFrames",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "DCDe29sIKcE",
+      "durationSeconds": 2403,
+      "order": 147,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=DCDe29sIKcE"
+      ]
+    },
+    {
+      "id": "corey_video_Lw2rlcxScZY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 4): Filtering - Using Conditionals to Filter Rows and Columns",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Lw2rlcxScZY",
+      "durationSeconds": 1384,
+      "order": 148,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Lw2rlcxScZY"
+      ]
+    },
+    {
+      "id": "corey_video_W9XjRYFkkyw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 3): Indexes - How to Set, Reset, and Use Indexes",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "W9XjRYFkkyw",
+      "durationSeconds": 1047,
+      "order": 149,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=W9XjRYFkkyw"
+      ]
+    },
+    {
+      "id": "corey_video_zmdjNSmRXF4",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 2): DataFrame and Series Basics - Selecting Rows and Columns",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "zmdjNSmRXF4",
+      "durationSeconds": 2015,
+      "order": 150,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=zmdjNSmRXF4"
+      ]
+    },
+    {
+      "id": "corey_video_ZyhVh-qRZPA",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Pandas Tutorial (Part 1): Getting Started with Data Analysis - Installation and Loading Data",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "ZyhVh-qRZPA",
+      "durationSeconds": 1381,
+      "order": 151,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=ZyhVh-qRZPA"
+      ]
+    },
+    {
+      "id": "corey_video_z0gguhEmWiY",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Zip Files - Creating and Extracting Zip Archives",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "z0gguhEmWiY",
+      "durationSeconds": 1630,
+      "order": 152,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=z0gguhEmWiY"
+      ]
+    },
+    {
+      "id": "corey_video_P7X8tMplsw",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Data Science Tutorial: Analyzing the 2019 Stack Overflow Developer Survey",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "_P7X8tMplsw",
+      "durationSeconds": 3088,
+      "order": 153,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=_P7X8tMplsw"
+      ]
+    },
+    {
+      "id": "corey_video_fKl2JW_qrso",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Multiprocessing Tutorial: Run Code in Parallel Using the Multiprocessing Module",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "fKl2JW_qrso",
+      "durationSeconds": 2655,
+      "order": 154,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=fKl2JW_qrso"
+      ]
+    },
+    {
+      "id": "corey_video_IEEhzQoKtQU",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Threading Tutorial: Run Code Concurrently Using the Threading Module",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "IEEhzQoKtQU",
+      "durationSeconds": 2165,
+      "order": 155,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=IEEhzQoKtQU"
+      ]
+    },
+    {
+      "id": "corey_video_mO_dS3rXDIs",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Quick Tip: The Difference Between \"==\" and \"is\" (Equality vs Identity)",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "mO_dS3rXDIs",
+      "durationSeconds": 531,
+      "order": 156,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=mO_dS3rXDIs"
+      ]
+    },
+    {
+      "id": "corey_video_2Fp1N6dof0Y",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Python Tutorial: Calling External Commands Using the Subprocess Module",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "2Fp1N6dof0Y",
+      "durationSeconds": 1141,
+      "order": 157,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=2Fp1N6dof0Y"
+      ]
+    },
+    {
+      "id": "corey_video_XFZRVnP-MTU",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Matplotlib Tutorial (Part 10): Subplots",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "XFZRVnP-MTU",
+      "durationSeconds": 1282,
+      "order": 158,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=XFZRVnP-MTU"
+      ]
+    },
+    {
+      "id": "corey_video_Ercd-Ip5PfQ",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Matplotlib Tutorial (Part 9): Plotting Live Data in Real-Time",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "Ercd-Ip5PfQ",
+      "durationSeconds": 1234,
+      "order": 159,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=Ercd-Ip5PfQ"
+      ]
+    },
+    {
+      "id": "corey_video_LWjaAiKaf8",
+      "languageId": "python",
+      "categoryId": "corey_schafer_python_videos",
+      "title": "Matplotlib Tutorial (Part 8): Plotting Time Series Data",
+      "description": "Corey Schafer video tutorial for Python and related developer skills.",
+      "content": "",
+      "type": "VIDEO",
+      "sourceName": "Corey Schafer",
+      "videoId": "_LWjaAiKaf8",
+      "durationSeconds": 1029,
+      "order": 160,
+      "referenceUrls": [
+        "https://www.youtube.com/watch?v=_LWjaAiKaf8"
+      ]
+    },
+    {
+      "id": "tutorial_intro",
+      "languageId": "python",
+      "categoryId": "python_getting_started",
+      "title": "What Python is used for",
+      "description": "See where Python fits in apps, scripts, data, web backends, and automation.",
+      "content": "Key idea\nPython is a general purpose language with a small readable syntax. In EzTech, use it first for problem solving and small console programs.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nList three tasks you could automate with Python.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_install_setup",
+      "languageId": "python",
+      "categoryId": "python_getting_started",
+      "title": "Install Python and run a file",
+      "description": "Install Python, check the version, and run a .py file from a terminal.",
+      "content": "Key idea\nUse python --version to confirm the install. Create one small file, save it, then run python filename.py.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCreate hello.py and print your name.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_first_program",
+      "languageId": "python",
+      "categoryId": "python_getting_started",
+      "title": "Your first Python program",
+      "description": "Use print, comments, and simple expressions to understand output.",
+      "content": "Key idea\nA program runs from top to bottom. print() sends text to the console. Comments start with # and explain intent.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint three lines about yourself.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_input_output",
+      "languageId": "python",
+      "categoryId": "python_getting_started",
+      "title": "Input and output",
+      "description": "Read text with input() and display results with print().",
+      "content": "Key idea\ninput() always returns a string. Convert it with int() or float() before arithmetic.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nRead a name and age, then print a greeting.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 4,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_indentation",
+      "languageId": "python",
+      "categoryId": "python_syntax_basics",
+      "title": "Indentation",
+      "description": "Use indentation to show which lines belong together.",
+      "content": "Key idea\nPython uses indentation instead of braces. Keep one consistent indent level, usually four spaces.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nFix an if statement with incorrect indentation.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_statements",
+      "languageId": "python",
+      "categoryId": "python_syntax_basics",
+      "title": "Statements and expressions",
+      "description": "Understand the difference between instructions and values.",
+      "content": "Key idea\nA statement does work. An expression produces a value. Many beginner bugs come from using one where the other is expected.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPredict the value of 2 + 3 * 4.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_comments",
+      "languageId": "python",
+      "categoryId": "python_syntax_basics",
+      "title": "Comments",
+      "description": "Write short comments that explain why code exists.",
+      "content": "Key idea\nComments start with #. Use them for intent, edge cases, and reminders, not for repeating obvious code.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nAdd helpful comments to a small calculator.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_common_errors",
+      "languageId": "python",
+      "categoryId": "python_syntax_basics",
+      "title": "Common syntax errors",
+      "description": "Recognize missing colons, quotes, parentheses, and indentation mistakes.",
+      "content": "Key idea\nWhen code fails before running, read the line number and also inspect the line just above it.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nFix three broken snippets by reading their error messages.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 4,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_variables_assignment",
+      "languageId": "python",
+      "categoryId": "python_variables",
+      "title": "Variables and assignment",
+      "description": "Store values with meaningful names.",
+      "content": "Key idea\nA variable points to a value. Assignment uses =. Comparison uses ==.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCalculate a rectangle area from width and height.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_naming",
+      "languageId": "python",
+      "categoryId": "python_variables",
+      "title": "Naming style",
+      "description": "Choose names that make code easy to scan.",
+      "content": "Key idea\nUse lowercase_with_underscores for variables and functions. Prefer total_score over x when meaning matters.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nRename unclear variables in a small program.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_casting",
+      "languageId": "python",
+      "categoryId": "python_variables",
+      "title": "Casting input",
+      "description": "Convert strings into numbers or other types when needed.",
+      "content": "Key idea\nUse int(), float(), str(), and bool() intentionally. Convert near the input boundary so later code receives the right type.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nRead two numbers as strings and print their sum.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_type_checking",
+      "languageId": "python",
+      "categoryId": "python_data_types",
+      "title": "Check data types",
+      "description": "Use type() and isinstance() while debugging.",
+      "content": "Key idea\ntype(value) shows the exact type. isinstance(value, int) is better when checking categories of values.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint the type of five different values.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_booleans",
+      "languageId": "python",
+      "categoryId": "python_data_types",
+      "title": "Booleans",
+      "description": "Represent true or false conditions.",
+      "content": "Key idea\nComparisons such as age >= 18 return booleans. Combine them with and, or, and not.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCheck whether a score is between 0 and 100.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_none",
+      "languageId": "python",
+      "categoryId": "python_data_types",
+      "title": "None",
+      "description": "Represent an intentionally missing value.",
+      "content": "Key idea\nNone is not 0, an empty string, or False. Use is None when checking for missing values.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nReturn None when a search does not find a match.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_integers_floats",
+      "languageId": "python",
+      "categoryId": "python_numbers",
+      "title": "Integers and floats",
+      "description": "Use whole numbers and decimal numbers correctly.",
+      "content": "Key idea\nint is exact for whole numbers. float is approximate for decimal calculations.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nRead two prices and print the total.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_operators",
+      "languageId": "python",
+      "categoryId": "python_numbers",
+      "title": "Math operators",
+      "description": "Use +, -, *, /, //, %, and **.",
+      "content": "Key idea\n// gives floor division. % gives the remainder. ** calculates powers.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint quotient, remainder, and square of a number.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_rounding",
+      "languageId": "python",
+      "categoryId": "python_numbers",
+      "title": "Rounding numbers",
+      "description": "Round values for display without changing core logic too early.",
+      "content": "Key idea\nround(value, 2) is useful for display. Keep exact values while calculating, then format at the edge.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint an average rounded to two decimals.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_string_basics",
+      "languageId": "python",
+      "categoryId": "python_strings",
+      "title": "String basics",
+      "description": "Create, combine, and measure text.",
+      "content": "Key idea\nStrings are sequences of characters. Use len() for length and + or f-strings to combine text.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint the length of a username.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_slicing",
+      "languageId": "python",
+      "categoryId": "python_strings",
+      "title": "Indexing and slicing",
+      "description": "Read parts of a string with indexes and ranges.",
+      "content": "Key idea\nIndexes start at 0. Slices use start:stop and do not include the stop index.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint the first, last, and reversed version of a word.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_f_strings",
+      "languageId": "python",
+      "categoryId": "python_strings",
+      "title": "f-strings",
+      "description": "Format variables into readable output.",
+      "content": "Key idea\nPut f before the string and write variables inside braces. This keeps output clear.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint 'Alice scored 95 points' from variables.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_string_methods",
+      "languageId": "python",
+      "categoryId": "python_strings",
+      "title": "String methods",
+      "description": "Use built-in helpers like strip, lower, split, and replace.",
+      "content": "Key idea\nMethods return new strings because strings are immutable. Assign the result if you need to keep it.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nNormalize an email by trimming spaces and lowercasing it.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 4,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_list_basics",
+      "languageId": "python",
+      "categoryId": "python_lists",
+      "title": "List basics",
+      "description": "Store ordered, changeable data.",
+      "content": "Key idea\nA Python list is the everyday array-like container. Use append(), indexing, slicing, and loops.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nStore five scores and print the highest.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_list_methods",
+      "languageId": "python",
+      "categoryId": "python_lists",
+      "title": "List methods",
+      "description": "Add, remove, sort, and count items.",
+      "content": "Key idea\nappend adds one item, extend adds many, remove deletes by value, and pop removes by position.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nRemove negative numbers from a list.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_list_comprehensions",
+      "languageId": "python",
+      "categoryId": "python_lists",
+      "title": "List comprehensions",
+      "description": "Build lists from existing data compactly.",
+      "content": "Key idea\nA comprehension is a loop expression. Use it when it stays readable.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCreate a list of squares from 1 to 10.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_nested_lists",
+      "languageId": "python",
+      "categoryId": "python_lists",
+      "title": "Nested lists",
+      "description": "Represent grids and tables.",
+      "content": "Key idea\nA nested list is a list of lists. Access values with two indexes, such as grid[row][col].\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint every value in a 3 by 3 grid.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 4,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_tuples",
+      "languageId": "python",
+      "categoryId": "python_tuples_sets",
+      "title": "Tuples",
+      "description": "Represent fixed groups of values.",
+      "content": "Key idea\nTuples are immutable. Use them for coordinates, pairs, and multiple return values.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nReturn both min and max from a function.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_unpacking",
+      "languageId": "python",
+      "categoryId": "python_tuples_sets",
+      "title": "Unpacking",
+      "description": "Assign multiple values from a tuple or list.",
+      "content": "Key idea\nUnpacking makes structured values readable. The number of variables must match the values.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nUnpack a name and score from a pair.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_sets",
+      "languageId": "python",
+      "categoryId": "python_tuples_sets",
+      "title": "Sets",
+      "description": "Keep unique values and compare groups.",
+      "content": "Key idea\nSets remove duplicates and support union, intersection, and difference.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nFind common items between two lists.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_dict_basics",
+      "languageId": "python",
+      "categoryId": "python_dictionaries",
+      "title": "Dictionary basics",
+      "description": "Map keys to values.",
+      "content": "Key idea\nDictionaries are ideal for records, lookup tables, and counting. Keys should be stable values such as strings or numbers.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCreate a profile dictionary with name and age.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_dict_loops",
+      "languageId": "python",
+      "categoryId": "python_dictionaries",
+      "title": "Loop through dictionaries",
+      "description": "Read keys and values clearly.",
+      "content": "Key idea\nUse items() when you need both key and value. Use get() when a key may be missing.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint each product name and price.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_counting",
+      "languageId": "python",
+      "categoryId": "python_dictionaries",
+      "title": "Counting with dictionaries",
+      "description": "Count frequency of values.",
+      "content": "Key idea\nFor each item, update a count. This pattern appears often in coding interviews and data cleanup.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCount words in a sentence.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_if_else",
+      "languageId": "python",
+      "categoryId": "python_control_flow",
+      "title": "if, elif, and else",
+      "description": "Choose a branch based on conditions.",
+      "content": "Key idea\nUse if for the first condition, elif for alternatives, and else as the fallback.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nClassify a score as fail, pass, or excellent.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_comparison_chains",
+      "languageId": "python",
+      "categoryId": "python_control_flow",
+      "title": "Comparison chains",
+      "description": "Write readable range checks.",
+      "content": "Key idea\nPython allows 0 <= score <= 100. This is clearer than two separate comparisons.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCheck whether a temperature is in a safe range.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_match_case",
+      "languageId": "python",
+      "categoryId": "python_control_flow",
+      "title": "match and case",
+      "description": "Choose behavior from known patterns.",
+      "content": "Key idea\nmatch is useful for command-style values. Keep cases simple when learning.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nHandle commands start, stop, and help.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_for_loops",
+      "languageId": "python",
+      "categoryId": "python_loops",
+      "title": "for loops",
+      "description": "Repeat work over ranges and collections.",
+      "content": "Key idea\nA for loop visits each item in a sequence. range(n) gives 0 through n - 1.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nSum all even numbers from 1 to n.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_while_loops",
+      "languageId": "python",
+      "categoryId": "python_loops",
+      "title": "while loops",
+      "description": "Repeat while a condition remains true.",
+      "content": "Key idea\nA while loop is useful when you do not know the number of repeats in advance.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nKeep asking for input until the user types quit.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_break_continue",
+      "languageId": "python",
+      "categoryId": "python_loops",
+      "title": "break and continue",
+      "description": "Control loop flow.",
+      "content": "Key idea\nbreak exits the loop. continue jumps to the next iteration. Use them when they simplify the loop.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nFind the first number divisible by 7.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_define_functions",
+      "languageId": "python",
+      "categoryId": "python_functions",
+      "title": "Define functions",
+      "description": "Create named blocks of reusable logic.",
+      "content": "Key idea\nA function has a name, parameters, and a body. return sends a value back to the caller.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nWrite a function that returns the larger of two numbers.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_parameters",
+      "languageId": "python",
+      "categoryId": "python_functions",
+      "title": "Parameters and defaults",
+      "description": "Pass data into functions safely.",
+      "content": "Key idea\nParameters are names inside the function. Defaults are useful when one value is common.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nWrite a greeting function with a default language.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_return_values",
+      "languageId": "python",
+      "categoryId": "python_functions",
+      "title": "Return values",
+      "description": "Design functions that are easy to test.",
+      "content": "Key idea\nReturning is different from printing. A returned value can be reused by other code.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nReturn a list of squares from a list of numbers.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_scope",
+      "languageId": "python",
+      "categoryId": "python_functions",
+      "title": "Scope",
+      "description": "Understand local and global names.",
+      "content": "Key idea\nVariables created inside a function are local. Prefer returning values instead of changing globals.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nFix a function that accidentally depends on a global variable.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 4,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_classes",
+      "languageId": "python",
+      "categoryId": "python_oop",
+      "title": "Classes and objects",
+      "description": "Group data and behavior into a custom type.",
+      "content": "Key idea\nA class defines the shape. An object is an instance. __init__ sets starting attributes.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCreate a Student class with name and score.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_methods",
+      "languageId": "python",
+      "categoryId": "python_oop",
+      "title": "Methods and self",
+      "description": "Attach behavior to objects.",
+      "content": "Key idea\nMethods are functions inside classes. self refers to the current object.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nAdd a passed() method to Student.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_inheritance",
+      "languageId": "python",
+      "categoryId": "python_oop",
+      "title": "Inheritance basics",
+      "description": "Share behavior between related classes.",
+      "content": "Key idea\nInheritance can remove duplication, but use it only when objects truly have an is-a relationship.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nCreate Animal and Dog classes.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_dunder_methods",
+      "languageId": "python",
+      "categoryId": "python_oop",
+      "title": "Useful dunder methods",
+      "description": "Customize string display and equality.",
+      "content": "Key idea\n__str__ makes objects readable when printed. __repr__ helps debugging.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nImplement __str__ for a Book class.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 4,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_read_files",
+      "languageId": "python",
+      "categoryId": "python_files_modules",
+      "title": "Read files",
+      "description": "Use with open(...) to read text safely.",
+      "content": "Key idea\nThe with block closes files automatically. Read small files with read(), or loop line by line.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nRead all lines from notes.txt.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_write_files",
+      "languageId": "python",
+      "categoryId": "python_files_modules",
+      "title": "Write files",
+      "description": "Save text output from a program.",
+      "content": "Key idea\nUse mode 'w' to overwrite and 'a' to append. Be careful with paths when running from different folders.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nWrite a list of names to a file.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_imports",
+      "languageId": "python",
+      "categoryId": "python_files_modules",
+      "title": "Imports and modules",
+      "description": "Split code across files and use standard library modules.",
+      "content": "Key idea\nimport gives access to another module. Keep imports at the top so dependencies are visible.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nUse math.sqrt and random.randint in a script.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_paths",
+      "languageId": "python",
+      "categoryId": "python_files_modules",
+      "title": "Paths",
+      "description": "Work with file and folder paths.",
+      "content": "Key idea\npathlib.Path gives readable path operations across operating systems.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nBuild a path to a data file beside your script.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 4,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_try_except",
+      "languageId": "python",
+      "categoryId": "python_exceptions",
+      "title": "try and except",
+      "description": "Handle expected failures without crashing.",
+      "content": "Key idea\nPut risky code in try and recovery logic in except. Catch specific exceptions when possible.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nKeep asking for a number until parsing succeeds.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_finally_else",
+      "languageId": "python",
+      "categoryId": "python_exceptions",
+      "title": "else and finally",
+      "description": "Run cleanup or success-only logic.",
+      "content": "Key idea\nelse runs when no exception occurs. finally runs whether an exception occurred or not.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint a cleanup message after reading a file.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_json_loads_dumps",
+      "languageId": "python",
+      "categoryId": "python_json",
+      "title": "JSON strings",
+      "description": "Convert between JSON text and Python data.",
+      "content": "Key idea\njson.loads parses a string. json.dumps creates a JSON string.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nTurn a profile dictionary into JSON text.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_json_files",
+      "languageId": "python",
+      "categoryId": "python_json",
+      "title": "JSON files",
+      "description": "Save and load structured data files.",
+      "content": "Key idea\nUse json.dump for files and json.load to read them back.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nSave app settings to settings.json.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_datetime_basics",
+      "languageId": "python",
+      "categoryId": "python_datetime",
+      "title": "datetime basics",
+      "description": "Represent dates and times.",
+      "content": "Key idea\nThe datetime module gives date, time, datetime, and timedelta types.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nPrint today's date.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_format_dates",
+      "languageId": "python",
+      "categoryId": "python_datetime",
+      "title": "Format dates",
+      "description": "Convert dates to and from readable strings.",
+      "content": "Key idea\nstrftime formats a datetime. strptime parses a string into a datetime.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nParse '2026-06-24' into a date.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_asserts",
+      "languageId": "python",
+      "categoryId": "python_testing",
+      "title": "Assertions",
+      "description": "Check assumptions while learning.",
+      "content": "Key idea\nassert stops the program if a condition is false. It is useful for tiny practice checks.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nAssert that add(2, 3) equals 5.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_unit_tests",
+      "languageId": "python",
+      "categoryId": "python_testing",
+      "title": "Unit tests",
+      "description": "Test functions in repeatable files.",
+      "content": "Key idea\nUnit tests call functions with known inputs and compare the output to expected values.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nWrite two tests for a max_of_two function.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_read_prompt",
+      "languageId": "python",
+      "categoryId": "python_problem_solving",
+      "title": "Read the prompt",
+      "description": "Turn a coding prompt into inputs, outputs, and constraints.",
+      "content": "Key idea\nBefore coding, identify what data comes in, what must go out, and which edge cases matter.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nAnnotate a two-sum style prompt.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 1,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_small_steps",
+      "languageId": "python",
+      "categoryId": "python_problem_solving",
+      "title": "Solve in small steps",
+      "description": "Break a problem into helper decisions.",
+      "content": "Key idea\nWrite a simple version first, then improve. Print intermediate values while learning.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nSolve a list sum problem before adding validation.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 2,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    },
+    {
+      "id": "tutorial_debugging",
+      "languageId": "python",
+      "categoryId": "python_problem_solving",
+      "title": "Debugging practice",
+      "description": "Use tracebacks and small examples to find bugs.",
+      "content": "Key idea\nDebugging is narrowing the problem. Reproduce it, inspect values, change one thing, and run again.\n\nBeginner checklist\n- Identify the input, output, and important variables.\n- Run one tiny example before the full solution.\n- Read errors from the first useful line, then fix one thing at a time.\n\nPractice\nFix an off-by-one loop bug.",
+      "type": "TUTORIAL",
+      "sourceName": "EzTech Tutorial",
+      "videoId": "",
+      "durationSeconds": 0,
+      "order": 3,
+      "referenceUrls": [
+        "https://docs.python.org/3/tutorial/",
+        "https://www.w3schools.com/python/"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "name": "Corey Schafer YouTube Channel",
+      "url": "https://www.youtube.com/@coreyms",
+      "license": "Linked video metadata and YouTube embeds only."
+    },
+    {
+      "name": "Corey Schafer Python Tutorials Playlist",
+      "url": "https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU",
+      "license": "Linked video metadata and YouTube embeds only."
+    },
+    {
+      "name": "Python Documentation Tutorial",
+      "url": "https://docs.python.org/3/tutorial/",
+      "license": "PSF License Version 2."
+    },
+    {
+      "name": "W3Schools Python Tutorial",
+      "url": "https://www.w3schools.com/python/",
+      "license": "Used only as topic inspiration; tutorial text is original EzTech content."
     }
   ]
 }

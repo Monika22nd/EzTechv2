@@ -8,13 +8,18 @@ import com.eztech.core.domain.model.User
 import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.repository.UserRepository
 import com.eztech.core.domain.usecase.gamification.GetUserBadgesUseCase
+import com.eztech.core.domain.usecase.gamification.GetLeaderboardUseCase
 import com.eztech.core.domain.usecase.gamification.RecordDailyLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import java.time.LocalDate
 
 data class ProfileUiState(
     val user: User? = null,
@@ -30,21 +35,24 @@ class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val getUserBadgesUseCase: GetUserBadgesUseCase,
     private val recordDailyLoginUseCase: RecordDailyLoginUseCase,
+    private val getLeaderboardUseCase: GetLeaderboardUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
+    private var dailyLoginRequestKey: String? = null
 
     init {
         loadProfile()
+        observeRank()
     }
 
     private fun loadProfile() {
         viewModelScope.launch {
-            authRepository.observeCurrentUser().collect { user ->
+            authRepository.observeCurrentUser().collectLatest { user ->
                 if (user == null) {
                     _uiState.value = ProfileUiState(isLoading = false)
-                    return@collect
+                    return@collectLatest
                 }
                 userRepository.observeUserProfile(user.uid).collect { resource ->
                     when (resource) {
@@ -52,7 +60,7 @@ class ProfileViewModel @Inject constructor(
                         is Resource.Success -> {
                             val fullUser = resource.data
                             loadBadges(fullUser)
-                            recordDailyLogin(fullUser)
+                            recordDailyLogin(fullUser.uid)
                         }
                         is Resource.Error -> _uiState.value = _uiState.value.copy(
                             isLoading = false, error = resource.message,
@@ -73,9 +81,35 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun recordDailyLogin(user: User) {
+    private fun recordDailyLogin(userId: String) {
+        val requestKey = "$userId:${LocalDate.now()}"
+        if (dailyLoginRequestKey == requestKey) return
+        dailyLoginRequestKey = requestKey
         viewModelScope.launch {
-            recordDailyLoginUseCase(userId = user.uid, lastLoginDate = user.lastLoginDate)
+            val result = recordDailyLoginUseCase(userId)
+            if (result is Resource.Success) {
+                _uiState.value = _uiState.value.copy(
+                    newlyUnlockedBadge = result.data.newlyUnlockedBadges.firstOrNull(),
+                )
+            } else if (result is Resource.Error) {
+                dailyLoginRequestKey = null
+            }
+        }
+    }
+
+    private fun observeRank() {
+        viewModelScope.launch {
+            combine(
+                authRepository.observeCurrentUser(),
+                getLeaderboardUseCase(),
+            ) { user, leaderboard ->
+                if (user == null || leaderboard !is Resource.Success) return@combine 0
+                leaderboard.data.firstOrNull { entry -> entry.userId == user.uid }?.rank ?: 0
+            }.collect { rank ->
+                _uiState.update { state ->
+                    state.copy(user = state.user?.copy(rank = rank))
+                }
+            }
         }
     }
 

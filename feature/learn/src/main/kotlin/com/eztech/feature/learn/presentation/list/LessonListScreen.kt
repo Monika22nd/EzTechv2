@@ -3,6 +3,7 @@ package com.eztech.feature.learn.presentation.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eztech.core.domain.model.Lesson
@@ -82,9 +84,11 @@ fun LessonListScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                    horizontal = EzTechDimens.ScreenPadding,
-                    vertical = EzTechDimens.SpaceMedium,
+                contentPadding = PaddingValues(
+                    start = EzTechDimens.ScreenPadding,
+                    top = EzTechDimens.SpaceMedium,
+                    end = EzTechDimens.ScreenPadding,
+                    bottom = 88.dp,
                 ),
                 verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceMedium),
             ) {

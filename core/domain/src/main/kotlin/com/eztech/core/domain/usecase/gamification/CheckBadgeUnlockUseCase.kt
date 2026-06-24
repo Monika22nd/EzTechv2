@@ -34,7 +34,7 @@ class CheckBadgeUnlockUseCase(
                 BadgeRequirementType.WATCH_COUNT ->
                     user.watchedLessonIds.size >= badge.requirement.value
                 BadgeRequirementType.HARD_COUNT ->
-                    false // set externally via Problem difficulty tracking
+                    user.hardSolvedCount >= badge.requirement.value
                 BadgeRequirementType.LEVEL ->
                     user.level >= badge.requirement.value
                 BadgeRequirementType.SPEED_SOLVE ->

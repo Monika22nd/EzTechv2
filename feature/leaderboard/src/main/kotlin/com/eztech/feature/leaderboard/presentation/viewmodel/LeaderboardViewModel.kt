@@ -2,6 +2,7 @@ package com.eztech.feature.leaderboard.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eztech.core.common.Resource
 import com.eztech.core.domain.model.LeaderboardEntry
 import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.usecase.gamification.GetLeaderboardUseCase
@@ -36,13 +37,26 @@ class LeaderboardViewModel @Inject constructor(
             combine(
                 getLeaderboardUseCase(),
                 authRepository.observeCurrentUser(),
-            ) { entries, user ->
+            ) { resource, user ->
                 val uid = user?.uid
-                LeaderboardUiState(
-                    entries = entries.map { it.copy(isCurrentUser = it.userId == uid) },
-                    isLoading = false,
-                    currentUserId = uid,
-                )
+                when (resource) {
+                    Resource.Loading -> LeaderboardUiState(
+                        isLoading = true,
+                        currentUserId = uid,
+                    )
+                    is Resource.Success -> LeaderboardUiState(
+                        entries = resource.data.map {
+                            it.copy(isCurrentUser = it.userId == uid)
+                        },
+                        isLoading = false,
+                        currentUserId = uid,
+                    )
+                    is Resource.Error -> LeaderboardUiState(
+                        isLoading = false,
+                        currentUserId = uid,
+                        error = resource.message,
+                    )
+                }
             }.collect { _uiState.value = it }
         }
     }

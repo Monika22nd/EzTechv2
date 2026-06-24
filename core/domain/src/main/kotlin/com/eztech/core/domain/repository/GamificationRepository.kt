@@ -2,7 +2,10 @@ package com.eztech.core.domain.repository
 
 import com.eztech.core.common.Resource
 import com.eztech.core.domain.model.Badge
+import com.eztech.core.domain.model.DailyLoginResult
+import com.eztech.core.domain.model.Difficulty
 import com.eztech.core.domain.model.LeaderboardEntry
+import com.eztech.core.domain.model.ProblemCompletion
 import kotlinx.coroutines.flow.Flow
 
 interface GamificationRepository {
@@ -19,12 +22,22 @@ interface GamificationRepository {
         badgeId: String,
     ): Resource<Unit>
 
+    suspend fun recordProblemSolved(
+        userId: String,
+        problemId: String,
+        difficulty: Difficulty,
+        expReward: Int,
+        solveDurationSeconds: Int,
+    ): Resource<ProblemCompletion>
+
     suspend fun recordDailyLogin(
         userId: String,
         today: String,
-    ): Resource<Unit>
+        yesterday: String,
+        expReward: Int,
+    ): Resource<DailyLoginResult>
 
-    fun observeLeaderboard(): Flow<List<LeaderboardEntry>>
+    fun observeLeaderboard(): Flow<Resource<List<LeaderboardEntry>>>
 
-    fun observeUserLeaderboardEntry(userId: String): Flow<LeaderboardEntry?>
+    fun observeUserLeaderboardEntry(userId: String): Flow<Resource<LeaderboardEntry?>>
 }

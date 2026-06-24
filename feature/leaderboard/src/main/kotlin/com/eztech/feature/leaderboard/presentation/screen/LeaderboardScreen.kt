@@ -10,6 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Code
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eztech.feature.leaderboard.presentation.component.LeaderboardItem
@@ -17,8 +19,10 @@ import com.eztech.feature.leaderboard.presentation.component.PodiumView
 import com.eztech.feature.leaderboard.presentation.viewmodel.LeaderboardViewModel
 import com.eztech.core.ui.theme.EzTechDimens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeaderboardScreen(
+    onProblemsClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LeaderboardViewModel = hiltViewModel(),
 ) {
@@ -35,6 +39,13 @@ fun LeaderboardScreen(
                         fontWeight = FontWeight.Bold,
                     )
                 },
+                actions = {
+                    TextButton(onClick = onProblemsClick) {
+                        Icon(Icons.Rounded.Code, contentDescription = null)
+                        Spacer(Modifier.width(EzTechDimens.SpaceSmall))
+                        Text("Problems")
+                    }
+                },
             )
         },
         modifier = modifier,
@@ -50,6 +61,18 @@ fun LeaderboardScreen(
                         Spacer(Modifier.height(EzTechDimens.SpaceMedium))
                         Text("Đang tải bảng xếp hạng...", style = MaterialTheme.typography.bodyMedium)
                     }
+                }
+            }
+            uiState.error != null -> {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(innerPadding),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        uiState.error.orEmpty(),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
+                    )
                 }
             }
             uiState.entries.isEmpty() -> {

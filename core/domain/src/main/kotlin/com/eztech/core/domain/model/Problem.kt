@@ -9,5 +9,5 @@ data class Problem(
     val starterCode: String,
     val solutionCode: String,
     val tags: List<String> = emptyList(),
+    val order: Int = 0,
 )
-

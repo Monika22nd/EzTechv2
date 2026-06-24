@@ -4,8 +4,11 @@ import com.eztech.core.common.Resource
 import com.eztech.core.domain.model.User
 import com.eztech.core.domain.model.computeLevel
 import com.eztech.core.domain.repository.UserRepository
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -13,6 +16,7 @@ import kotlinx.coroutines.tasks.await
 
 internal class UserRepositoryImpl(
     private val firestore: FirebaseFirestore,
+    private val firebaseAuth: FirebaseAuth,
 ) : UserRepository {
 
     override fun observeUserProfile(userId: String): Flow<Resource<User>> = callbackFlow {
@@ -26,7 +30,8 @@ internal class UserRepositoryImpl(
                     return@addSnapshotListener
                 }
                 if (snapshot == null || !snapshot.exists()) {
-                    trySend(Resource.Error("User profile not found"))
+                    ensureProfileExists(userId)
+                    trySend(Resource.Loading)
                     return@addSnapshotListener
                 }
                 val exp = snapshot.getLong("exp")?.toInt() ?: 0
@@ -38,6 +43,7 @@ internal class UserRepositoryImpl(
                     exp = exp,
                     level = computeLevel(exp),
                     solvedCount = snapshot.getLong("solvedCount")?.toInt() ?: 0,
+                    hardSolvedCount = snapshot.getLong("hardSolvedCount")?.toInt() ?: 0,
                     solvedProblemIds = (snapshot.get("solvedProblemIds") as? List<*>)
                         ?.filterIsInstance<String>() ?: emptyList(),
                     watchedLessonIds = (snapshot.get("watchedLessonIds") as? List<*>)
@@ -54,15 +60,62 @@ internal class UserRepositoryImpl(
     override suspend fun updateProfile(userId: String, name: String): Resource<Unit> =
         runCatching {
             firestore.collection("users").document(userId)
-                .update("name", name.trim())
+                .set(mapOf("name" to name.trim()), SetOptions.merge())
                 .await()
-            // Sync to leaderboard
             firestore.collection("leaderboard").document(userId)
-                .update("displayName", name.trim())
+                .set(
+                    mapOf("displayName" to name.trim()),
+                    SetOptions.merge(),
+                )
                 .await()
             Resource.Success(Unit)
         }.getOrElse { Resource.Error(it.message ?: "Update failed") }
 
     override suspend fun updateAvatar(userId: String, avatarBytes: ByteArray): Resource<String> =
-        Resource.Error("Avatar upload requires Firebase Storage — implement in Phase 6")
+        Resource.Error("Avatar upload requires Firebase Storage; implement in a later phase.")
+
+    private fun ensureProfileExists(userId: String) {
+        val firebaseUser = firebaseAuth.currentUser?.takeIf { user -> user.uid == userId }
+        val displayName = firebaseUser?.displayName
+            ?: firebaseUser?.email
+            ?: "EzTech Learner"
+        val avatarUrl = firebaseUser?.photoUrl?.toString()
+
+        firestore.collection("users")
+            .document(userId)
+            .set(
+                mapOf(
+                    "uid" to userId,
+                    "name" to displayName,
+                    "email" to (firebaseUser?.email ?: ""),
+                    "avatarUrl" to avatarUrl,
+                    "exp" to 0,
+                    "level" to 1,
+                    "solvedCount" to 0,
+                    "hardSolvedCount" to 0,
+                    "solvedProblemIds" to emptyList<String>(),
+                    "watchedLessonIds" to emptyList<String>(),
+                    "currentStreak" to 0,
+                    "lastLoginDate" to "",
+                    "rank" to 0,
+                ),
+                SetOptions.merge(),
+            )
+
+        firestore.collection("leaderboard")
+            .document(userId)
+            .set(
+                mapOf(
+                    "displayName" to displayName,
+                    "avatarUrl" to avatarUrl,
+                    "totalExp" to 0,
+                    "solvedCount" to 0,
+                    "hardSolvedCount" to 0,
+                    "level" to 1,
+                    "currentStreak" to 0,
+                    "updatedAt" to Timestamp.now(),
+                ),
+                SetOptions.merge(),
+            )
+    }
 }

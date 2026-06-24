@@ -1,0 +1,79 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function owns(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    match /programming_languages/{languageId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /lesson_categories/{categoryId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /lessons/{lessonId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /problems/{problemId} {
+      allow read: if signedIn();
+      allow write: if false;
+
+      match /test_cases/{testCaseId} {
+        allow read: if signedIn();
+        allow write: if false;
+      }
+    }
+
+    match /seed_metadata/{documentId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /users/{userId} {
+      allow read: if owns(userId);
+      allow create: if owns(userId)
+        && request.resource.data.uid == userId;
+      allow update: if owns(userId)
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.uid == userId;
+      allow delete: if owns(userId);
+
+      match /lessonProgress/{lessonId} {
+        allow read: if owns(userId);
+        allow create, update: if owns(userId)
+          && request.resource.data.lessonId == lessonId
+          && request.resource.data.watched == true;
+        allow delete: if owns(userId);
+      }
+
+      match /badges/{badgeId} {
+        allow read, write: if owns(userId);
+      }
+
+      match /solvedProblems/{problemId} {
+        allow read, write: if owns(userId);
+      }
+
+      match /expEvents/{eventId} {
+        allow read, write: if owns(userId);
+      }
+    }
+
+    match /leaderboard/{userId} {
+      allow read: if signedIn();
+      allow create, update: if owns(userId);
+      allow delete: if owns(userId);
+    }
+  }
+}

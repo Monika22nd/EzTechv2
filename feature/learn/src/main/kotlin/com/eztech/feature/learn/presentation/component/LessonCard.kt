@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.automirrored.rounded.MenuBook
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.eztech.core.domain.model.Lesson
+import com.eztech.core.domain.model.LessonContentType
 import com.eztech.core.ui.theme.EzTechDimens
 
 @Composable
@@ -39,6 +41,15 @@ internal fun LessonCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    if (lesson.type == LessonContentType.TUTORIAL) {
+        TutorialLessonCard(
+            lesson = lesson,
+            onClick = onClick,
+            modifier = modifier,
+        )
+        return
+    }
+
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
@@ -138,6 +149,74 @@ internal fun LessonCard(
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TutorialLessonCard(
+    lesson: Lesson,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(EzTechDimens.SpaceMedium),
+            horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceMedium),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Surface(
+                modifier = Modifier.size(44.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.MenuBook,
+                        contentDescription = null,
+                        modifier = Modifier.size(26.dp),
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceXSmall),
+            ) {
+                Text(
+                    text = lesson.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = lesson.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            if (lesson.watched) {
+                Icon(
+                    imageVector = Icons.Rounded.Check,
+                    contentDescription = "Completed",
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.tertiary,
+                )
             }
         }
     }

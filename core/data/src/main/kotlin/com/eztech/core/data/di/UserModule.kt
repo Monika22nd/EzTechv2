@@ -2,6 +2,7 @@ package com.eztech.core.data.di
 
 import com.eztech.core.data.repository.UserRepositoryImpl
 import com.eztech.core.domain.repository.UserRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,11 @@ object UserModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(firestore: FirebaseFirestore): UserRepository =
-        UserRepositoryImpl(firestore)
+    fun provideUserRepository(
+        firestore: FirebaseFirestore,
+        firebaseAuth: FirebaseAuth,
+    ): UserRepository = UserRepositoryImpl(
+        firestore = firestore,
+        firebaseAuth = firebaseAuth,
+    )
 }

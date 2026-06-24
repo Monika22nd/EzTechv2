@@ -30,6 +30,8 @@ include(":core:domain")
 include(":core:ui")
 include(":feature:auth")
 include(":feature:learn")
+include(":feature:ide")
 include(":feature:leaderboard")
 include(":feature:profile")
+include(":feature:problems")
 

@@ -1,0 +1,88 @@
+{
+  "name": "EzTech Dark",
+  "settings": [
+    {
+      "settings": {
+        "background": "#15171C",
+        "foreground": "#DCE2EA",
+        "caret": "#F4F7FB",
+        "invisibles": "#48505C",
+        "lineHighlight": "#1E222A",
+        "selection": "#315A7D",
+        "highlightedDelimitersForeground": "#62D394"
+      }
+    },
+    {
+      "name": "Comments",
+      "scope": "comment, punctuation.definition.comment",
+      "settings": {
+        "foreground": "#7F8C9D",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "name": "Strings",
+      "scope": "string, constant.other.symbol",
+      "settings": {
+        "foreground": "#A8D892"
+      }
+    },
+    {
+      "name": "Numbers and constants",
+      "scope": "constant.numeric, constant.language, support.constant",
+      "settings": {
+        "foreground": "#E8B86D"
+      }
+    },
+    {
+      "name": "Keywords",
+      "scope": "keyword, storage.type, storage.modifier",
+      "settings": {
+        "foreground": "#C7A0F4"
+      }
+    },
+    {
+      "name": "Functions",
+      "scope": "entity.name.function, support.function, meta.function-call.generic",
+      "settings": {
+        "foreground": "#70B7E8"
+      }
+    },
+    {
+      "name": "Classes and types",
+      "scope": "entity.name.class, entity.name.type, support.type",
+      "settings": {
+        "foreground": "#62D394"
+      }
+    },
+    {
+      "name": "Variables and parameters",
+      "scope": "variable, variable.parameter",
+      "settings": {
+        "foreground": "#DCE2EA"
+      }
+    },
+    {
+      "name": "Decorators",
+      "scope": "entity.name.function.decorator, punctuation.definition.decorator",
+      "settings": {
+        "foreground": "#F08C78"
+      }
+    },
+    {
+      "name": "Operators",
+      "scope": "keyword.operator",
+      "settings": {
+        "foreground": "#91C7E8"
+      }
+    },
+    {
+      "name": "Invalid",
+      "scope": "invalid",
+      "settings": {
+        "foreground": "#FFFFFF",
+        "background": "#B83A4B"
+      }
+    }
+  ]
+}

@@ -129,7 +129,7 @@ object BadgeCatalog {
             name = "Perfectionist",
             description = "Giải tất cả bài tập",
             iconEmoji = "🏆",
-            requirement = BadgeRequirement(BadgeRequirementType.SOLVE_COUNT, 999),
+            requirement = BadgeRequirement(BadgeRequirementType.SOLVE_COUNT, 8),
             rarity = BadgeRarity.LEGENDARY,
         ),
     )

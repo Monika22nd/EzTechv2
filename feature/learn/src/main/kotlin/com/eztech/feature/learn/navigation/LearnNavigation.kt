@@ -6,8 +6,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.eztech.core.domain.model.LessonContentType
 import com.eztech.feature.learn.presentation.category.LessonCategoryScreen
 import com.eztech.feature.learn.presentation.list.LessonListScreen
+import com.eztech.feature.learn.presentation.tutorial.TutorialArticleScreen
 import com.eztech.feature.learn.presentation.video.VideoPlayerScreen
 
 object LearnRoutes {
@@ -20,6 +22,7 @@ object LearnRoutes {
     const val LessonList =
         "$Root/{$LanguageIdArg}/category/{$CategoryIdArg}?$CategoryNameArg={$CategoryNameArg}"
     const val VideoPlayer = "$Root/lesson/{$LessonIdArg}"
+    const val TutorialArticle = "$Root/tutorial/{$LessonIdArg}"
 
     fun lessonList(
         languageId: String,
@@ -30,6 +33,9 @@ object LearnRoutes {
 
     fun videoPlayer(lessonId: String): String =
         "$Root/lesson/${Uri.encode(lessonId)}"
+
+    fun tutorialArticle(lessonId: String): String =
+        "$Root/tutorial/${Uri.encode(lessonId)}"
 }
 
 fun NavGraphBuilder.learnGraph(navController: NavHostController) {
@@ -43,6 +49,9 @@ fun NavGraphBuilder.learnGraph(navController: NavHostController) {
                         categoryName = category.name,
                     ),
                 )
+            },
+            onVideoClick = { lesson ->
+                navController.navigate(LearnRoutes.videoPlayer(lesson.id))
             },
         )
     }
@@ -60,7 +69,11 @@ fun NavGraphBuilder.learnGraph(navController: NavHostController) {
         LessonListScreen(
             onBackClick = navController::popBackStack,
             onLessonClick = { lesson ->
-                navController.navigate(LearnRoutes.videoPlayer(lesson.id))
+                if (lesson.type == LessonContentType.TUTORIAL) {
+                    navController.navigate(LearnRoutes.tutorialArticle(lesson.id))
+                } else {
+                    navController.navigate(LearnRoutes.videoPlayer(lesson.id))
+                }
             },
         )
     }
@@ -71,5 +84,13 @@ fun NavGraphBuilder.learnGraph(navController: NavHostController) {
         ),
     ) {
         VideoPlayerScreen(onBackClick = navController::popBackStack)
+    }
+    composable(
+        route = LearnRoutes.TutorialArticle,
+        arguments = listOf(
+            navArgument(LearnRoutes.LessonIdArg) { type = NavType.StringType },
+        ),
+    ) {
+        TutorialArticleScreen(onBackClick = navController::popBackStack)
     }
 }

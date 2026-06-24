@@ -39,6 +39,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     buildFeatures {
         compose = true
@@ -52,8 +53,10 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:learn"))
+    implementation(project(":feature:ide"))
     implementation(project(":feature:leaderboard"))
     implementation(project(":feature:profile"))
+    implementation(project(":feature:problems"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -77,4 +80,5 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

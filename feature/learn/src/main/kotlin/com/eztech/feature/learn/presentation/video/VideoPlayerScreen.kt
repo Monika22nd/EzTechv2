@@ -148,6 +148,13 @@ fun VideoPlayerScreen(
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onBackground,
                         )
+                        if (lesson.content.isNotBlank()) {
+                            Text(
+                                text = lesson.content,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onBackground,
+                            )
+                        }
                     }
                 }
             }

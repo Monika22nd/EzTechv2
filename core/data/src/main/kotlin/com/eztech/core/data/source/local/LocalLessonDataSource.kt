@@ -3,6 +3,7 @@ package com.eztech.core.data.source.local
 import android.content.Context
 import com.eztech.core.domain.model.Lesson
 import com.eztech.core.domain.model.LessonCategory
+import com.eztech.core.domain.model.LessonContentType
 import com.eztech.core.domain.model.ProgrammingLanguage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -73,6 +74,25 @@ internal class LocalLessonDataSource @Inject constructor(
             .toList()
     }
 
+    suspend fun getLessonsByType(
+        languageId: String,
+        type: LessonContentType,
+        userId: String?,
+    ): List<Lesson> = withContext(Dispatchers.IO) {
+        val watchedLessonIds = userId
+            ?.let(::getWatchedLessonIds)
+            .orEmpty()
+
+        seedData.lessons
+            .asSequence()
+            .filter { lesson ->
+                lesson.languageId == languageId && lesson.type == type
+            }
+            .map { lesson -> lesson.copy(watched = lesson.id in watchedLessonIds) }
+            .sortedWith(compareBy<Lesson> { it.categoryId }.thenBy(Lesson::order))
+            .toList()
+    }
+
     suspend fun getLesson(
         lessonId: String,
         userId: String?,
@@ -136,12 +156,13 @@ internal class LocalLessonDataSource @Inject constructor(
         name = json.getString("name"),
         lessonCount = 0,
         description = json.optString("description"),
+        type = json.contentType(default = LessonContentType.TUTORIAL),
         iconUrl = json.optionalString("iconUrl"),
         order = json.optInt("order"),
     )
 
     private fun parseLesson(json: JSONObject): Lesson {
-        val videoId = json.getString("videoId")
+        val videoId = json.optString("videoId")
         return Lesson(
             id = json.getString("id"),
             languageId = json.getString("languageId"),
@@ -151,9 +172,12 @@ internal class LocalLessonDataSource @Inject constructor(
             order = json.optInt("order"),
             durationSeconds = json.optInt("durationSeconds"),
             description = json.optString("description"),
+            content = json.optString("content"),
+            type = json.contentType(default = LessonContentType.VIDEO),
             sourceName = json.optString("sourceName"),
             thumbnailUrl = json.optionalString("thumbnailUrl")
-                ?: "https://img.youtube.com/vi/$videoId/hqdefault.jpg",
+                ?: videoId.takeIf(String::isNotBlank)
+                    ?.let { id -> "https://img.youtube.com/vi/$id/hqdefault.jpg" },
         )
     }
 
@@ -180,6 +204,11 @@ internal class LocalLessonDataSource @Inject constructor(
 
     private fun JSONObject.optionalString(key: String): String? =
         optString(key).takeIf(String::isNotBlank)
+
+    private fun JSONObject.contentType(default: LessonContentType): LessonContentType =
+        runCatching {
+            LessonContentType.valueOf(optString("type").uppercase())
+        }.getOrDefault(default)
 
     private fun <T> JSONArray.mapObjects(transform: (JSONObject) -> T): List<T> =
         List(length()) { index -> transform(getJSONObject(index)) }

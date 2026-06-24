@@ -9,6 +9,7 @@ data class User(
     val level: Int = 1,
     val badges: List<Badge> = emptyList(),
     val solvedCount: Int = 0,
+    val hardSolvedCount: Int = 0,
     val solvedProblemIds: List<String> = emptyList(),
     val watchedLessonIds: List<String> = emptyList(),
     val currentStreak: Int = 0,

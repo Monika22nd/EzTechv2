@@ -6,6 +6,7 @@ data class LessonCategory(
     val name: String,
     val lessonCount: Int,
     val description: String = "",
+    val type: LessonContentType = LessonContentType.TUTORIAL,
     val iconUrl: String? = null,
     val order: Int = 0,
 )

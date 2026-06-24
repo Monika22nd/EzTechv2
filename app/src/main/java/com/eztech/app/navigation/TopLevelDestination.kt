@@ -1,12 +1,14 @@
 package com.eztech.app.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.Assignment
 import androidx.compose.material.icons.automirrored.rounded.MenuBook
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.rounded.EmojiEvents
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.eztech.core.ui.component.EzTechBottomBarItem
+import com.eztech.feature.problems.navigation.ProblemsRoutes
 
 enum class TopLevelDestination(
     val route: String,
@@ -22,6 +24,11 @@ enum class TopLevelDestination(
         route = "ide",
         label = "IDE",
         icon = Icons.Rounded.Code,
+    ),
+    Problems(
+        route = ProblemsRoutes.Root,
+        label = "Problems",
+        icon = Icons.AutoMirrored.Rounded.Assignment,
     ),
     Leaderboard(
         route = "leaderboard",

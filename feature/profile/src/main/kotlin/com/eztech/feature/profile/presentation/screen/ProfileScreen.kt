@@ -25,6 +25,7 @@ import com.eztech.feature.profile.presentation.component.StatsGrid
 import com.eztech.feature.profile.presentation.viewmodel.ProfileViewModel
 import com.eztech.core.ui.theme.EzTechDimens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -32,6 +33,19 @@ fun ProfileScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var showLogoutDialog by remember { mutableStateOf(false) }
+
+    uiState.newlyUnlockedBadge?.let { badge ->
+        AlertDialog(
+            onDismissRequest = viewModel::onBadgeAnimationDone,
+            title = { Text("Badge unlocked") },
+            text = { Text("${badge.name}\n${badge.description}") },
+            confirmButton = {
+                TextButton(onClick = viewModel::onBadgeAnimationDone) {
+                    Text("Continue")
+                }
+            },
+        )
+    }
 
     if (showLogoutDialog) {
         AlertDialog(
