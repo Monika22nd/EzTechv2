@@ -1,0 +1,102 @@
+{
+  "languages": [
+    {
+      "id": "python",
+      "name": "Python",
+      "description": "Learn Python fundamentals through concise video lessons.",
+      "order": 1,
+      "isEnabled": true
+    }
+  ],
+  "categories": [
+    {
+      "id": "python_getting_started",
+      "languageId": "python",
+      "name": "Getting Started",
+      "description": "Install Python and write your first programs.",
+      "order": 1
+    },
+    {
+      "id": "python_data_types",
+      "languageId": "python",
+      "name": "Core Data Types",
+      "description": "Work with numbers, text, collections, and dictionaries.",
+      "order": 2
+    },
+    {
+      "id": "python_functions",
+      "languageId": "python",
+      "name": "Functions",
+      "description": "Organize reusable logic with Python functions.",
+      "order": 3
+    }
+  ],
+  "lessons": [
+    {
+      "id": "python_install_setup",
+      "languageId": "python",
+      "categoryId": "python_getting_started",
+      "title": "Install and set up Python",
+      "description": "Set up Python on Windows or macOS and run a first script.",
+      "sourceName": "Corey Schafer",
+      "videoId": "YYXdXT2l-Gg",
+      "durationSeconds": 923,
+      "order": 1
+    },
+    {
+      "id": "python_strings",
+      "languageId": "python",
+      "categoryId": "python_getting_started",
+      "title": "Strings and textual data",
+      "description": "Create, transform, and format strings in Python.",
+      "sourceName": "Corey Schafer",
+      "videoId": "k9TUPpGqYTo",
+      "durationSeconds": 1260,
+      "order": 2
+    },
+    {
+      "id": "python_numbers",
+      "languageId": "python",
+      "categoryId": "python_data_types",
+      "title": "Integers and floating-point numbers",
+      "description": "Use numeric types, operators, and common built-in functions.",
+      "sourceName": "Corey Schafer",
+      "videoId": "khKv-8q7YmY",
+      "durationSeconds": 734,
+      "order": 1
+    },
+    {
+      "id": "python_collections",
+      "languageId": "python",
+      "categoryId": "python_data_types",
+      "title": "Lists, tuples, and sets",
+      "description": "Choose and manipulate Python's core collection types.",
+      "sourceName": "Corey Schafer",
+      "videoId": "W8KRzm-HUcc",
+      "durationSeconds": 1776,
+      "order": 2
+    },
+    {
+      "id": "python_dictionaries",
+      "languageId": "python",
+      "categoryId": "python_data_types",
+      "title": "Dictionaries and key-value data",
+      "description": "Store and access structured values using dictionaries.",
+      "sourceName": "Corey Schafer",
+      "videoId": "daefaLgNkw0",
+      "durationSeconds": 587,
+      "order": 3
+    },
+    {
+      "id": "python_functions_basics",
+      "languageId": "python",
+      "categoryId": "python_functions",
+      "title": "Functions",
+      "description": "Define functions, pass arguments, and return values.",
+      "sourceName": "Corey Schafer",
+      "videoId": "9Os0o3wzS_I",
+      "durationSeconds": 1273,
+      "order": 1
+    }
+  ]
+}

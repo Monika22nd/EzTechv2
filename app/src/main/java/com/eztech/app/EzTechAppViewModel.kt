@@ -1,0 +1,34 @@
+package com.eztech.app
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.eztech.core.domain.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+
+@HiltViewModel
+class EzTechAppViewModel @Inject constructor(
+    authRepository: AuthRepository,
+) : ViewModel() {
+
+    val sessionState: StateFlow<SessionState> = authRepository
+        .observeCurrentUser()
+        .map { user ->
+            if (user == null) SessionState.SignedOut else SessionState.SignedIn
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = SessionState.Loading,
+        )
+}
+
+enum class SessionState {
+    Loading,
+    SignedIn,
+    SignedOut,
+}
