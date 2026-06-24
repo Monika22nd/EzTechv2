@@ -14,6 +14,17 @@ interface GamificationRepository {
 
     suspend fun getBadges(userId: String): Resource<List<Badge>>
 
-    fun observeLeaderboard(): Flow<List<LeaderboardEntry>>
-}
+    suspend fun unlockBadge(
+        userId: String,
+        badgeId: String,
+    ): Resource<Unit>
 
+    suspend fun recordDailyLogin(
+        userId: String,
+        today: String,
+    ): Resource<Unit>
+
+    fun observeLeaderboard(): Flow<List<LeaderboardEntry>>
+
+    fun observeUserLeaderboardEntry(userId: String): Flow<LeaderboardEntry?>
+}

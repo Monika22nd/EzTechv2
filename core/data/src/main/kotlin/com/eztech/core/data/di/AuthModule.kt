@@ -20,15 +20,23 @@ object AuthModule {
 
     @Provides
     @Singleton
+    fun provideFirebaseAuth(@ApplicationContext context: Context): FirebaseAuth {
+        val app = FirebaseApp.getApps(context).firstOrNull()
+            ?: return FirebaseAuth.getInstance()
+        return FirebaseAuth.getInstance(app)
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthRepository(
         @ApplicationContext context: Context,
+        firebaseAuth: FirebaseAuth,
+        firestore: FirebaseFirestore,
     ): AuthRepository {
-        val firebaseApp = FirebaseApp.getApps(context).firstOrNull()
-            ?: return UnconfiguredAuthRepository()
-
+        if (FirebaseApp.getApps(context).isEmpty()) return UnconfiguredAuthRepository()
         return FirebaseAuthRepository(
-            firebaseAuth = FirebaseAuth.getInstance(firebaseApp),
-            firestore = FirebaseFirestore.getInstance(firebaseApp),
+            firebaseAuth = firebaseAuth,
+            firestore = firestore,
         )
     }
 }
