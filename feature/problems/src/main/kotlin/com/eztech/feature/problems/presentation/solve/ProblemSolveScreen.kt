@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Send
 import androidx.compose.material.icons.rounded.FileOpen
 import androidx.compose.material.icons.rounded.PlayArrow
@@ -24,7 +23,6 @@ import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.SaveAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -37,8 +35,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -56,6 +52,7 @@ import com.eztech.core.domain.model.CodeExecutionResult
 import com.eztech.core.domain.model.ProblemSubmission
 import com.eztech.core.domain.model.SubmissionStatus
 import com.eztech.core.ui.component.EzTechEmptyState
+import com.eztech.core.ui.component.EzTechTopBar
 import com.eztech.core.ui.file.readUtf8Text
 import com.eztech.core.ui.file.writeUtf8Text
 import com.eztech.core.ui.theme.EzTechDimens
@@ -76,7 +73,6 @@ import java.util.Locale
  * The screen combines problem content, a Python code editor, visible examples, custom input,
  * submission results, submission history, and import/export actions for `.py` files.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProblemSolveScreen(
     onBackClick: () -> Unit,
@@ -139,25 +135,9 @@ fun ProblemSolveScreen(
         modifier = modifier,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                    actionIconContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = state.problem?.title ?: "Solve problem",
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 1,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
-                    }
-                },
+            EzTechTopBar(
+                title = state.problem?.title ?: "Solve problem",
+                onBackClick = onBackClick,
                 actions = {
                     IconButton(
                         onClick = {
@@ -204,6 +184,7 @@ fun ProblemSolveScreen(
             )
         },
     ) { innerPadding ->
+        val problem = state.problem
         when {
             state.isLoading -> Box(
                 modifier = Modifier.fillMaxSize().padding(innerPadding),
@@ -211,7 +192,7 @@ fun ProblemSolveScreen(
             ) {
                 CircularProgressIndicator()
             }
-            state.problem == null -> Box(
+            problem == null -> Box(
                 modifier = Modifier.fillMaxSize().padding(innerPadding),
                 contentAlignment = Alignment.Center,
             ) {
@@ -235,7 +216,7 @@ fun ProblemSolveScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
                 ) {
-                    DifficultyBadge(state.problem!!.difficulty)
+                    DifficultyBadge(problem.difficulty)
                     Text(
                         text = "${state.visibleTestCases.size} examples",
                         style = MaterialTheme.typography.labelLarge,

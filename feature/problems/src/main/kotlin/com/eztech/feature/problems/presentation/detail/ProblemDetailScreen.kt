@@ -11,19 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,13 +27,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eztech.core.ui.component.EzTechEmptyState
+import com.eztech.core.ui.component.EzTechTopBar
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.problems.presentation.component.DifficultyBadge
 import com.eztech.feature.problems.presentation.component.ProblemDescription
 import com.eztech.feature.problems.presentation.component.VisibleTestCaseCard
 import com.eztech.feature.problems.presentation.model.ProblemTypeCatalog
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProblemDetailScreen(
     onBackClick: () -> Unit,
@@ -52,23 +47,9 @@ fun ProblemDetailScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = problem?.title ?: "Problem",
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
-                    }
-                },
+            EzTechTopBar(
+                title = problem?.title ?: "Problem",
+                onBackClick = onBackClick,
             )
         },
         bottomBar = {

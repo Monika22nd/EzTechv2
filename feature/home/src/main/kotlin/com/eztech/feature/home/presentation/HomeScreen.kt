@@ -27,16 +27,13 @@ import androidx.compose.material.icons.rounded.Timeline
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -55,6 +52,7 @@ import com.eztech.core.domain.model.Problem
 import com.eztech.core.domain.model.Recommendation
 import com.eztech.core.domain.model.RecommendationStats
 import com.eztech.core.ui.component.EzTechEmptyState
+import com.eztech.core.ui.component.EzTechTopBar
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.home.presentation.component.RecommendationSection
 
@@ -64,7 +62,6 @@ import com.eztech.feature.home.presentation.component.RecommendationSection
  * It observes HomeViewModel and chooses between loading, error, and dashboard content states while
  * delegating navigation actions back to the app-level NavHost.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onLearnClick: () -> Unit,
@@ -81,20 +78,10 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = "Dashboard",
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
-            )
+            EzTechTopBar(title = "Dashboard")
         },
     ) { innerPadding ->
+        val summary = state.summary
         when {
             state.isLoading -> LoadingContent(
                 modifier = Modifier
@@ -102,7 +89,7 @@ fun HomeScreen(
                     .padding(innerPadding),
             )
 
-            state.errorMessage != null && state.summary == null -> ErrorContent(
+            state.errorMessage != null && summary == null -> ErrorContent(
                 message = state.errorMessage.orEmpty(),
                 onRetry = viewModel::retry,
                 modifier = Modifier
@@ -110,8 +97,8 @@ fun HomeScreen(
                     .padding(innerPadding),
             )
 
-            state.summary != null -> DashboardContent(
-                summary = state.summary!!,
+            summary != null -> DashboardContent(
+                summary = summary,
                 recommendations = state.recommendations,
                 recommendationStats = state.recommendationStats,
                 isLoadingRecommendations = state.isLoadingRecommendations,

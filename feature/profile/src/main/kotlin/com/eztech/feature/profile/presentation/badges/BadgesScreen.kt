@@ -13,21 +13,15 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,10 +37,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eztech.core.domain.model.Badge
 import com.eztech.core.domain.model.BadgeRequirementType
 import com.eztech.core.ui.component.EzTechEmptyState
+import com.eztech.core.ui.component.EzTechTopBar
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.profile.presentation.component.BadgeItem
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BadgesScreen(
     onBackClick: () -> Unit,
@@ -66,26 +60,9 @@ fun BadgesScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = "Badges",
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = "Back",
-                        )
-                    }
-                },
+            EzTechTopBar(
+                title = "Badges",
+                onBackClick = onBackClick,
             )
         },
     ) { innerPadding ->

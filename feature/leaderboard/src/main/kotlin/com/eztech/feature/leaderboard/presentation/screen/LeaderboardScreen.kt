@@ -14,16 +14,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Code
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,12 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eztech.core.ui.component.EzTechTopBar
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.leaderboard.presentation.component.LeaderboardItem
 import com.eztech.feature.leaderboard.presentation.component.PodiumView
 import com.eztech.feature.leaderboard.presentation.viewmodel.LeaderboardViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeaderboardScreen(
     onProblemsClick: () -> Unit,
@@ -49,19 +46,8 @@ fun LeaderboardScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                    actionIconContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = "Leaderboard",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
+            EzTechTopBar(
+                title = "Leaderboard",
                 actions = {
                     TextButton(onClick = onProblemsClick) {
                         Icon(Icons.Rounded.Code, contentDescription = null)
