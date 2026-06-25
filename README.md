@@ -1,108 +1,265 @@
 # EzTechv2
 
-EzTechv2 is an Android learning app for Python programming. It combines tutorial content, video lessons, coding problems, an in-app Python IDE, gamification, leaderboard, bookmarks, and user profile management.
+EzTechv2 là ứng dụng Android hỗ trợ học lập trình Python. Ứng dụng kết hợp bài học dạng tutorial, video, bài tập lập trình, IDE Python trong app, hệ thống điểm kinh nghiệm, huy hiệu, bảng xếp hạng, bookmark và quản lý hồ sơ người dùng.
 
-## Features
+## Mục Tiêu
 
-- Email/password authentication with Firebase Authentication.
-- Firestore-backed user profiles, learning content, video lessons, tutorials, coding problems, progress, bookmarks, and leaderboard data.
-- Home dashboard with learning progress and quick actions.
-- Learn module with video tutorials and article-style tutorial lessons.
-- Problems module with ordered Python practice problems, search, filters, code drafts, custom input, submission history, and accepted submission tracking.
-- In-app Python IDE powered by Chaquopy.
-- Gamification with EXP, levels, streaks, badges, and leaderboard ranking.
-- Profile and settings screens with display name editing, avatar URL, dark/light/system theme preference, notifications toggle, and logout.
-- Offline-friendly fallback and lightweight in-memory caching for key Firestore reads.
+- Xây dựng một app học Python có thể demo trực tiếp trên emulator hoặc điện thoại Android.
+- Lưu dữ liệu người dùng, bài học, video, bài tập và tiến độ học tập bằng Firebase.
+- Cho phép người học xem bài, làm bài tập, chạy code Python, lưu nháp code và theo dõi tiến độ.
+- Tổ chức code theo kiến trúc nhiều module, MVVM và clean architecture nhẹ để dễ mở rộng.
 
-## Tech Stack
+## Tính Năng Chính
+
+- Đăng ký, đăng nhập, quên mật khẩu bằng Firebase Authentication.
+- Trang Home dashboard hiển thị tiến độ học, bài học gần đây, số bài đã giải và thông tin xếp hạng.
+- Mục Learn gồm danh sách video tutorial và danh sách bài học dạng bài viết.
+- Mục Problems gồm danh sách bài tập Python theo thứ tự, tìm kiếm, lọc độ khó, xem chi tiết và giải bài.
+- Màn hình Solve có editor, custom input, chạy thử code, submit, lưu draft và xem lịch sử nộp bài.
+- IDE Python trong app sử dụng Chaquopy để chạy code.
+- Bookmark bài học để lưu các bài cần xem lại.
+- Gamification: EXP, level, streak, badge và leaderboard.
+- Profile: xem thông tin cá nhân, thống kê học tập, huy hiệu, đổi display name và avatar URL.
+- Settings: đổi theme System/Light/Dark, bật/tắt notification, logout.
+- Dữ liệu chính lấy từ Cloud Firestore, có fallback local và cache nhẹ để giảm đọc lặp.
+
+## Công Nghệ Sử Dụng
 
 - Kotlin
 - Jetpack Compose
 - Material 3
 - Navigation Compose
-- Hilt
-- Coroutines and Flow
+- Hilt Dependency Injection
+- Kotlin Coroutines và Flow
 - Firebase Authentication
 - Cloud Firestore
 - DataStore Preferences
-- Chaquopy Python runtime
+- Chaquopy Python Runtime
 - Coil image loading
 - YouTube Player library
 
-## Project Structure
+## Cấu Trúc Thư Mục
 
 ```text
-app/                 Main Android app and navigation shell
-core/common/         Shared Resource and common utilities
-core/domain/         Domain models, repositories, and use cases
-core/data/           Firebase, local data, Python execution, repository implementations
-core/ui/             Shared UI components and theme
-feature/auth/        Login, register, password reset
-feature/home/        Home dashboard
-feature/learn/       Tutorial/video learning screens
-feature/problems/    Problem list, detail, solve flow
-feature/ide/         Python IDE
-feature/leaderboard/ Leaderboard and ranking UI
-feature/profile/     Profile, badges, edit profile, settings
+EzTechv2/
+├── app/
+│   ├── src/main/java/com/eztech/app/
+│   │   ├── EzTechApplication.kt
+│   │   ├── EzTechAppViewModel.kt
+│   │   ├── MainActivity.kt
+│   │   └── navigation/
+│   │       ├── EzTechApp.kt
+│   │       ├── EzTechNavHost.kt
+│   │       ├── NavigationExtensions.kt
+│   │       └── TopLevelDestination.kt
+│   ├── google-services.json
+│   └── build.gradle.kts
+│
+├── core/
+│   ├── common/
+│   │   └── Resource.kt
+│   ├── domain/
+│   │   └── src/main/kotlin/com/eztech/core/domain/
+│   │       ├── model/
+│   │       ├── repository/
+│   │       └── usecase/
+│   ├── data/
+│   │   └── src/main/kotlin/com/eztech/core/data/
+│   │       ├── di/
+│   │       ├── engine/
+│   │       ├── repository/
+│   │       └── source/
+│   └── ui/
+│       └── src/main/kotlin/com/eztech/core/ui/
+│           ├── component/
+│           └── theme/
+│
+├── feature/
+│   ├── auth/
+│   │   └── presentation/
+│   ├── home/
+│   │   ├── di/
+│   │   ├── navigation/
+│   │   └── presentation/
+│   ├── learn/
+│   │   ├── navigation/
+│   │   └── presentation/
+│   │       ├── bookmarks/
+│   │       ├── category/
+│   │       ├── component/
+│   │       ├── list/
+│   │       ├── tutorial/
+│   │       └── video/
+│   ├── problems/
+│   │   ├── navigation/
+│   │   └── presentation/
+│   │       ├── component/
+│   │       ├── detail/
+│   │       ├── list/
+│   │       └── solve/
+│   ├── ide/
+│   │   └── presentation/
+│   ├── leaderboard/
+│   │   └── presentation/
+│   └── profile/
+│       ├── navigation/
+│       └── presentation/
+│           ├── badges/
+│           ├── component/
+│           ├── edit/
+│           ├── screen/
+│           └── settings/
+│
+├── firestore.rules
+├── firebase.json
+├── gradle/
+├── settings.gradle.kts
+└── README.md
 ```
 
-## Firebase Setup
+## Kiến Trúc App
 
-The app uses Firebase Authentication and Cloud Firestore. Firebase Storage is not required.
+Ứng dụng được tổ chức theo hướng nhiều module và MVVM.
 
-1. Create or select a Firebase project.
-2. Enable Email/Password sign-in in Firebase Authentication.
-3. Enable Cloud Firestore.
-4. Add the Android app package `com.eztech.app`.
-5. Place `google-services.json` in `app/google-services.json`.
-6. Deploy Firestore rules when rules change:
+### Các Lớp Chính
+
+```text
+UI Screen / Composable
+        ↓ gọi event
+ViewModel
+        ↓ gọi use case hoặc repository
+Domain UseCase
+        ↓ gọi interface repository
+Repository Interface
+        ↓ được implement ở core:data
+Repository Implementation
+        ↓ đọc/ghi dữ liệu
+Firebase / Local Source / Python Engine
+```
+
+### Vai Trò Từng Layer
+
+- `app`: chứa `MainActivity`, app shell, bottom navigation và nav host tổng.
+- `feature/*`: mỗi feature là một module riêng, chứa UI screen, state, ViewModel và navigation của feature đó.
+- `core/domain`: chứa model, repository interface và use case. Layer này không phụ thuộc Firebase hay Android UI.
+- `core/data`: implement repository, làm việc với Firebase, local fallback, DataStore và Chaquopy.
+- `core/ui`: chứa theme, màu sắc, typography và component UI dùng chung.
+- `core/common`: chứa class dùng chung như `Resource`.
+
+### MVVM Trong Feature
+
+Mỗi màn hình lớn thường có 3 phần:
+
+```text
+ExampleScreen.kt       Hiển thị UI bằng Jetpack Compose
+ExampleUiState.kt      Gom dữ liệu/trạng thái màn hình
+ExampleViewModel.kt    Xử lý logic, gọi use case/repository, cập nhật UiState
+```
+
+Ví dụ trong `feature/problems`:
+
+```text
+ProblemListScreen.kt
+ProblemListUiState.kt
+ProblemListViewModel.kt
+
+ProblemSolveScreen.kt
+ProblemSolveUiState.kt
+ProblemSolveViewModel.kt
+```
+
+Luồng hoạt động:
+
+1. Người dùng thao tác trên `Screen`.
+2. `Screen` gọi function trong `ViewModel`.
+3. `ViewModel` gọi `UseCase` hoặc `Repository`.
+4. Repository đọc/ghi Firestore hoặc chạy Python engine.
+5. Kết quả được trả về dạng `Resource.Loading`, `Resource.Success`, `Resource.Error`.
+6. `ViewModel` cập nhật `UiState`.
+7. Compose tự render lại giao diện.
+
+## Firebase
+
+Ứng dụng dùng:
+
+- Firebase Authentication: đăng ký, đăng nhập, quên mật khẩu.
+- Cloud Firestore: lưu user profile, bài học, video, bài tập, progress, bookmark, leaderboard, submission history.
+
+Ứng dụng không dùng Firebase Storage để tránh phải nâng cấp Blaze. Avatar được lưu bằng trường `avatarUrl` trong Firestore.
+
+### Deploy Firestore Rules
+
+Chỉ cần chạy lệnh này khi file `firestore.rules` thay đổi:
 
 ```powershell
 firebase deploy --only firestore
 ```
 
-During a demo, this command is not required if the Firestore rules have already been deployed. The APK only needs internet access and a valid Firebase configuration.
+Khi demo, nếu rules đã deploy rồi thì không cần chạy lệnh này nữa. Chỉ cần cài APK, đăng nhập và app sẽ tự kết nối Firestore.
 
-## Build
+## Build App
 
-From the project root:
+Chạy từ thư mục gốc project:
 
 ```powershell
 .\gradlew.bat :app:assembleDebug
 ```
 
-Debug APK:
+APK debug nằm tại:
 
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Unsigned release APK:
+Build release unsigned:
 
 ```powershell
 .\gradlew.bat :app:assembleRelease
 ```
 
+File release unsigned:
+
 ```text
 app/build/outputs/apk/release/app-release-unsigned.apk
 ```
 
-## Tests
+## Test
 
 ```powershell
 .\gradlew.bat :core:domain:test :core:data:testDebugUnitTest :feature:problems:testDebugUnitTest :feature:profile:testDebugUnitTest
 ```
 
-## Data Notes
+Các test chính hiện kiểm tra repository, problems ViewModel và profile/settings ViewModel.
 
-The app currently supports Firestore-driven Python learning content and ordered coding problems. Adding more problems, for example 600 total, is supported as long as the documents follow the same schema and include an order/index field for stable sorting.
+## Dữ Liệu Firestore
 
-For larger datasets, Firestore pagination can be added later to reduce initial reads. For a private demo app, hundreds of problem documents are fine.
+App hiện hỗ trợ dữ liệu học Python và bài tập lập trình lấy từ Firestore.
 
-## Demo Checklist
+Các nhóm dữ liệu chính:
 
-- Install the debug APK.
-- Register or log in.
-- Verify Home, Learn, Video, Tutorial, Problems, Solve, IDE, Rank, Profile, and Settings.
-- Confirm Firestore shows user documents and progress updates.
-- Confirm problems appear in the intended order.
+- `users`: thông tin người dùng, EXP, level, streak, solved problems, bookmarked lessons.
+- `lessons` hoặc nhóm collection bài học: tutorial/video lesson.
+- `problems`: danh sách bài tập Python.
+- `problemSubmissions`: lịch sử nộp bài.
+- `codeDrafts`: code nháp của người dùng.
+- `leaderboard`: dữ liệu bảng xếp hạng.
+
+Nếu muốn thêm 600 bài problems, app vẫn chạy được nếu dữ liệu giữ đúng schema và có field thứ tự như `order` hoặc `index` để hiển thị câu 1, 2, 3... Với vài trăm bài, app demo vẫn ổn. Nếu tăng lên hàng nghìn bài, nên bổ sung pagination để tiết kiệm lượt đọc Firestore.
+
+## Checklist Demo
+
+- Cài APK debug lên emulator hoặc điện thoại.
+- Đăng ký hoặc đăng nhập.
+- Kiểm tra Home dashboard.
+- Mở Learn, video tutorial và tutorial article.
+- Mở Problems, xem thứ tự bài, tìm kiếm/lọc, vào chi tiết và solve.
+- Chạy code trong IDE Python.
+- Kiểm tra Rank/Leaderboard.
+- Kiểm tra Profile, Badges, Edit Profile và Settings.
+- Mở Firebase Console để show dữ liệu user/progress trên Firestore nếu cần.
+
+## Ghi Chú
+
+- App chưa ký release chính thức, nên dùng `app-debug.apk` để demo.
+- Google Sign-In và Play Store release không nằm trong phạm vi bản demo hiện tại.
+- Firebase Storage đã được bỏ, vì bản demo không cần upload file thật.
