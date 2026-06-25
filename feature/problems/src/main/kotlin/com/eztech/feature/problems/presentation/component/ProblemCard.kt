@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import com.eztech.core.domain.model.Problem
 import com.eztech.core.ui.theme.EzTechDimens
+import com.eztech.feature.problems.presentation.model.ProblemTypeCatalog
 
 @Composable
 fun ProblemCard(
@@ -26,6 +27,8 @@ fun ProblemCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val problemTypes = ProblemTypeCatalog.labelsFor(problem).take(MAX_VISIBLE_TYPES)
+
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
@@ -66,7 +69,7 @@ fun ProblemCard(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = problem.tags.joinToString("  |  "),
+                    text = problemTypes.joinToString("  |  "),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
                     maxLines = 1,
@@ -81,3 +84,5 @@ fun ProblemCard(
         }
     }
 }
+
+private const val MAX_VISIBLE_TYPES = 3

@@ -12,14 +12,15 @@ import androidx.compose.ui.Modifier
 import com.eztech.core.domain.model.Difficulty
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.problems.presentation.list.ProblemSortOption
+import com.eztech.feature.problems.presentation.model.ProblemTypeFilter
 
 @Composable
 fun ProblemFilterRow(
     selectedDifficulty: Difficulty?,
     onDifficultySelected: (Difficulty?) -> Unit,
-    availableTags: List<String>,
-    selectedTag: String?,
-    onTagSelected: (String?) -> Unit,
+    availableProblemTypes: List<ProblemTypeFilter>,
+    selectedProblemType: String?,
+    onProblemTypeSelected: (String?) -> Unit,
     sortOption: ProblemSortOption,
     onSortOptionSelected: (ProblemSortOption) -> Unit,
     modifier: Modifier = Modifier,
@@ -48,21 +49,21 @@ fun ProblemFilterRow(
             }
         }
 
-        if (availableTags.isNotEmpty()) {
+        if (availableProblemTypes.isNotEmpty()) {
             Row(
                 modifier = Modifier.horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
             ) {
                 FilterChip(
-                    selected = selectedTag == null,
-                    onClick = { onTagSelected(null) },
-                    label = { Text("Any tag") },
+                    selected = selectedProblemType == null,
+                    onClick = { onProblemTypeSelected(null) },
+                    label = { Text("All types") },
                 )
-                availableTags.take(MAX_VISIBLE_TAGS).forEach { tag ->
+                availableProblemTypes.take(MAX_VISIBLE_TYPES).forEach { type ->
                     FilterChip(
-                        selected = selectedTag == tag,
-                        onClick = { onTagSelected(tag) },
-                        label = { Text(tag) },
+                        selected = selectedProblemType == type.key,
+                        onClick = { onProblemTypeSelected(type.key) },
+                        label = { Text(type.displayLabel) },
                     )
                 }
             }
@@ -83,4 +84,4 @@ fun ProblemFilterRow(
     }
 }
 
-private const val MAX_VISIBLE_TAGS = 16
+private const val MAX_VISIBLE_TYPES = 16

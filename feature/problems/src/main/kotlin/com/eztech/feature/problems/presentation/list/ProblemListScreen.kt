@@ -93,9 +93,9 @@ fun ProblemListScreen(
                     ProblemFilterRow(
                         selectedDifficulty = state.selectedDifficulty,
                         onDifficultySelected = viewModel::selectDifficulty,
-                        availableTags = state.availableTags,
-                        selectedTag = state.selectedTag,
-                        onTagSelected = viewModel::selectTag,
+                        availableProblemTypes = state.availableProblemTypes,
+                        selectedProblemType = state.selectedProblemType,
+                        onProblemTypeSelected = viewModel::selectProblemType,
                         sortOption = state.sortOption,
                         onSortOptionSelected = viewModel::selectSortOption,
                     )
@@ -104,7 +104,7 @@ fun ProblemListScreen(
                     item {
                         EzTechEmptyState(
                             title = "No matching problems",
-                            message = "Try another search, difficulty, or tag.",
+                            message = "Try another search, difficulty, or problem type.",
                             modifier = Modifier.fillMaxSize().padding(EzTechDimens.SpaceXLarge),
                         )
                     }

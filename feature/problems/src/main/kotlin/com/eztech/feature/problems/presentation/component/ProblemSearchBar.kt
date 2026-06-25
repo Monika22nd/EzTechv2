@@ -32,6 +32,6 @@ fun ProblemSearchBar(
                 }
             }
         },
-        label = { Text("Search problems") },
+        label = { Text("Search title, #, type") },
     )
 }

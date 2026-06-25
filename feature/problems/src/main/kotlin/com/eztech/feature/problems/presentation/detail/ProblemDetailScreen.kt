@@ -35,6 +35,7 @@ import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.problems.presentation.component.DifficultyBadge
 import com.eztech.feature.problems.presentation.component.ProblemDescription
 import com.eztech.feature.problems.presentation.component.VisibleTestCaseCard
+import com.eztech.feature.problems.presentation.model.ProblemTypeCatalog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,13 +102,14 @@ fun ProblemDetailScreen(
                 verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceMedium),
             ) {
                 item {
+                    val problemTypes = ProblemTypeCatalog.labelsFor(problem)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
                     ) {
                         DifficultyBadge(problem.difficulty)
                         Text(
-                            text = problem.tags.joinToString("  |  "),
+                            text = problemTypes.joinToString("  |  "),
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary,
                         )

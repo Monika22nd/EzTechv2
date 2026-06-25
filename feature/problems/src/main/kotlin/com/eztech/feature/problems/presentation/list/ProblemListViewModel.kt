@@ -6,6 +6,7 @@ import com.eztech.core.common.Resource
 import com.eztech.core.domain.model.Difficulty
 import com.eztech.core.domain.model.Problem
 import com.eztech.core.domain.usecase.problem.GetProblemsUseCase
+import com.eztech.feature.problems.presentation.model.ProblemTypeCatalog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -40,10 +41,10 @@ class ProblemListViewModel @Inject constructor(
         }
     }
 
-    fun selectTag(tag: String?) {
-        if (_uiState.value.selectedTag == tag) return
+    fun selectProblemType(problemType: String?) {
+        if (_uiState.value.selectedProblemType == problemType) return
         _uiState.update { state ->
-            state.copy(selectedTag = tag).withFilteredProblems()
+            state.copy(selectedProblemType = problemType).withFilteredProblems()
         }
     }
 
@@ -65,12 +66,7 @@ class ProblemListViewModel @Inject constructor(
                         Resource.Loading -> state.copy(isLoading = true, errorMessage = null)
                         is Resource.Success -> state.copy(
                             allProblems = result.data,
-                            availableTags = result.data
-                                .flatMap(Problem::tags)
-                                .map(String::trim)
-                                .filter(String::isNotEmpty)
-                                .distinct()
-                                .sortedBy(String::lowercase),
+                            availableProblemTypes = ProblemTypeCatalog.filtersFor(result.data),
                             isLoading = false,
                             errorMessage = null,
                         ).withFilteredProblems()
@@ -92,15 +88,14 @@ class ProblemListViewModel @Inject constructor(
                 selectedDifficulty == null || problem.difficulty == selectedDifficulty
             }
             .filter { problem ->
-                selectedTag == null || problem.tags.any { tag ->
-                    tag.equals(selectedTag, ignoreCase = true)
-                }
+                ProblemTypeCatalog.matches(problem, selectedProblemType)
             }
             .filter { problem ->
                 query.isBlank() ||
                     problem.title.contains(query, ignoreCase = true) ||
                     problem.description.contains(query, ignoreCase = true) ||
                     problem.tags.any { tag -> tag.contains(query, ignoreCase = true) } ||
+                    ProblemTypeCatalog.matchesSearch(problem, query) ||
                     problem.order.toString() == query.removePrefix("#")
             }
             .toList()

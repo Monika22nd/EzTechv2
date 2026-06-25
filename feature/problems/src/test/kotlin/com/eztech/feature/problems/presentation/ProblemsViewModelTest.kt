@@ -80,6 +80,23 @@ class ProblemsViewModelTest {
     }
 
     @Test
+    fun `list applies problem type filter`() = runTest(dispatcher) {
+        val repository = FakeProblemRepository()
+        val viewModel = ProblemListViewModel(GetProblemsUseCase(repository))
+        advanceUntilIdle()
+
+        viewModel.selectProblemType("strings")
+        advanceUntilIdle()
+
+        assertEquals("strings", viewModel.uiState.value.selectedProblemType)
+        assertEquals(listOf("hard"), viewModel.uiState.value.problems.map(Problem::id))
+        assertEquals(
+            listOf("Lists", "Strings"),
+            viewModel.uiState.value.availableProblemTypes.map { type -> type.label },
+        )
+    }
+
+    @Test
     fun `solve loads starter code and publishes accepted result`() = runTest(dispatcher) {
         val problemRepository = FakeProblemRepository()
         val codeExecutionRepository = FakeCodeExecutionRepository()
@@ -125,8 +142,8 @@ class ProblemsViewModelTest {
 
     private class FakeProblemRepository : ProblemRepository {
         private val problems = listOf(
-            problem("easy", Difficulty.EASY),
-            problem("hard", Difficulty.HARD),
+            problem("easy", Difficulty.EASY, tags = listOf("functions", "lists")),
+            problem("hard", Difficulty.HARD, tags = listOf("functions", "strings")),
         )
         private val tests = listOf(
             TestCase(
@@ -274,7 +291,11 @@ class ProblemsViewModelTest {
     }
 
     private companion object {
-        fun problem(id: String, difficulty: Difficulty) = Problem(
+        fun problem(
+            id: String,
+            difficulty: Difficulty,
+            tags: List<String> = emptyList(),
+        ) = Problem(
             id = id,
             title = id,
             description = "Description",
@@ -282,6 +303,7 @@ class ProblemsViewModelTest {
             constraints = emptyList(),
             starterCode = "print(input())",
             solutionCode = "print(input())",
+            tags = tags,
         )
     }
 }
