@@ -131,6 +131,6 @@ internal class LocalProblemDataSource @Inject constructor(
 
     private companion object {
         const val SEED_DATA_PATH = "seed_data/problems.json"
-        const val MAX_PROBLEM_COUNT = 200
+        const val MAX_PROBLEM_COUNT = 1_000
     }
 }

@@ -5,7 +5,7 @@ This folder contains local seed data used by the Android app.
 ## Problems
 
 - File: `problems.json`
-- Count: 228 problems, including 220 MBPP problems and 8 custom EzTech starter problems.
+- Count: 973 MBPP problems converted from the full MBPP dataset.
 - Source: MBPP - Mostly Basic Python Problems
 - URL: https://huggingface.co/datasets/Muennighoff/mbpp
 - License: CC BY 4.0

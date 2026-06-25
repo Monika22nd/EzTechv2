@@ -15,7 +15,7 @@ GOOGLE_SERVICES_PATH = PROJECT_ROOT / "app/google-services.json"
 PROBLEMS_PATH = PROJECT_ROOT / "core/data/src/main/assets/seed_data/problems.json"
 LESSONS_PATH = PROJECT_ROOT / "core/data/src/main/assets/seed_data/lessons.json"
 BATCH_SIZE = 400
-DEFAULT_PROBLEM_LIMIT = 200
+DEFAULT_PROBLEM_LIMIT = 1000
 
 
 def main() -> int:
@@ -175,7 +175,17 @@ def build_problem_clean_writes(
         api_key=api_key,
         collection_id="problems",
     )
-    return [{"delete": problem_name} for problem_name in problem_names]
+    writes: list[dict[str, Any]] = []
+    for problem_name in problem_names:
+        problem_id = problem_name.rsplit("/", 1)[-1]
+        test_case_names = list_collection_document_names(
+            project_id=project_id,
+            api_key=api_key,
+            collection_id=f"problems/{problem_id}/test_cases",
+        )
+        writes.extend({"delete": test_case_name} for test_case_name in test_case_names)
+        writes.append({"delete": problem_name})
+    return writes
 
 
 def list_collection_document_names(

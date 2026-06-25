@@ -96,7 +96,7 @@ internal class FirebaseProblemDataSource @Inject constructor(
         const val INPUT = "input"
         const val EXPECTED_OUTPUT = "expectedOutput"
         const val IS_HIDDEN = "isHidden"
-        const val MAX_PROBLEM_COUNT = 200L
+        const val MAX_PROBLEM_COUNT = 1_000L
         const val TAG = "EzTechFirestore"
     }
 }

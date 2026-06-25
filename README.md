@@ -244,7 +244,7 @@ Các nhóm dữ liệu chính:
 - `codeDrafts`: code nháp của người dùng.
 - `leaderboard`: dữ liệu bảng xếp hạng.
 
-Nếu muốn thêm 600 bài problems, app vẫn chạy được nếu dữ liệu giữ đúng schema và có field thứ tự như `order` hoặc `index` để hiển thị câu 1, 2, 3... Với vài trăm bài, app demo vẫn ổn. Nếu tăng lên hàng nghìn bài, nên bổ sung pagination để tiết kiệm lượt đọc Firestore.
+Seed data hiện có 973 bài problems từ full MBPP dataset. Mỗi problem được import kèm field `order` để app hiển thị theo thứ tự câu 1, 2, 3... Nếu sau này tăng lên hàng nghìn bài, nên bổ sung pagination để tiết kiệm lượt đọc Firestore.
 
 ## Checklist Demo
 

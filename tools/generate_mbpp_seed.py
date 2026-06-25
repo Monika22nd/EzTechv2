@@ -10,13 +10,12 @@ from pathlib import Path
 
 MBPP_URL = (
     "https://raw.githubusercontent.com/google-research/google-research/"
-    "master/mbpp/sanitized-mbpp.json"
+    "master/mbpp/mbpp.jsonl"
 )
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PROBLEMS_PATH = PROJECT_ROOT / "core/data/src/main/assets/seed_data/problems.json"
-DOWNLOAD_PATH = PROJECT_ROOT / "tools/cache/sanitized-mbpp.json"
-TARGET_MBPP_PROBLEMS = 220
-SOURCE_URL = "https://huggingface.co/datasets/Muennighoff/mbpp"
+DOWNLOAD_PATH = PROJECT_ROOT / "tools/cache/mbpp.jsonl"
+SOURCE_URL = "https://github.com/google-research/google-research/tree/master/mbpp"
 SOURCE_LICENSE = "CC BY 4.0"
 
 
@@ -48,45 +47,36 @@ TAG_KEYWORDS = [
 
 def main() -> int:
     mbpp_items = load_mbpp()
-    seed = json.loads(PROBLEMS_PATH.read_text(encoding="utf-8"))
-    custom_problems = [
-        item for item in seed["problems"] if not item["id"].startswith("mbpp_")
-    ]
-    custom_tests = [
-        item for item in seed["testCases"] if not item["problemId"].startswith("mbpp_")
-    ]
-
     generated_problems = []
     generated_tests = []
-    skipped = 0
+    skipped = []
+
     for item in mbpp_items:
-        if len(generated_problems) >= TARGET_MBPP_PROBLEMS:
-            break
         converted = convert_item(item)
         if converted is None:
-            skipped += 1
+            skipped.append(item.get("task_id", "unknown"))
             continue
         problem, tests = converted
         generated_problems.append(problem)
         generated_tests.extend(tests)
 
-    if len(generated_problems) < 200:
+    if len(generated_problems) < 900:
         raise RuntimeError(
-            f"Only generated {len(generated_problems)} MBPP problems; expected at least 200."
+            f"Only generated {len(generated_problems)} MBPP problems; expected at least 900."
         )
     balance_difficulties(generated_problems)
 
     output = {
-        "problems": custom_problems + generated_problems,
-        "testCases": custom_tests + generated_tests,
+        "problems": generated_problems,
+        "testCases": generated_tests,
         "sources": [
             {
                 "name": "MBPP - Mostly Basic Python Problems",
                 "url": SOURCE_URL,
                 "license": SOURCE_LICENSE,
                 "notes": (
-                    "MBPP problem prompts and assert-style tests are used for "
-                    "Python practice data. Keep attribution when importing to Firestore."
+                    "Full MBPP tasks are converted into assert-based Python "
+                    "practice problems. Keep attribution when importing to Firestore."
                 ),
             }
         ],
@@ -95,11 +85,9 @@ def main() -> int:
         json.dumps(output, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    print(
-        f"Wrote {len(output['problems'])} problems "
-        f"({len(generated_problems)} MBPP, {len(custom_problems)} custom)."
-    )
-    print(f"Wrote {len(output['testCases'])} test cases. Skipped {skipped} MBPP rows.")
+    print(f"Wrote {len(output['problems'])} MBPP problems.")
+    print(f"Wrote {len(output['testCases'])} test cases.")
+    print(f"Skipped {len(skipped)} MBPP rows: {skipped}")
     return 0
 
 
@@ -124,7 +112,12 @@ def load_mbpp() -> list[dict]:
     if not DOWNLOAD_PATH.exists():
         print(f"Downloading MBPP from {MBPP_URL}")
         urllib.request.urlretrieve(MBPP_URL, DOWNLOAD_PATH)
-    return json.loads(DOWNLOAD_PATH.read_text(encoding="utf-8"))
+
+    rows = []
+    for line in DOWNLOAD_PATH.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            rows.append(json.loads(line))
+    return rows
 
 
 def convert_item(item: dict) -> tuple[dict, list[dict]] | None:
@@ -134,11 +127,10 @@ def convert_item(item: dict) -> tuple[dict, list[dict]] | None:
     solution = normalize_code(item.get("code", ""))
     assertions = [
         normalize_assertion(test)
-        for test in item.get("test_list", [])
+        for test in list(item.get("test_list", [])) + list(item.get("challenge_test_list", []))
         if normalize_assertion(test)
     ]
-    imports = [normalize_code(line) for line in item.get("test_imports", [])]
-    imports = [line for line in imports if line]
+    imports = build_test_imports(item)
 
     if not prompt or not solution or not assertions:
         return None
@@ -188,6 +180,18 @@ def convert_item(item: dict) -> tuple[dict, list[dict]] | None:
             }
         )
     return problem, tests
+
+
+def build_test_imports(item: dict) -> list[str]:
+    imports = []
+    for value in item.get("test_imports", []):
+        line = normalize_code(value)
+        if line:
+            imports.append(line)
+    setup = normalize_code(item.get("test_setup_code", ""))
+    if setup:
+        imports.append(setup)
+    return imports
 
 
 def build_starter(solution: str) -> str:

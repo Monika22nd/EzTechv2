@@ -37,8 +37,8 @@ The importer writes:
 
 Expected current size:
 
-- 200 problems
-- 609 test cases
+- 973 MBPP problems
+- More than 2,900 test cases
 - 220 lessons (160 Corey Schafer videos + 60 written tutorials)
 - 20 lesson categories
 
