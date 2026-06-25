@@ -21,7 +21,7 @@
         "test-problem"
       ],
       "source": {
-        "name": "EzTech manual test problem",
+        "name": "PyQuest manual test problem",
         "taskId": "test-0001",
         "url": "local",
         "license": "Project demo data"

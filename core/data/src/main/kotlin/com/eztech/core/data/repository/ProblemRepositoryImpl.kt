@@ -36,7 +36,7 @@ internal class ProblemRepositoryImpl(
      * Emits the full problem list filtered by difficulty.
      *
      * The list is loaded once through getCachedProblems(), so all screens share the same remote/local
-     * fallback behavior and the manual EzTech test problem can be merged consistently.
+     * fallback behavior and the manual PyQuest test problem can be merged consistently.
      */
     override fun observeProblems(
         difficulty: Difficulty?,

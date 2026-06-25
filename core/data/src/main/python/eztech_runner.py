@@ -51,13 +51,13 @@ class LimitedStringIO(io.StringIO):
 def restricted_import(name, globals=None, locals=None, fromlist=(), level=0):
     root_module = name.partition(".")[0]
     if root_module in BLOCKED_MODULES:
-        raise ImportError(f"Module '{root_module}' is not available in EzTech IDE.")
+        raise ImportError(f"Module '{root_module}' is not available in PyQuest IDE.")
     return builtins.__import__(name, globals, locals, fromlist, level)
 
 
 def blocked_open(*args, **kwargs):
     del args, kwargs
-    raise PermissionError("File access is not available in EzTech IDE.")
+    raise PermissionError("File access is not available in PyQuest IDE.")
 
 
 def run_code(code, stdin="", timeout_seconds=10.0):

@@ -116,7 +116,7 @@ internal class UserRepositoryImpl(
         val firebaseUser = firebaseAuth.currentUser?.takeIf { user -> user.uid == userId }
         val displayName = firebaseUser?.displayName
             ?: firebaseUser?.email
-            ?: "EzTech Learner"
+            ?: "PyQuest Learner"
         val avatarUrl = firebaseUser?.photoUrl?.toString()
 
         firestore.collection("users")

@@ -137,7 +137,9 @@ fun TutorialArticleScreen(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                             Text(
-                                text = lesson.sourceName.ifBlank { "EzTech Tutorial" },
+                                text = lesson.sourceName
+                                    .ifBlank { "PyQuest Tutorial" }
+                                    .replace("EzTech", "PyQuest"),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primary,
                             )
@@ -146,7 +148,9 @@ fun TutorialArticleScreen(
                     item { HorizontalDivider() }
                     item {
                         Text(
-                            text = lesson.content.ifBlank { "Tutorial content is being prepared." },
+                            text = lesson.content
+                                .ifBlank { "Tutorial content is being prepared." }
+                                .replace("EzTech", "PyQuest"),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onBackground,
                         )

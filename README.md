@@ -1,11 +1,11 @@
-# EzTechv2
+# PyQuest
 
 ## APK test nhanh
 
-- File APK debug để cài lên điện thoại/emulator: [EzTechv2-debug.apk](./EzTechv2-debug.apk)
+- File APK debug để cài lên điện thoại/emulator: [PyQuest-debug.apk](./PyQuest-debug.apk)
 - Bản debug dùng Firebase project `eztech-v2` đã cấu hình trong `app/google-services.json`.
 
-EzTechv2 là ứng dụng Android học lập trình Python. App có bài học dạng tutorial, video tutorial, danh sách bài tập Python, màn hình giải bài có editor, IDE Python trong app, hệ thống gợi ý học tập, EXP, level, streak, badge, leaderboard, bookmark, profile và lưu tiến độ bằng Firebase.
+PyQuest là ứng dụng Android học lập trình Python. App có bài học dạng tutorial, video tutorial, danh sách bài tập Python, màn hình giải bài có editor, IDE Python trong app, hệ thống gợi ý học tập, EXP, level, streak, badge, leaderboard, bookmark, profile và lưu tiến độ bằng Firebase.
 
 ## Chức năng chính
 
@@ -63,7 +63,7 @@ Lý do dùng cấu trúc này:
 
 ```text
 EzTechv2/
-├── EzTechv2-debug.apk                                            # APK debug đặt ở gốc repo để dễ tải/cài thử
+├── PyQuest-debug.apk                                             # APK debug đặt ở gốc repo để dễ tải/cài thử
 ├── README.md                                                     # Tài liệu project, kiến trúc, cách build/test/demo
 ├── firebase.json                                                 # Cấu hình Firebase deploy Firestore rules
 ├── firestore.rules                                               # Security rules cho Firestore
@@ -133,7 +133,7 @@ EzTechv2/
 │   │   ├── build.gradle.kts                                      # Cấu hình Firebase/Chaquopy/dependency data
 │   │   └── src/main/
 │   │       ├── assets/seed_data/
-│   │       │   ├── problems.json                                 # 973 MBPP problems + 1 EzTech test problem
+│   │       │   ├── problems.json                                 # 973 MBPP problems + 1 PyQuest test problem
 │   │       │   ├── lessons.json                                  # Seed tutorial/video lesson Python
 │   │       │   └── README.md                                     # Nguồn seed data và license
 │   │       └── kotlin/com/eztech/core/data/
@@ -336,7 +336,7 @@ Logic:
 
 ### Seed local
 
-- `core/data/src/main/assets/seed_data/problems.json`: 973 MBPP problems + 1 EzTech test problem.
+- `core/data/src/main/assets/seed_data/problems.json`: 973 MBPP problems + 1 PyQuest test problem.
 - `core/data/src/main/assets/seed_data/lessons.json`: lesson/video seed.
 - App ưu tiên Firestore nhưng có fallback local nếu remote lỗi hoặc timeout.
 - Bài `eztech_test_0001` được merge local nếu Firestore chưa có, giúp test chức năng Problems ngay trong APK.
@@ -382,7 +382,7 @@ app/build/outputs/apk/debug/app-debug.apk
 File copy dễ tải ở gốc repo:
 
 ```text
-EzTechv2-debug.apk
+PyQuest-debug.apk
 ```
 
 ## Test
@@ -422,7 +422,7 @@ Bài này có:
 
 ## Checklist demo
 
-1. Cài [EzTechv2-debug.apk](./EzTechv2-debug.apk).
+1. Cài [PyQuest-debug.apk](./PyQuest-debug.apk).
 2. Đăng ký hoặc đăng nhập.
 3. Mở Home để xem dashboard và recommendation stats.
 4. Mở Learn để xem tutorial/video.

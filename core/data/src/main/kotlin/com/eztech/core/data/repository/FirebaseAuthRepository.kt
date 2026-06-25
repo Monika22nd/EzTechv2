@@ -90,7 +90,7 @@ internal class FirebaseAuthRepository(
         val user = firebaseUser.toDomainUser(
             name = firebaseUser.displayName
                 ?: firebaseUser.email
-                ?: "EzTech Learner",
+                ?: "PyQuest Learner",
         )
         val userDocument = firestore.collection(USERS_COLLECTION).document(user.uid)
         userDocument.get().addOnSuccessListener { snapshot ->
@@ -117,7 +117,7 @@ internal class FirebaseAuthRepository(
             val user = firebaseUser.toDomainUser(
                 name = firebaseUser.displayName
                     ?: firebaseUser.email
-                    ?: "EzTech Learner",
+                    ?: "PyQuest Learner",
             )
             firestore.collection(USERS_COLLECTION)
                 .document(user.uid)

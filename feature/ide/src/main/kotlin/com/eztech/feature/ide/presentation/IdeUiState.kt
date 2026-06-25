@@ -11,7 +11,7 @@ data class IdeUiState(
 )
 
 internal const val DEFAULT_PYTHON_CODE = """# Write Python and tap Run
-message = "Hello from EzTech!"
+message = "Hello from PyQuest!"
 print(message)
 
 for number in range(1, 4):

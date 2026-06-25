@@ -76,7 +76,7 @@ internal fun AuthScreenLayout(
                     }
                 }
                 Text(
-                    text = "EzTech",
+                    text = "PyQuest",
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )

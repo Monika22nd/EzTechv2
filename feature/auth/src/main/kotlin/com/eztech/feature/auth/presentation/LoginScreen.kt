@@ -92,7 +92,7 @@ fun LoginScreen(
             onClick = onRegisterClick,
             enabled = !state.isLoading,
         ) {
-            Text("New to EzTech? Create an account")
+            Text("New to PyQuest? Create an account")
         }
     }
 }

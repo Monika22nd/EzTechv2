@@ -104,7 +104,7 @@ class GetDashboardSummaryUseCase(
 
         return Resource.Success(
             DashboardSummary(
-                userName = user.name.ifBlank { "EzTech Learner" },
+                userName = user.name.ifBlank { "PyQuest Learner" },
                 level = user.level,
                 exp = user.exp,
                 expToNextLevel = user.expToNextLevel,
