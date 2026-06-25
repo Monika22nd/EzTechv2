@@ -1,5 +1,9 @@
 # EzTechv2
 
+## APK Test
+
+- File APK debug de cai tren dien thoai: [EzTechv2-debug.apk](./EzTechv2-debug.apk)
+
 EzTechv2 là ứng dụng Android hỗ trợ học lập trình Python. Ứng dụng kết hợp bài học dạng tutorial, video, bài tập lập trình, IDE Python trong app, hệ thống điểm kinh nghiệm, huy hiệu, bảng xếp hạng, bookmark và quản lý hồ sơ người dùng.
 
 ## Mục Tiêu

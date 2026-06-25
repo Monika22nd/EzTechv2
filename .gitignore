@@ -22,7 +22,6 @@ keystore.properties
 __pycache__/
 *.py[cod]
 tools/cache/
-/EzTechv2-debug.apk
 /EzTechv2-debug.zip
 /phase5-gamification.patch
 /.idea/vcs.xml
