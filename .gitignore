@@ -25,3 +25,8 @@ tools/cache/
 /EzTechv2-debug.zip
 /phase5-gamification.patch
 /.idea/vcs.xml
+/.idea/
+__pycache__/
+*.py[cod]
+/Bao_cao_EzTech_App_Demo*.docx
+~$*.docx

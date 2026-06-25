@@ -63,190 +63,180 @@ Lý do dùng cấu trúc này:
 
 ```text
 EzTechv2/
-|-- EzTechv2-debug.apk
-|   |-- APK debug đặt ở gốc repo để dễ tải/cài thử.
-|
-|-- app/
-|   |-- build.gradle.kts
-|   |   |-- Cấu hình module app, Firebase Google Services, Hilt và module dependency.
-|   |-- google-services.json
-|   |   |-- File cấu hình Firebase Android app.
-|   |-- src/main/java/com/eztech/app/
-|   |   |-- EzTechApplication.kt
-|   |   |   |-- Application class dùng Hilt.
-|   |   |-- MainActivity.kt
-|   |   |   |-- Activity chính, gọi Compose content và theme.
-|   |   |-- EzTechAppViewModel.kt
-|   |   |   |-- Theo dõi auth/session/theme ở cấp app shell.
-|   |   |-- navigation/
-|   |   |   |-- EzTechApp.kt
-|   |   |   |   |-- App shell, bottom navigation và route tổng.
-|   |   |   |-- EzTechNavHost.kt
-|   |   |   |   |-- Khai báo NavHost và liên kết các feature.
-|   |   |   |-- NavigationExtensions.kt
-|   |   |   |   |-- Helper điều hướng Compose.
-|   |   |   |-- TopLevelDestination.kt
-|   |   |   |   |-- Danh sách tab chính: Home, Learn, IDE, Problems, Rank, Me.
-|
-|-- core/
-|   |-- common/
-|   |   |-- Resource.kt
-|   |   |   |-- Kiểu Loading/Success/Error dùng chung cho repository và ViewModel.
-|   |
-|   |-- domain/
-|   |   |-- model/
-|   |   |   |-- User.kt, Lesson.kt, Problem.kt, TestCase.kt, DashboardSummary.kt
-|   |   |   |   |-- Các model nghiệp vụ độc lập Firebase/UI.
-|   |   |   |-- Recommendation.kt
-|   |   |   |   |-- Model dashboard gợi ý, thống kê gợi ý, metric chip và card gợi ý.
-|   |   |   |-- PythonProblemCurriculum.kt
-|   |   |   |   |-- Phân loại problem theo lộ trình Python: syntax, operators, conditionals, loops, strings, lists, collections, functions, algorithms.
-|   |   |-- repository/
-|   |   |   |-- AuthRepository.kt, LessonRepository.kt, ProblemRepository.kt, UserRepository.kt, GamificationRepository.kt
-|   |   |   |   |-- Interface repository để domain không phụ thuộc Firebase.
-|   |   |-- usecase/
-|   |   |   |-- GetDashboardSummaryUseCase.kt
-|   |   |   |   |-- Gom user, lesson, problem, leaderboard thành dữ liệu Home dashboard.
-|   |   |   |-- recommendation/GetRecommendationsUseCase.kt
-|   |   |   |   |-- Gom user progress, lessons, problems rồi gọi RecommendationEngine.
-|   |   |   |-- recommendation/RecommendationEngine.kt
-|   |   |   |   |-- Thuật toán khuyến nghị: next path, adaptive difficulty, weak stage, lesson review.
-|   |   |   |-- problem/
-|   |   |   |   |-- GetProblemsUseCase.kt: lấy danh sách bài.
-|   |   |   |   |-- GetProblemDetailUseCase.kt: lấy chi tiết bài.
-|   |   |   |   |-- GetVisibleTestCasesUseCase.kt: lấy test case hiển thị.
-|   |   |   |   |-- SubmitSolutionUseCase.kt: chạy code với toàn bộ test case và trả kết quả.
-|   |   |   |   |-- RunCustomInputUseCase.kt: chạy code với input tự nhập.
-|   |   |   |   |-- SaveCodeDraftUseCase.kt / GetCodeDraftUseCase.kt: lưu và đọc draft code.
-|   |   |   |   |-- RecordProblemSubmissionUseCase.kt / GetProblemSubmissionHistoryUseCase.kt: lưu và đọc lịch sử submit.
-|   |
-|   |-- data/
-|   |   |-- src/main/assets/seed_data/
-|   |   |   |-- problems.json
-|   |   |   |   |-- 973 bài MBPP + 1 bài EzTech test problem, kèm test case assert.
-|   |   |   |-- lessons.json
-|   |   |   |   |-- Seed tutorial/video lesson Python.
-|   |   |   |-- README.md
-|   |   |   |   |-- Nguồn dữ liệu seed và license.
-|   |   |-- src/main/kotlin/com/eztech/core/data/
-|   |   |   |-- repository/
-|   |   |   |   |-- ProblemRepositoryImpl.kt
-|   |   |   |   |   |-- Remote-first Firestore, fallback local seed, cache problems/test cases.
-|   |   |   |   |-- LessonRepositoryImpl.kt
-|   |   |   |   |   |-- Đọc bài học/video và progress bài học.
-|   |   |   |   |-- UserRepositoryImpl.kt
-|   |   |   |   |   |-- Đọc/ghi profile người dùng.
-|   |   |   |   |-- GamificationRepositoryImpl.kt
-|   |   |   |   |   |-- EXP, level, streak, badge, leaderboard.
-|   |   |   |   |-- AuthRepositoryImpl.kt
-|   |   |   |   |   |-- Firebase Auth.
-|   |   |   |-- source/
-|   |   |   |   |-- remote/
-|   |   |   |   |   |-- Firebase...DataSource.kt: đọc/ghi Firestore.
-|   |   |   |   |-- local/
-|   |   |   |   |   |-- Local...DataSource.kt: đọc seed data từ assets.
-|   |   |   |-- engine/
-|   |   |   |   |-- PythonCodeExecutionRepository.kt hoặc engine liên quan.
-|   |   |   |   |   |-- Chạy code Python bằng Chaquopy.
-|   |
-|   |-- ui/
-|   |   |-- src/main/kotlin/com/eztech/core/ui/
-|   |   |   |-- component/
-|   |   |   |   |-- Component dùng chung: empty state, card, loading,...
-|   |   |   |-- file/CodeFileIo.kt
-|   |   |   |   |-- Helper import/export text UTF-8 qua Android Storage Access Framework.
-|   |   |   |-- theme/
-|   |   |   |   |-- Màu, typography, dimens và theme Material 3.
-|
-|-- feature/
-|   |-- auth/
-|   |   |-- presentation/
-|   |   |   |-- Màn hình đăng nhập, đăng ký, quên mật khẩu.
-|   |
-|   |-- home/
-|   |   |-- presentation/
-|   |   |   |-- HomeScreen.kt
-|   |   |   |   |-- UI dashboard, progress, recommendation, quick action.
-|   |   |   |-- HomeViewModel.kt
-|   |   |   |   |-- Gọi GetDashboardSummaryUseCase và GetRecommendationsUseCase.
-|   |   |   |-- HomeUiState.kt
-|   |   |   |   |-- State tổng cho dashboard.
-|   |   |   |-- component/RecommendationSection.kt
-|   |   |   |   |-- Card gợi ý, stats gợi ý và metric chip.
-|   |   |   |-- recommendation/
-|   |   |   |   |-- RecommendationsScreen.kt
-|   |   |   |   |   |-- Trang riêng xem tất cả recommendation.
-|   |   |   |   |-- RecommendationsViewModel.kt
-|   |   |   |   |   |-- Load 12 recommendation cho trang riêng.
-|   |
-|   |-- learn/
-|   |   |-- presentation/
-|   |   |   |-- list/
-|   |   |   |   |-- Danh sách lesson/video.
-|   |   |   |-- category/
-|   |   |   |   |-- Nhóm lesson theo chủ đề.
-|   |   |   |-- tutorial/
-|   |   |   |   |-- Màn hình đọc tutorial.
-|   |   |   |-- video/
-|   |   |   |   |-- Màn hình xem YouTube tutorial.
-|   |   |   |-- bookmarks/
-|   |   |   |   |-- Danh sách lesson đã bookmark.
-|   |
-|   |-- problems/
-|   |   |-- presentation/
-|   |   |   |-- list/
-|   |   |   |   |-- ProblemListScreen.kt: UI danh sách bài.
-|   |   |   |   |-- ProblemListViewModel.kt: search/filter/sort problem.
-|   |   |   |   |-- ProblemListUiState.kt: state danh sách problem.
-|   |   |   |-- model/ProblemTypeCatalog.kt
-|   |   |   |   |-- Tạo filter dạng bài và match search theo curriculum/tag.
-|   |   |   |-- detail/
-|   |   |   |   |-- Màn hình chi tiết bài.
-|   |   |   |-- solve/
-|   |   |   |   |-- ProblemSolveScreen.kt: editor, test case, submit, history, import/export.
-|   |   |   |   |-- ProblemSolveViewModel.kt: load bài, lưu draft, run custom input, submit, lưu tiến độ.
-|   |   |   |   |-- ProblemSolveUiState.kt: state màn hình solve.
-|   |
-|   |-- ide/
-|   |   |-- presentation/
-|   |   |   |-- IdeScreen.kt
-|   |   |   |   |-- IDE Python tự do, import/export file `.py`.
-|   |   |   |-- IdeViewModel.kt
-|   |   |   |   |-- Chạy code và cập nhật console.
-|   |   |   |-- component/EditorToolbar.kt
-|   |   |   |   |-- Toolbar run, undo, redo, import, export, clear, paste, font size.
-|   |
-|   |-- leaderboard/
-|   |   |-- presentation/
-|   |   |   |-- Bảng xếp hạng người dùng.
-|   |
-|   |-- profile/
-|   |   |-- presentation/
-|   |   |   |-- screen/
-|   |   |   |   |-- Trang profile.
-|   |   |   |-- badges/
-|   |   |   |   |-- Danh sách huy hiệu.
-|   |   |   |-- edit/
-|   |   |   |   |-- Sửa display name/avatar URL.
-|   |   |   |-- settings/
-|   |   |   |   |-- Theme, notification, logout.
-|
-|-- tools/
-|   |-- generate_mbpp_seed.py
-|   |   |-- Convert MBPP thành seed problems.json.
-|   |-- generate_lesson_seed.py
-|   |   |-- Generate lesson seed.
-|   |-- import_seed_to_firestore.py
-|   |   |-- Import seed data lên Firestore bằng REST API.
-|
-|-- firestore.rules
-|   |-- Security rules cho Firestore.
-|-- firebase.json
-|   |-- Cấu hình Firebase deploy rules.
-|-- settings.gradle.kts
-|   |-- Khai báo module Gradle.
-|-- build.gradle.kts
-|   |-- Cấu hình Gradle cấp project.
+├── EzTechv2-debug.apk                                            # APK debug đặt ở gốc repo để dễ tải/cài thử
+├── README.md                                                     # Tài liệu project, kiến trúc, cách build/test/demo
+├── firebase.json                                                 # Cấu hình Firebase deploy Firestore rules
+├── firestore.rules                                               # Security rules cho Firestore
+├── settings.gradle.kts                                           # Khai báo toàn bộ Gradle modules
+├── build.gradle.kts                                              # Cấu hình Gradle cấp project
+├── gradle.properties                                             # Cấu hình Gradle/Android build
+├── local.properties                                              # SDK local path, chỉ dùng trên máy dev
+│
+├── app/                                                          # Android app shell, entry point và navigation tổng
+│   ├── build.gradle.kts                                          # Cấu hình module app, Firebase, Hilt, dependency modules
+│   ├── google-services.json                                      # Firebase config cho Android app
+│   └── src/main/
+│       ├── AndroidManifest.xml                                   # Manifest chính của app
+│       ├── java/com/eztech/app/
+│       │   ├── EzTechApplication.kt                              # Application class dùng Hilt
+│       │   ├── MainActivity.kt                                   # Activity chính, gắn Compose content và theme
+│       │   ├── EzTechAppViewModel.kt                             # Theo dõi auth/session/theme ở cấp app shell
+│       │   └── navigation/
+│       │       ├── EzTechApp.kt                                  # App shell, bottom navigation và route tổng
+│       │       ├── EzTechNavHost.kt                              # Khai báo NavHost, nối route các feature
+│       │       ├── NavigationExtensions.kt                       # Helper điều hướng Compose
+│       │       └── TopLevelDestination.kt                        # Danh sách tab: Home, Learn, IDE, Problems, Rank, Me
+│       └── res/                                                  # Resource Android của app module
+│
+├── core/                                                         # Các module dùng chung cho toàn app
+│   ├── common/                                                   # Common utility module
+│   │   └── src/main/kotlin/com/eztech/core/common/
+│   │       └── Resource.kt                                       # Loading/Success/Error dùng chung cho data flow
+│   │
+│   ├── domain/                                                   # Business/domain layer, không phụ thuộc Firebase/UI
+│   │   ├── build.gradle.kts                                      # Cấu hình module domain
+│   │   └── src/main/kotlin/com/eztech/core/domain/
+│   │       ├── model/                                            # Data model nghiệp vụ
+│   │       │   ├── User.kt                                       # Thông tin user, level, exp, progress
+│   │       │   ├── Lesson.kt                                     # Model bài học/tutorial/video
+│   │       │   ├── Problem.kt                                    # Model bài tập lập trình
+│   │       │   ├── TestCase.kt                                   # Model test case cho problem
+│   │       │   ├── DashboardSummary.kt                           # Model dữ liệu Home dashboard
+│   │       │   ├── Recommendation.kt                             # Model recommendation, stats, metric chip
+│   │       │   └── PythonProblemCurriculum.kt                    # Phân loại/sort bài theo lộ trình Python
+│   │       ├── repository/                                       # Repository interface để domain độc lập data source
+│   │       │   ├── AuthRepository.kt                             # Interface đăng nhập/đăng ký/current user
+│   │       │   ├── UserRepository.kt                             # Interface đọc/ghi profile user
+│   │       │   ├── LessonRepository.kt                           # Interface bài học, progress, bookmark
+│   │       │   ├── ProblemRepository.kt                          # Interface problems, test cases, submissions
+│   │       │   └── GamificationRepository.kt                     # Interface EXP, badge, streak, leaderboard
+│   │       └── usecase/                                          # Business logic cấp application
+│   │           ├── GetDashboardSummaryUseCase.kt                 # Gom user/lesson/problem/rank cho Home
+│   │           ├── ExecuteCodeUseCase.kt                         # Chạy code qua execution repository
+│   │           ├── recommendation/
+│   │           │   ├── GetRecommendationsUseCase.kt              # Gom dữ liệu rồi gọi engine khuyến nghị
+│   │           │   └── RecommendationEngine.kt                   # Thuật toán next path, difficulty, weak stage
+│   │           ├── problem/
+│   │           │   ├── GetProblemsUseCase.kt                     # Lấy danh sách problems
+│   │           │   ├── GetProblemDetailUseCase.kt                # Lấy chi tiết một problem
+│   │           │   ├── GetVisibleTestCasesUseCase.kt             # Lấy visible test cases
+│   │           │   ├── SubmitSolutionUseCase.kt                  # Chạy tất cả test case và phân loại kết quả
+│   │           │   ├── RunCustomInputUseCase.kt                  # Chạy code với stdin tự nhập
+│   │           │   ├── SaveCodeDraftUseCase.kt                   # Lưu draft code
+│   │           │   ├── GetCodeDraftUseCase.kt                    # Đọc draft code
+│   │           │   ├── RecordProblemSubmissionUseCase.kt         # Lưu lịch sử submit
+│   │           │   └── GetProblemSubmissionHistoryUseCase.kt     # Đọc lịch sử submit
+│   │           ├── gamification/                                 # Use case EXP, complete problem, badges
+│   │           └── lesson/                                       # Use case bài học, bookmark, progress
+│   │
+│   ├── data/                                                     # Data layer: Firebase, local seed, DataStore, Chaquopy
+│   │   ├── build.gradle.kts                                      # Cấu hình Firebase/Chaquopy/dependency data
+│   │   └── src/main/
+│   │       ├── assets/seed_data/
+│   │       │   ├── problems.json                                 # 973 MBPP problems + 1 EzTech test problem
+│   │       │   ├── lessons.json                                  # Seed tutorial/video lesson Python
+│   │       │   └── README.md                                     # Nguồn seed data và license
+│   │       └── kotlin/com/eztech/core/data/
+│   │           ├── di/                                           # Hilt bindings cho repository/use case/data source
+│   │           ├── engine/                                       # Python execution bằng Chaquopy
+│   │           ├── repository/
+│   │           │   ├── AuthRepositoryImpl.kt                     # Firebase Auth implementation
+│   │           │   ├── UserRepositoryImpl.kt                     # Firestore profile/user settings
+│   │           │   ├── LessonRepositoryImpl.kt                   # Firestore/local lessons + progress/bookmarks
+│   │           │   ├── ProblemRepositoryImpl.kt                  # Remote-first Firestore, fallback local, cache
+│   │           │   └── GamificationRepositoryImpl.kt             # EXP, streak, badge, leaderboard Firestore logic
+│   │           └── source/
+│   │               ├── remote/                                   # Firebase data sources
+│   │               │   ├── FirebaseProblemDataSource.kt          # Đọc problems/test_cases từ Firestore
+│   │               │   └── FirebaseLessonDataSource.kt           # Đọc lessons/categories từ Firestore
+│   │               └── local/                                    # Local fallback data sources
+│   │                   ├── LocalProblemDataSource.kt             # Parse problems.json trong assets
+│   │                   └── LocalLessonDataSource.kt              # Parse lessons.json trong assets
+│   │
+│   └── ui/                                                       # UI shared module
+│       ├── build.gradle.kts                                      # Cấu hình Compose shared UI
+│       └── src/main/kotlin/com/eztech/core/ui/
+│           ├── component/                                        # Component dùng chung: empty state, cards, loading
+│           ├── file/
+│           │   └── CodeFileIo.kt                                 # Import/export text UTF-8 qua Android document picker
+│           └── theme/                                            # Material 3 colors, typography, dimens, theme
+│
+├── feature/                                                      # Các module tính năng độc lập theo màn hình
+│   ├── auth/                                                     # Đăng nhập, đăng ký, quên mật khẩu
+│   │   └── src/main/kotlin/com/eztech/feature/auth/
+│   │       ├── navigation/                                       # Auth routes
+│   │       └── presentation/                                     # Auth screens, state, ViewModel
+│   │
+│   ├── home/                                                     # Dashboard và recommendation
+│   │   └── src/main/kotlin/com/eztech/feature/home/
+│   │       ├── navigation/                                       # Home/recommendation routes
+│   │       └── presentation/
+│   │           ├── HomeScreen.kt                                 # UI dashboard, progress, quick actions
+│   │           ├── HomeViewModel.kt                              # Gọi dashboard + recommendation use cases
+│   │           ├── HomeUiState.kt                                # State tổng cho Home
+│   │           ├── component/RecommendationSection.kt            # Stats card, recommendation card, metric chip
+│   │           └── recommendation/
+│   │               ├── RecommendationsScreen.kt                  # Trang riêng xem tất cả recommendation
+│   │               ├── RecommendationsViewModel.kt               # Load recommendation list dài hơn Home
+│   │               └── RecommendationsUiState.kt                 # State trang Recommendations
+│   │
+│   ├── learn/                                                    # Tutorial, video, category, bookmark bài học
+│   │   └── src/main/kotlin/com/eztech/feature/learn/
+│   │       ├── navigation/                                       # Learn routes
+│   │       └── presentation/
+│   │           ├── list/                                         # Danh sách lessons/videos
+│   │           ├── category/                                     # Danh mục bài học
+│   │           ├── tutorial/                                     # Màn hình đọc tutorial
+│   │           ├── video/                                        # Màn hình xem YouTube tutorial
+│   │           ├── bookmarks/                                    # Danh sách lesson đã bookmark
+│   │           └── component/                                    # Component riêng của Learn
+│   │
+│   ├── problems/                                                 # Danh sách, chi tiết và solve bài tập
+│   │   └── src/main/kotlin/com/eztech/feature/problems/
+│   │       ├── navigation/                                       # Problem routes và argument problemId
+│   │       └── presentation/
+│   │           ├── list/
+│   │           │   ├── ProblemListScreen.kt                      # UI list, search, filter, sort
+│   │           │   ├── ProblemListViewModel.kt                   # Logic filter/search/sort in-memory
+│   │           │   └── ProblemListUiState.kt                     # State danh sách problem
+│   │           ├── model/ProblemTypeCatalog.kt                   # Filter dạng bài theo curriculum/tag
+│   │           ├── detail/                                       # Màn hình chi tiết problem
+│   │           ├── solve/
+│   │           │   ├── ProblemSolveScreen.kt                     # Editor, examples, custom input, submit, history
+│   │           │   ├── ProblemSolveViewModel.kt                  # Load bài, autosave draft, submit, save progress
+│   │           │   └── ProblemSolveUiState.kt                    # State màn hình solve
+│   │           └── component/                                    # Difficulty badge, test case card, result card
+│   │
+│   ├── ide/                                                      # IDE Python tự do trong app
+│   │   └── src/main/kotlin/com/eztech/feature/ide/
+│   │       ├── navigation/                                       # IDE route
+│   │       └── presentation/
+│   │           ├── IdeScreen.kt                                  # Editor + console + import/export .py
+│   │           ├── IdeViewModel.kt                               # Run code và cập nhật stdout/stderr
+│   │           └── component/
+│   │               ├── EditorToolbar.kt                          # Run, undo, redo, import, export, clear, paste
+│   │               ├── CodeEditorComposable.kt                   # Code editor UI
+│   │               ├── ConsoleOutputView.kt                      # Console stdout/stderr/stdin
+│   │               └── QuickKeyboard.kt                          # Phím nhanh cho ký tự code
+│   │
+│   ├── leaderboard/                                              # Bảng xếp hạng
+│   │   └── src/main/kotlin/com/eztech/feature/leaderboard/
+│   │       └── presentation/                                     # Leaderboard screen/state/ViewModel
+│   │
+│   └── profile/                                                  # Profile, badges, edit profile, settings
+│       └── src/main/kotlin/com/eztech/feature/profile/
+│           ├── navigation/                                       # Profile routes
+│           └── presentation/
+│               ├── screen/                                       # Trang profile chính
+│               ├── badges/                                       # Danh sách huy hiệu
+│               ├── edit/                                         # Đổi display name/avatar URL
+│               ├── settings/                                     # Theme, notification, logout
+│               └── component/                                    # Component riêng của Profile
+│
+└── tools/                                                        # Script hỗ trợ seed/import dữ liệu
+    ├── generate_mbpp_seed.py                                     # Convert MBPP thành problems.json
+    ├── generate_lesson_seed.py                                   # Generate lessons.json
+    └── import_seed_to_firestore.py                               # Import seed lên Firestore bằng REST API
 ```
 
 ## Luồng dữ liệu chính
