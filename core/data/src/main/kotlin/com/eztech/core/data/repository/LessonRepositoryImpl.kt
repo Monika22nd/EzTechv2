@@ -11,6 +11,7 @@ import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.repository.LessonRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -47,13 +48,14 @@ internal class LessonRepositoryImpl(
         categoryId: String,
     ): Flow<Resource<List<Lesson>>> = authRepository.observeCurrentUser()
         .flatMapLatest { user ->
-            watchedLessonIds(user?.uid).mapLatest { watchedLessonIds ->
+            lessonFlags(user?.uid).mapLatest { flags ->
                 remoteFirst(
                     remote = {
                         remoteDataSource.getLessons(
                             languageId = languageId,
                             categoryId = categoryId,
-                            watchedLessonIds = watchedLessonIds,
+                            watchedLessonIds = flags.watchedLessonIds,
+                            bookmarkedLessonIds = flags.bookmarkedLessonIds,
                         )
                     },
                     fallback = {
@@ -73,13 +75,14 @@ internal class LessonRepositoryImpl(
         type: LessonContentType,
     ): Flow<Resource<List<Lesson>>> = authRepository.observeCurrentUser()
         .flatMapLatest { user ->
-            watchedLessonIds(user?.uid).mapLatest { watchedLessonIds ->
+            lessonFlags(user?.uid).mapLatest { flags ->
                 remoteFirst(
                     remote = {
                         remoteDataSource.getLessonsByType(
                             languageId = languageId,
                             type = type,
-                            watchedLessonIds = watchedLessonIds,
+                            watchedLessonIds = flags.watchedLessonIds,
+                            bookmarkedLessonIds = flags.bookmarkedLessonIds,
                         )
                     },
                     fallback = {
@@ -97,17 +100,41 @@ internal class LessonRepositoryImpl(
     override fun observeLesson(lessonId: String): Flow<Resource<Lesson>> =
         authRepository.observeCurrentUser()
             .flatMapLatest { user ->
-                watchedLessonIds(user?.uid).mapLatest { watchedLessonIds ->
+                lessonFlags(user?.uid).mapLatest { flags ->
                     remoteFirst(
                         remote = {
                             remoteDataSource.getLesson(
                                 lessonId = lessonId,
-                                watchedLessonIds = watchedLessonIds,
+                                watchedLessonIds = flags.watchedLessonIds,
+                                bookmarkedLessonIds = flags.bookmarkedLessonIds,
                             )
                         },
                         fallback = {
                             localDataSource.getLesson(
                                 lessonId = lessonId,
+                                userId = user?.uid,
+                            )
+                        },
+                    )
+                }
+            }
+            .asResourceFlow()
+
+    override fun observeBookmarkedLessons(languageId: String): Flow<Resource<List<Lesson>>> =
+        authRepository.observeCurrentUser()
+            .flatMapLatest { user ->
+                lessonFlags(user?.uid).mapLatest { flags ->
+                    remoteFirst(
+                        remote = {
+                            remoteDataSource.getBookmarkedLessons(
+                                languageId = languageId,
+                                watchedLessonIds = flags.watchedLessonIds,
+                                bookmarkedLessonIds = flags.bookmarkedLessonIds,
+                            )
+                        },
+                        fallback = {
+                            localDataSource.getBookmarkedLessons(
+                                languageId = languageId,
                                 userId = user?.uid,
                             )
                         },
@@ -135,6 +162,43 @@ internal class LessonRepositoryImpl(
         onFailure = { error -> error.toResourceError() },
     )
 
+    override suspend fun setBookmarked(
+        userId: String,
+        lessonId: String,
+        bookmarked: Boolean,
+    ): Resource<Unit> = runCatching {
+        remoteDataSource.setBookmarked(
+            userId = userId,
+            lessonId = lessonId,
+            bookmarked = bookmarked,
+        )
+        runCatching {
+            localDataSource.setBookmarked(
+                userId = userId,
+                lessonId = lessonId,
+                bookmarked = bookmarked,
+            )
+        }
+    }.fold(
+        onSuccess = { Resource.Success(Unit) },
+        onFailure = { error -> error.toResourceError() },
+    )
+
+    private fun lessonFlags(userId: String?): Flow<LessonFlags> =
+        if (userId == null) {
+            flowOf(LessonFlags())
+        } else {
+            combine(
+                watchedLessonIds(userId),
+                bookmarkedLessonIds(userId),
+            ) { watchedLessonIds, bookmarkedLessonIds ->
+                LessonFlags(
+                    watchedLessonIds = watchedLessonIds,
+                    bookmarkedLessonIds = bookmarkedLessonIds,
+                )
+            }
+        }
+
     private fun watchedLessonIds(userId: String?): Flow<Set<String>> =
         if (userId == null) {
             flowOf(emptySet())
@@ -143,6 +207,11 @@ internal class LessonRepositoryImpl(
                 .onStart { emit(emptySet()) }
                 .catch { emit(emptySet()) }
         }
+
+    private fun bookmarkedLessonIds(userId: String): Flow<Set<String>> =
+        remoteDataSource.observeBookmarkedLessonIds(userId)
+            .onStart { emit(emptySet()) }
+            .catch { emit(emptySet()) }
 
     private fun <T> remoteFirstFlow(
         remote: suspend () -> T,
@@ -180,4 +249,9 @@ internal class LessonRepositoryImpl(
     private companion object {
         const val REMOTE_TIMEOUT_MS = 8_000L
     }
+
+    private data class LessonFlags(
+        val watchedLessonIds: Set<String> = emptySet(),
+        val bookmarkedLessonIds: Set<String> = emptySet(),
+    )
 }

@@ -2,6 +2,7 @@ package com.eztech.core.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +16,8 @@ fun EzTechEmptyState(
     title: String,
     message: String,
     modifier: Modifier = Modifier,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier,
@@ -33,6 +36,10 @@ fun EzTechEmptyState(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
+        if (actionLabel != null && onAction != null) {
+            Button(onClick = onAction) {
+                Text(text = actionLabel)
+            }
+        }
     }
 }
-

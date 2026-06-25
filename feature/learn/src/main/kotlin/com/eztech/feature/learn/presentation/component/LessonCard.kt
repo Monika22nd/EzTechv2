@@ -39,12 +39,14 @@ import com.eztech.core.ui.theme.EzTechDimens
 internal fun LessonCard(
     lesson: Lesson,
     onClick: () -> Unit,
+    onBookmarkClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     if (lesson.type == LessonContentType.TUTORIAL) {
         TutorialLessonCard(
             lesson = lesson,
             onClick = onClick,
+            onBookmarkClick = onBookmarkClick,
             modifier = modifier,
         )
         return
@@ -108,6 +110,20 @@ internal fun LessonCard(
                         }
                     }
                 }
+                if (onBookmarkClick != null) {
+                    Surface(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(EzTechDimens.SpaceSmall),
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.88f),
+                    ) {
+                        BookmarkButton(
+                            bookmarked = lesson.bookmarked,
+                            onClick = onBookmarkClick,
+                        )
+                    }
+                }
             }
             Column(
                 modifier = Modifier.padding(EzTechDimens.SpaceMedium),
@@ -158,6 +174,7 @@ internal fun LessonCard(
 private fun TutorialLessonCard(
     lesson: Lesson,
     onClick: () -> Unit,
+    onBookmarkClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -216,6 +233,12 @@ private fun TutorialLessonCard(
                     contentDescription = "Completed",
                     modifier = Modifier.size(24.dp),
                     tint = MaterialTheme.colorScheme.tertiary,
+                )
+            }
+            if (onBookmarkClick != null) {
+                BookmarkButton(
+                    bookmarked = lesson.bookmarked,
+                    onClick = onBookmarkClick,
                 )
             }
         }

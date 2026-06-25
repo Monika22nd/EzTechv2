@@ -36,6 +36,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.hilt.android)

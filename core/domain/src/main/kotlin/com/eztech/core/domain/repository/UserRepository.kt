@@ -12,9 +12,8 @@ interface UserRepository {
         name: String,
     ): Resource<Unit>
 
-    suspend fun updateAvatar(
+    suspend fun updateAvatarUrl(
         userId: String,
-        avatarBytes: ByteArray,
+        avatarUrl: String,
     ): Resource<String>
 }
-

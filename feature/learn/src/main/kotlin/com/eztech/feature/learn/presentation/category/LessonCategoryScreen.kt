@@ -17,12 +17,14 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Bookmarks
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -52,6 +54,7 @@ import com.eztech.feature.learn.presentation.component.formatDuration
 fun LessonCategoryScreen(
     onCategoryClick: (LessonCategory) -> Unit,
     onVideoClick: (Lesson) -> Unit,
+    onBookmarksClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LessonCategoryViewModel = hiltViewModel(),
 ) {
@@ -59,7 +62,19 @@ fun LessonCategoryScreen(
 
     Scaffold(
         modifier = modifier,
-        topBar = { LearnTopBar(title = "Learn Python") },
+        topBar = {
+            LearnTopBar(
+                title = "Learn Python",
+                actions = {
+                    IconButton(onClick = onBookmarksClick) {
+                        Icon(
+                            imageVector = Icons.Rounded.Bookmarks,
+                            contentDescription = "Bookmarks",
+                        )
+                    }
+                },
+            )
+        },
     ) { innerPadding ->
         when {
             state.isLoading -> LoadingContent(

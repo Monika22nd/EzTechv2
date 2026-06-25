@@ -1,11 +1,13 @@
 package com.eztech.core.data.repository
 
+import android.net.Uri
 import com.eztech.core.common.Resource
 import com.eztech.core.domain.model.User
 import com.eztech.core.domain.model.computeLevel
 import com.eztech.core.domain.repository.UserRepository
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.SetOptions
@@ -71,8 +73,44 @@ internal class UserRepositoryImpl(
             Resource.Success(Unit)
         }.getOrElse { Resource.Error(it.message ?: "Update failed") }
 
-    override suspend fun updateAvatar(userId: String, avatarBytes: ByteArray): Resource<String> =
-        Resource.Error("Avatar upload requires Firebase Storage; implement in a later phase.")
+    override suspend fun updateAvatarUrl(userId: String, avatarUrl: String): Resource<String> =
+        runCatching {
+            require(userId.isNotBlank()) { "User ID is required." }
+            val normalizedUrl = avatarUrl.trim()
+            require(
+                normalizedUrl.isBlank() ||
+                    normalizedUrl.startsWith("https://") ||
+                    normalizedUrl.startsWith("http://"),
+            ) {
+                "Avatar URL must start with http:// or https://."
+            }
+
+            val storedAvatarUrl = normalizedUrl.ifBlank { null }
+            firestore.collection("users")
+                .document(userId)
+                .set(mapOf("avatarUrl" to storedAvatarUrl), SetOptions.merge())
+                .await()
+            firestore.collection("leaderboard")
+                .document(userId)
+                .set(mapOf("avatarUrl" to storedAvatarUrl), SetOptions.merge())
+                .await()
+
+            firebaseAuth.currentUser
+                ?.takeIf { user -> user.uid == userId }
+                ?.updateProfile(
+                    UserProfileChangeRequest.Builder()
+                        .setPhotoUri(storedAvatarUrl?.let(Uri::parse))
+                        .build(),
+                )
+                ?.await()
+
+            normalizedUrl
+        }.fold(
+            onSuccess = { avatarUrl -> Resource.Success(avatarUrl) },
+            onFailure = { error ->
+                Resource.Error(error.message ?: "Avatar update failed.", error)
+            },
+        )
 
     private fun ensureProfileExists(userId: String) {
         val firebaseUser = firebaseAuth.currentUser?.takeIf { user -> user.uid == userId }
@@ -95,6 +133,7 @@ internal class UserRepositoryImpl(
                     "hardSolvedCount" to 0,
                     "solvedProblemIds" to emptyList<String>(),
                     "watchedLessonIds" to emptyList<String>(),
+                    "bookmarkedLessonIds" to emptyList<String>(),
                     "currentStreak" to 0,
                     "lastLoginDate" to "",
                     "rank" to 0,
@@ -118,4 +157,5 @@ internal class UserRepositoryImpl(
                 SetOptions.merge(),
             )
     }
+
 }

@@ -33,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.problems.presentation.component.DifficultyBadge
+import com.eztech.feature.problems.presentation.component.ProblemDescription
 import com.eztech.feature.problems.presentation.component.VisibleTestCaseCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,8 +89,10 @@ fun ProblemDetailScreen(
             ) {
                 EzTechEmptyState(
                     title = "Problem unavailable",
-                    message = state.errorMessage.orEmpty(),
+                    message = state.errorMessage ?: "This problem could not be loaded.",
                     modifier = Modifier.padding(EzTechDimens.ScreenPadding),
+                    actionLabel = "Try again",
+                    onAction = viewModel::retry,
                 )
             }
             else -> LazyColumn(
@@ -111,40 +114,41 @@ fun ProblemDetailScreen(
                     }
                 }
                 item {
-                    Text(
-                        text = problem.description,
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
+                    ProblemDescription(text = problem.description)
                 }
-                item { HorizontalDivider() }
-                item {
-                    Column(verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall)) {
-                        Text(
-                            text = "Constraints",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                        problem.constraints.forEach { constraint ->
+                if (problem.constraints.isNotEmpty()) {
+                    item { HorizontalDivider() }
+                    item {
+                        Column(verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall)) {
                             Text(
-                                text = "- $constraint",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                text = "Constraints",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.SemiBold,
                             )
+                            problem.constraints.forEach { constraint ->
+                                Text(
+                                    text = "- $constraint",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
                         }
                     }
                 }
-                item {
-                    Text(
-                        text = "Examples",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-                itemsIndexed(
-                    items = state.visibleTestCases,
-                    key = { _, testCase -> testCase.id },
-                ) { index, testCase ->
-                    VisibleTestCaseCard(testCase = testCase, index = index)
+                if (state.visibleTestCases.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Examples",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
+                    itemsIndexed(
+                        items = state.visibleTestCases,
+                        key = { _, testCase -> testCase.id },
+                    ) { index, testCase ->
+                        VisibleTestCaseCard(testCase = testCase, index = index)
+                    }
                 }
             }
         }

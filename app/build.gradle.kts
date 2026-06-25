@@ -52,6 +52,7 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:ui"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:home"))
     implementation(project(":feature:learn"))
     implementation(project(":feature:ide"))
     implementation(project(":feature:leaderboard"))

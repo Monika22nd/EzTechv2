@@ -2,7 +2,14 @@ package com.eztech.feature.leaderboard.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -18,44 +25,94 @@ import com.eztech.core.ui.theme.EzTechDimens
 
 @Composable
 fun LeaderboardItem(entry: LeaderboardEntry, modifier: Modifier = Modifier) {
-    val bg = if (entry.isCurrentUser) MaterialTheme.colorScheme.primaryContainer
-             else MaterialTheme.colorScheme.surface
-    val baseMod = modifier
+    val backgroundColor = if (entry.isCurrentUser) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.surface
+    }
+    val itemModifier = modifier
         .fillMaxWidth()
         .clip(RoundedCornerShape(12.dp))
-        .background(bg)
+        .background(backgroundColor)
         .then(
-            if (entry.isCurrentUser) Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
-            else Modifier
+            if (entry.isCurrentUser) {
+                Modifier.border(
+                    width = 2.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(12.dp),
+                )
+            } else {
+                Modifier
+            },
         )
         .padding(horizontal = EzTechDimens.SpaceMedium, vertical = EzTechDimens.SpaceSmall)
 
-    Row(modifier = baseMod, verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = itemModifier, verticalAlignment = Alignment.CenterVertically) {
         Text(
-            "#${entry.rank}",
+            text = "#${entry.rank}",
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            color = if (entry.isCurrentUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (entry.isCurrentUser) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant
+            },
             modifier = Modifier.width(36.dp),
         )
-        Box(Modifier.size(40.dp).clip(CircleShape).background(MaterialTheme.colorScheme.secondaryContainer), Alignment.Center) {
-            Text(entry.displayName.take(1).uppercase(), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSecondaryContainer)
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.secondaryContainer),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = entry.displayName.take(1).uppercase(),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
         }
         Spacer(Modifier.width(EzTechDimens.SpaceMedium))
         Column(Modifier.weight(1f)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(entry.displayName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface)
+                Text(
+                    text = entry.displayName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
                 if (entry.isCurrentUser) {
                     Spacer(Modifier.width(6.dp))
-                    Text("You", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.clip(RoundedCornerShape(4.dp)).background(MaterialTheme.colorScheme.primaryContainer).padding(horizontal = 4.dp, vertical = 2.dp))
+                    Text(
+                        text = "You",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .padding(horizontal = 4.dp, vertical = 2.dp),
+                    )
                 }
             }
-            Text("Lv.${entry.level} · ${entry.solvedCount} solved", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                text = "Lv.${entry.level} | ${entry.solvedCount} solved",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
         Column(horizontalAlignment = Alignment.End) {
-            Text("${entry.totalExp}", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-            Text("EXP", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                text = "${entry.totalExp}",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Text(
+                text = "EXP",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

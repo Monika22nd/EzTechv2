@@ -30,6 +30,9 @@ fun EzTechApp(
         if (sessionState == SessionState.SignedIn && AuthRoutes.contains(currentRoute)) {
             navController.navigateToMain()
         }
+        if (sessionState == SessionState.SignedOut && !AuthRoutes.contains(currentRoute)) {
+            navController.navigateToAuth()
+        }
     }
 
     Scaffold(

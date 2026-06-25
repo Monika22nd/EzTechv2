@@ -63,13 +63,21 @@ internal class LocalLessonDataSource @Inject constructor(
         val watchedLessonIds = userId
             ?.let(::getWatchedLessonIds)
             .orEmpty()
+        val bookmarkedLessonIds = userId
+            ?.let(::getBookmarkedLessonIds)
+            .orEmpty()
 
         seedData.lessons
             .asSequence()
             .filter { lesson ->
                 lesson.languageId == languageId && lesson.categoryId == categoryId
             }
-            .map { lesson -> lesson.copy(watched = lesson.id in watchedLessonIds) }
+            .map { lesson ->
+                lesson.copy(
+                    watched = lesson.id in watchedLessonIds,
+                    bookmarked = lesson.id in bookmarkedLessonIds,
+                )
+            }
             .sortedBy(Lesson::order)
             .toList()
     }
@@ -82,13 +90,21 @@ internal class LocalLessonDataSource @Inject constructor(
         val watchedLessonIds = userId
             ?.let(::getWatchedLessonIds)
             .orEmpty()
+        val bookmarkedLessonIds = userId
+            ?.let(::getBookmarkedLessonIds)
+            .orEmpty()
 
         seedData.lessons
             .asSequence()
             .filter { lesson ->
                 lesson.languageId == languageId && lesson.type == type
             }
-            .map { lesson -> lesson.copy(watched = lesson.id in watchedLessonIds) }
+            .map { lesson ->
+                lesson.copy(
+                    watched = lesson.id in watchedLessonIds,
+                    bookmarked = lesson.id in bookmarkedLessonIds,
+                )
+            }
             .sortedWith(compareBy<Lesson> { it.categoryId }.thenBy(Lesson::order))
             .toList()
     }
@@ -103,8 +119,41 @@ internal class LocalLessonDataSource @Inject constructor(
             ?.let(::getWatchedLessonIds)
             ?.contains(lessonId)
             ?: false
+        val bookmarked = userId
+            ?.let(::getBookmarkedLessonIds)
+            ?.contains(lessonId)
+            ?: false
 
-        lesson.copy(watched = watched)
+        lesson.copy(
+            watched = watched,
+            bookmarked = bookmarked,
+        )
+    }
+
+    suspend fun getBookmarkedLessons(
+        languageId: String,
+        userId: String?,
+    ): List<Lesson> = withContext(Dispatchers.IO) {
+        val watchedLessonIds = userId
+            ?.let(::getWatchedLessonIds)
+            .orEmpty()
+        val bookmarkedLessonIds = userId
+            ?.let(::getBookmarkedLessonIds)
+            .orEmpty()
+
+        seedData.lessons
+            .asSequence()
+            .filter { lesson ->
+                lesson.languageId == languageId && lesson.id in bookmarkedLessonIds
+            }
+            .map { lesson ->
+                lesson.copy(
+                    watched = lesson.id in watchedLessonIds,
+                    bookmarked = true,
+                )
+            }
+            .sortedWith(compareBy<Lesson> { it.type.ordinal }.thenBy { it.categoryId }.thenBy(Lesson::order))
+            .toList()
     }
 
     suspend fun markAsWatched(userId: String, lessonId: String) = withContext(Dispatchers.IO) {
@@ -122,8 +171,37 @@ internal class LocalLessonDataSource @Inject constructor(
         }
     }
 
+    suspend fun setBookmarked(
+        userId: String,
+        lessonId: String,
+        bookmarked: Boolean,
+    ) = withContext(Dispatchers.IO) {
+        require(userId.isNotBlank()) { "A user ID is required to save bookmarks." }
+        require(seedData.lessons.any { lesson -> lesson.id == lessonId }) {
+            "Lesson '$lessonId' does not exist."
+        }
+
+        val bookmarkedLessonIds = getBookmarkedLessonIds(userId).toMutableSet()
+        val changed = if (bookmarked) {
+            bookmarkedLessonIds.add(lessonId)
+        } else {
+            bookmarkedLessonIds.remove(lessonId)
+        }
+        if (changed) {
+            preferences.edit()
+                .putStringSet(bookmarkKey(userId), bookmarkedLessonIds)
+                .apply()
+            _progressVersion.update { version -> version + 1 }
+        }
+    }
+
     private fun getWatchedLessonIds(userId: String): Set<String> =
         preferences.getStringSet(progressKey(userId), emptySet())
+            ?.toSet()
+            .orEmpty()
+
+    private fun getBookmarkedLessonIds(userId: String): Set<String> =
+        preferences.getStringSet(bookmarkKey(userId), emptySet())
             ?.toSet()
             .orEmpty()
 
@@ -201,6 +279,8 @@ internal class LocalLessonDataSource @Inject constructor(
     }
 
     private fun progressKey(userId: String) = "watched_lessons_$userId"
+
+    private fun bookmarkKey(userId: String) = "bookmarked_lessons_$userId"
 
     private fun JSONObject.optionalString(key: String): String? =
         optString(key).takeIf(String::isNotBlank)

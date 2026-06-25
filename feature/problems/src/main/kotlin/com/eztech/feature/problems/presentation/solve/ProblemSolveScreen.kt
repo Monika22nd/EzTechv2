@@ -5,26 +5,33 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Send
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -33,18 +40,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eztech.core.domain.model.CodeExecutionResult
+import com.eztech.core.domain.model.ProblemSubmission
 import com.eztech.core.domain.model.SubmissionStatus
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.ide.presentation.component.CodeEditorComposable
 import com.eztech.feature.ide.presentation.component.rememberCodeEditorController
 import com.eztech.feature.problems.presentation.component.DifficultyBadge
+import com.eztech.feature.problems.presentation.component.SubmissionSuccessDialog
 import com.eztech.feature.problems.presentation.component.TestResultCard
 import com.eztech.feature.problems.presentation.component.VisibleTestCaseCard
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,6 +73,15 @@ fun ProblemSolveScreen(
 
     LaunchedEffect(state.errorMessage) {
         state.errorMessage?.let { message -> snackbarHostState.showSnackbar(message) }
+    }
+
+    if (state.showCompletionDialog) {
+        state.completion?.let { completion ->
+            SubmissionSuccessDialog(
+                completion = completion,
+                onDismiss = viewModel::dismissCompletionDialog,
+            )
+        }
     }
 
     Scaffold(
@@ -120,8 +143,10 @@ fun ProblemSolveScreen(
             ) {
                 EzTechEmptyState(
                     title = "Problem unavailable",
-                    message = state.errorMessage.orEmpty(),
+                    message = state.errorMessage ?: "This problem could not be loaded.",
                     modifier = Modifier.padding(EzTechDimens.ScreenPadding),
+                    actionLabel = "Try again",
+                    onAction = viewModel::retry,
                 )
             }
             else -> Column(
@@ -141,6 +166,12 @@ fun ProblemSolveScreen(
                         text = "${state.visibleTestCases.size} examples",
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = state.draftStatus.displayText(),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = state.draftStatus.textColor(),
                     )
                 }
 
@@ -166,9 +197,12 @@ fun ProblemSolveScreen(
 
                 ResultPanel(
                     state = state,
+                    onPanelTabSelected = viewModel::selectPanelTab,
+                    onCustomInputChanged = viewModel::onCustomInputChanged,
+                    onRunCustomInput = viewModel::runCustomInput,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(min = 150.dp, max = 280.dp),
+                        .heightIn(min = 170.dp, max = 360.dp),
                 )
             }
         }
@@ -178,84 +212,327 @@ fun ProblemSolveScreen(
 @Composable
 private fun ResultPanel(
     state: ProblemSolveUiState,
+    onPanelTabSelected: (SolvePanelTab) -> Unit,
+    onCustomInputChanged: (String) -> Unit,
+    onRunCustomInput: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val submission = state.submissionResult
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
     ) {
         item {
-            if (submission == null) {
-                Text(
-                    text = "Examples",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(top = EzTechDimens.SpaceXSmall),
-                )
-            } else {
-                val accepted = submission.status == SubmissionStatus.ACCEPTED
-                Text(
-                    text = if (accepted) {
-                        "Accepted: ${submission.passed}/${submission.totalTests} tests"
-                    } else {
-                        "${submission.status.displayName()}: " +
-                            "${submission.passed}/${submission.totalTests} tests"
-                    },
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = if (accepted) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.error
-                    },
-                    modifier = Modifier.padding(top = EzTechDimens.SpaceXSmall),
-                )
-                Text(
-                    text = "Total execution: ${submission.executionTimeMs} ms",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                state.completion?.let { completion ->
-                    Text(
-                        text = if (completion.firstSolve) {
-                            "+${completion.awardedExp} EXP  |  Level ${completion.progress.level}"
-                        } else {
-                            "Previously solved  |  No additional EXP"
-                        },
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold,
+            TabRow(selectedTabIndex = state.selectedPanelTab.ordinal) {
+                SolvePanelTab.entries.forEach { tab ->
+                    Tab(
+                        selected = state.selectedPanelTab == tab,
+                        onClick = { onPanelTabSelected(tab) },
+                        text = { Text(tab.label) },
                     )
-                    if (completion.newlyUnlockedBadges.isNotEmpty()) {
+                }
+            }
+        }
+
+        when (state.selectedPanelTab) {
+            SolvePanelTab.EXAMPLES -> {
+                items(
+                    items = state.visibleTestCases,
+                    key = { testCase -> testCase.id },
+                ) { testCase ->
+                    VisibleTestCaseCard(
+                        testCase = testCase,
+                        index = state.visibleTestCases.indexOf(testCase),
+                    )
+                }
+            }
+
+            SolvePanelTab.CUSTOM_INPUT -> {
+                item {
+                    CustomInputPanel(
+                        state = state,
+                        onCustomInputChanged = onCustomInputChanged,
+                        onRunCustomInput = onRunCustomInput,
+                    )
+                }
+            }
+
+            SolvePanelTab.RESULTS -> {
+                item { SubmissionSummary(state = state) }
+                state.submissionResult?.let { submission ->
+                    items(
+                        items = submission.testResults,
+                        key = { result -> result.testCaseId },
+                    ) { result ->
+                        TestResultCard(result)
+                    }
+                }
+            }
+
+            SolvePanelTab.HISTORY -> {
+                state.historyErrorMessage?.let { message ->
+                    item {
                         Text(
-                            text = "Badge unlocked: " + completion.newlyUnlockedBadges
-                                .joinToString { badge -> badge.name },
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.tertiary,
+                            text = message,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.error,
                         )
+                    }
+                }
+                if (state.submissionHistory.isEmpty()) {
+                    item {
+                        EzTechEmptyState(
+                            title = "No submissions yet",
+                            message = "Submit your code to build history.",
+                        )
+                    }
+                } else {
+                    items(
+                        items = state.submissionHistory,
+                        key = ProblemSubmission::id,
+                    ) { submission ->
+                        SubmissionHistoryCard(submission = submission)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SubmissionSummary(
+    state: ProblemSolveUiState,
+    modifier: Modifier = Modifier,
+) {
+    val submission = state.submissionResult
+    Column(
+        modifier = modifier.padding(top = EzTechDimens.SpaceXSmall),
+        verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceXSmall),
+    ) {
         if (submission == null) {
-            items(
-                items = state.visibleTestCases,
-                key = { testCase -> testCase.id },
-            ) { testCase ->
-                VisibleTestCaseCard(
-                    testCase = testCase,
-                    index = state.visibleTestCases.indexOf(testCase),
+            Text(
+                text = "No result yet",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                text = "Submit your code to run all test cases.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            return
+        }
+
+        val accepted = submission.status == SubmissionStatus.ACCEPTED
+        val progress = if (submission.totalTests == 0) {
+            0f
+        } else {
+            submission.passed.toFloat() / submission.totalTests.toFloat()
+        }
+        Text(
+            text = if (accepted) {
+                "Accepted: ${submission.passed}/${submission.totalTests} tests"
+            } else {
+                "${submission.status.displayName()}: " +
+                    "${submission.passed}/${submission.totalTests} tests"
+            },
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Bold,
+            color = if (accepted) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            },
+        )
+        LinearProgressIndicator(
+            progress = { progress },
+            modifier = Modifier.fillMaxWidth(),
+            color = if (accepted) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
+            },
+        )
+        Text(
+            text = "Total execution: ${submission.executionTimeMs} ms",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        state.completion?.let { completion ->
+            Text(
+                text = if (completion.firstSolve) {
+                    "+${completion.awardedExp} EXP  |  Level ${completion.progress.level}"
+                } else {
+                    "Previously solved  |  No additional EXP"
+                },
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold,
+            )
+            if (completion.newlyUnlockedBadges.isNotEmpty()) {
+                Text(
+                    text = "Badge unlocked: " + completion.newlyUnlockedBadges
+                        .joinToString { badge -> badge.name },
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.tertiary,
                 )
             }
-        } else {
-            items(
-                items = submission.testResults,
-                key = { result -> result.testCaseId },
-            ) { result ->
-                TestResultCard(result)
+        }
+    }
+}
+
+@Composable
+private fun CustomInputPanel(
+    state: ProblemSolveUiState,
+    onCustomInputChanged: (String) -> Unit,
+    onRunCustomInput: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.padding(top = EzTechDimens.SpaceXSmall),
+        verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
+    ) {
+        OutlinedTextField(
+            value = state.customInput,
+            onValueChange = onCustomInputChanged,
+            modifier = Modifier.fillMaxWidth(),
+            minLines = 3,
+            maxLines = 5,
+            label = { Text("Custom stdin") },
+            placeholder = { Text("Input for your program") },
+        )
+        Button(
+            onClick = onRunCustomInput,
+            enabled = !state.isRunningCustomInput,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            if (state.isRunningCustomInput) {
+                CircularProgressIndicator(
+                    modifier = Modifier.padding(end = EzTechDimens.SpaceSmall),
+                    strokeWidth = 2.dp,
+                )
+            } else {
+                Icon(Icons.Rounded.PlayArrow, contentDescription = null)
+                Spacer(Modifier.width(EzTechDimens.SpaceSmall))
+            }
+            Text("Run with input")
+        }
+        state.customRunErrorMessage?.let { message ->
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+            )
+        }
+        state.customRunResult?.let { result ->
+            CustomRunResultCard(result = result)
+        }
+    }
+}
+
+@Composable
+private fun CustomRunResultCard(
+    result: CodeExecutionResult,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier.padding(EzTechDimens.SpaceMedium),
+            verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
+        ) {
+            Text(
+                text = "Exit ${result.exitCode} | ${result.executionTimeMs} ms",
+                style = MaterialTheme.typography.labelLarge,
+                color = if (result.isSuccess) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.error
+                },
+                fontWeight = FontWeight.SemiBold,
+            )
+            CodeOutput(label = "stdout", value = result.stdout.ifBlank { "<empty>" })
+            if (result.stderr.isNotBlank()) {
+                CodeOutput(label = "stderr", value = result.stderr)
             }
         }
+    }
+}
+
+@Composable
+private fun SubmissionHistoryCard(
+    submission: ProblemSubmission,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = if (submission.accepted) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
+        } else {
+            MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.45f)
+        },
+    ) {
+        Row(
+            modifier = Modifier.padding(EzTechDimens.SpaceMedium),
+            horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceMedium),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = submission.status.displayName(),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = if (submission.accepted) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.error
+                    },
+                )
+                Text(
+                    text = "${submission.passed}/${submission.totalTests} tests",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    text = "${submission.executionTimeMs} ms",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                Text(
+                    text = submission.submittedAtMillis.formatTime(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CodeOutput(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceXSmall),
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = FontFamily.Monospace,
+        )
     }
 }
 
@@ -264,4 +541,24 @@ private fun SubmissionStatus.displayName(): String = when (this) {
     SubmissionStatus.WRONG_ANSWER -> "Wrong answer"
     SubmissionStatus.RUNTIME_ERROR -> "Runtime error"
     SubmissionStatus.TIME_LIMIT_EXCEEDED -> "Time limit exceeded"
+}
+
+@Composable
+private fun DraftStatus.textColor() = when (this) {
+    DraftStatus.NONE -> MaterialTheme.colorScheme.onSurfaceVariant
+    DraftStatus.SAVING -> MaterialTheme.colorScheme.primary
+    DraftStatus.SAVED -> MaterialTheme.colorScheme.tertiary
+    DraftStatus.ERROR -> MaterialTheme.colorScheme.error
+}
+
+private fun DraftStatus.displayText(): String = when (this) {
+    DraftStatus.NONE -> ""
+    DraftStatus.SAVING -> "Saving draft"
+    DraftStatus.SAVED -> "Draft saved"
+    DraftStatus.ERROR -> "Draft not saved"
+}
+
+private fun Long.formatTime(): String {
+    if (this <= 0L) return ""
+    return SimpleDateFormat("MMM d, HH:mm", Locale.getDefault()).format(Date(this))
 }

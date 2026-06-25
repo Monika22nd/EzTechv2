@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 internal fun LearnTopBar(
     title: String,
     onBackClick: (() -> Unit)? = null,
+    actions: @Composable () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -34,5 +35,6 @@ internal fun LearnTopBar(
                 }
             }
         },
+        actions = { actions() },
     )
 }

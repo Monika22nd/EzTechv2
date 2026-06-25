@@ -7,6 +7,7 @@ import com.eztech.core.common.Resource
 import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.usecase.GetLessonUseCase
 import com.eztech.core.domain.usecase.MarkLessonWatchedUseCase
+import com.eztech.core.domain.usecase.SetLessonBookmarkedUseCase
 import com.eztech.feature.learn.navigation.LearnRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -22,6 +23,7 @@ class TutorialArticleViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getLesson: GetLessonUseCase,
     private val markLessonWatched: MarkLessonWatchedUseCase,
+    private val setLessonBookmarked: SetLessonBookmarkedUseCase,
     private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val lessonId = savedStateHandle.get<String>(LearnRoutes.LessonIdArg).orEmpty()
@@ -56,6 +58,34 @@ class TutorialArticleViewModel @Inject constructor(
                     _uiState.update { it.copy(message = result.message) }
                 }
 
+                Resource.Loading -> Unit
+            }
+        }
+    }
+
+    fun toggleBookmark() {
+        val lesson = _uiState.value.lesson ?: return
+        viewModelScope.launch {
+            val user = authRepository.observeCurrentUser().first()
+            if (user == null) {
+                _uiState.update { it.copy(message = "Sign in to save bookmarks.") }
+                return@launch
+            }
+            val bookmarked = !lesson.bookmarked
+            when (
+                val result = setLessonBookmarked(
+                    userId = user.uid,
+                    lessonId = lesson.id,
+                    bookmarked = bookmarked,
+                )
+            ) {
+                is Resource.Success -> _uiState.update {
+                    it.copy(
+                        lesson = lesson.copy(bookmarked = bookmarked),
+                        message = if (bookmarked) "Bookmarked." else "Bookmark removed.",
+                    )
+                }
+                is Resource.Error -> _uiState.update { it.copy(message = result.message) }
                 Resource.Loading -> Unit
             }
         }

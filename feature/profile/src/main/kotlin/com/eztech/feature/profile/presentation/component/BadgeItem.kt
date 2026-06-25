@@ -2,7 +2,11 @@ package com.eztech.feature.profile.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,30 +24,41 @@ import com.eztech.core.domain.model.Badge
 import com.eztech.core.domain.model.BadgeRarity
 
 @Composable
-fun BadgeItem(badge: Badge, modifier: Modifier = Modifier) {
+fun BadgeItem(
+    badge: Badge,
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+) {
     val rarityColor = when (badge.rarity) {
         BadgeRarity.COMMON -> Color(0xFF78909C)
         BadgeRarity.RARE -> Color(0xFF1565C0)
         BadgeRarity.EPIC -> Color(0xFF6A1B9A)
         BadgeRarity.LEGENDARY -> Color(0xFFE65100)
     }
+    val iconText = if (badge.unlocked) badge.iconEmoji else "LOCK"
 
     Column(
         modifier = modifier
             .alpha(if (badge.unlocked) 1f else 0.4f)
             .clip(RoundedCornerShape(12.dp))
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .background(MaterialTheme.colorScheme.surface)
             .border(
                 width = if (badge.unlocked) 2.dp else 1.dp,
-                color = if (badge.unlocked) rarityColor else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                color = if (badge.unlocked) rarityColor else {
+                    MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                },
                 shape = RoundedCornerShape(12.dp),
             )
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = if (badge.unlocked) badge.iconEmoji else "🔒",
-            fontSize = 28.sp,
+            text = iconText,
+            fontSize = if (iconText.length <= 2) 28.sp else 17.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            textAlign = TextAlign.Center,
         )
         Spacer(Modifier.height(4.dp))
         Text(
@@ -51,8 +66,11 @@ fun BadgeItem(badge: Badge, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
-            color = if (badge.unlocked) MaterialTheme.colorScheme.onSurface
-                    else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+            color = if (badge.unlocked) {
+                MaterialTheme.colorScheme.onSurface
+            } else {
+                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            },
             maxLines = 2,
         )
         if (badge.unlocked) {

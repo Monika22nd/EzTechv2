@@ -7,21 +7,30 @@ import com.eztech.core.domain.model.Badge
 import com.eztech.core.domain.model.DailyLoginResult
 import com.eztech.core.domain.model.Difficulty
 import com.eztech.core.domain.model.Problem
+import com.eztech.core.domain.model.ProblemDraft
+import com.eztech.core.domain.model.ProblemSubmission
 import com.eztech.core.domain.model.GamificationProgress
 import com.eztech.core.domain.model.LeaderboardEntry
 import com.eztech.core.domain.model.ProblemCompletion
+import com.eztech.core.domain.model.SubmissionResult
 import com.eztech.core.domain.model.SubmissionStatus
 import com.eztech.core.domain.model.TestCase
 import com.eztech.core.domain.model.User
 import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.repository.CodeExecutionRepository
 import com.eztech.core.domain.repository.ProblemRepository
+import com.eztech.core.domain.repository.ProblemWorkspaceRepository
 import com.eztech.core.domain.repository.GamificationRepository
 import com.eztech.core.domain.usecase.gamification.CompleteProblemUseCase
 import com.eztech.core.domain.usecase.gamification.UnlockEligibleBadgesUseCase
+import com.eztech.core.domain.usecase.problem.GetCodeDraftUseCase
 import com.eztech.core.domain.usecase.problem.GetProblemDetailUseCase
+import com.eztech.core.domain.usecase.problem.GetProblemSubmissionHistoryUseCase
 import com.eztech.core.domain.usecase.problem.GetProblemsUseCase
 import com.eztech.core.domain.usecase.problem.GetVisibleTestCasesUseCase
+import com.eztech.core.domain.usecase.problem.RecordProblemSubmissionUseCase
+import com.eztech.core.domain.usecase.problem.RunCustomInputUseCase
+import com.eztech.core.domain.usecase.problem.SaveCodeDraftUseCase
 import com.eztech.core.domain.usecase.problem.SubmitSolutionUseCase
 import com.eztech.feature.problems.navigation.ProblemsRoutes
 import com.eztech.feature.problems.presentation.list.ProblemListViewModel
@@ -73,6 +82,8 @@ class ProblemsViewModelTest {
     @Test
     fun `solve loads starter code and publishes accepted result`() = runTest(dispatcher) {
         val problemRepository = FakeProblemRepository()
+        val codeExecutionRepository = FakeCodeExecutionRepository()
+        val workspaceRepository = FakeProblemWorkspaceRepository()
         val viewModel = ProblemSolveViewModel(
             savedStateHandle = SavedStateHandle(
                 mapOf(ProblemsRoutes.ProblemIdArg to "easy"),
@@ -81,8 +92,9 @@ class ProblemsViewModelTest {
             getVisibleTestCases = GetVisibleTestCasesUseCase(problemRepository),
             submitSolution = SubmitSolutionUseCase(
                 problemRepository = problemRepository,
-                codeExecutionRepository = FakeCodeExecutionRepository(),
+                codeExecutionRepository = codeExecutionRepository,
             ),
+            runCustomInputUseCase = RunCustomInputUseCase(codeExecutionRepository),
             authRepository = FakeAuthRepository(),
             completeProblem = FakeGamificationRepository().let { repository ->
                 CompleteProblemUseCase(
@@ -90,6 +102,10 @@ class ProblemsViewModelTest {
                     unlockEligibleBadges = UnlockEligibleBadgesUseCase(repository),
                 )
             },
+            getCodeDraft = GetCodeDraftUseCase(workspaceRepository),
+            saveCodeDraft = SaveCodeDraftUseCase(workspaceRepository),
+            recordProblemSubmission = RecordProblemSubmissionUseCase(workspaceRepository),
+            getSubmissionHistory = GetProblemSubmissionHistoryUseCase(workspaceRepository),
         )
         advanceUntilIdle()
 
@@ -104,6 +120,7 @@ class ProblemsViewModelTest {
         )
         assertEquals(20, viewModel.uiState.value.completion?.awardedExp)
         assertFalse(viewModel.uiState.value.isSubmitting)
+        assertEquals(1, workspaceRepository.submissionsSaved)
     }
 
     private class FakeProblemRepository : ProblemRepository {
@@ -154,6 +171,36 @@ class ProblemsViewModelTest {
                 executionTimeMs = 4,
             ),
         )
+    }
+
+    private class FakeProblemWorkspaceRepository : ProblemWorkspaceRepository {
+        var submissionsSaved = 0
+
+        override suspend fun getCodeDraft(
+            userId: String,
+            problemId: String,
+        ): Resource<ProblemDraft?> = Resource.Success(null)
+
+        override suspend fun saveCodeDraft(
+            userId: String,
+            problemId: String,
+            code: String,
+        ): Resource<Unit> = Resource.Success(Unit)
+
+        override suspend fun recordSubmission(
+            userId: String,
+            problemId: String,
+            result: SubmissionResult,
+        ): Resource<Unit> {
+            submissionsSaved += 1
+            return Resource.Success(Unit)
+        }
+
+        override fun observeSubmissionHistory(
+            userId: String,
+            problemId: String,
+            limit: Int,
+        ): Flow<Resource<List<ProblemSubmission>>> = flowOf(Resource.Success(emptyList()))
     }
 
     private class FakeAuthRepository : AuthRepository {

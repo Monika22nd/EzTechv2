@@ -1,7 +1,17 @@
 package com.eztech.feature.profile.presentation.screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -9,9 +19,26 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Logout
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.automirrored.rounded.Logout
+import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,15 +46,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.eztech.core.domain.model.Badge
+import com.eztech.core.ui.theme.EzTechDimens
+import com.eztech.feature.profile.presentation.component.BadgeUnlockDialog
 import com.eztech.feature.profile.presentation.component.BadgeItem
 import com.eztech.feature.profile.presentation.component.LevelProgressBar
 import com.eztech.feature.profile.presentation.component.StatsGrid
 import com.eztech.feature.profile.presentation.viewmodel.ProfileViewModel
-import com.eztech.core.ui.theme.EzTechDimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
+    onEditProfileClick: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onViewAllBadgesClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
@@ -35,31 +67,31 @@ fun ProfileScreen(
     var showLogoutDialog by remember { mutableStateOf(false) }
 
     uiState.newlyUnlockedBadge?.let { badge ->
-        AlertDialog(
-            onDismissRequest = viewModel::onBadgeAnimationDone,
-            title = { Text("Badge unlocked") },
-            text = { Text("${badge.name}\n${badge.description}") },
-            confirmButton = {
-                TextButton(onClick = viewModel::onBadgeAnimationDone) {
-                    Text("Continue")
-                }
-            },
+        BadgeUnlockDialog(
+            badge = badge,
+            onDismiss = viewModel::onBadgeAnimationDone,
         )
     }
 
     if (showLogoutDialog) {
         AlertDialog(
             onDismissRequest = { showLogoutDialog = false },
-            title = { Text("Đăng xuất") },
-            text = { Text("Bạn có chắc muốn đăng xuất không?") },
+            title = { Text("Sign out") },
+            text = { Text("Are you sure you want to sign out?") },
             confirmButton = {
-                TextButton(onClick = {
-                    showLogoutDialog = false
-                    viewModel.logout()
-                }) { Text("Đăng xuất", color = MaterialTheme.colorScheme.error) }
+                TextButton(
+                    onClick = {
+                        showLogoutDialog = false
+                        viewModel.logout()
+                    },
+                ) {
+                    Text("Sign out", color = MaterialTheme.colorScheme.error)
+                }
             },
             dismissButton = {
-                TextButton(onClick = { showLogoutDialog = false }) { Text("Hủy") }
+                TextButton(onClick = { showLogoutDialog = false }) {
+                    Text("Cancel")
+                }
             },
         )
     }
@@ -67,10 +99,32 @@ fun ProfileScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("👤 Cá nhân", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold) },
+                title = {
+                    Text(
+                        text = "Profile",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                    )
+                },
                 actions = {
+                    IconButton(onClick = onEditProfileClick) {
+                        Icon(
+                            imageVector = Icons.Rounded.Edit,
+                            contentDescription = "Edit profile",
+                        )
+                    }
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(
+                            imageVector = Icons.Rounded.Settings,
+                            contentDescription = "Open settings",
+                        )
+                    }
                     IconButton(onClick = { showLogoutDialog = true }) {
-                        Icon(Icons.Rounded.Logout, contentDescription = "Logout", tint = MaterialTheme.colorScheme.error)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Rounded.Logout,
+                            contentDescription = "Sign out",
+                            tint = MaterialTheme.colorScheme.error,
+                        )
                     }
                 },
             )
@@ -79,50 +133,81 @@ fun ProfileScreen(
     ) { innerPadding ->
         when {
             uiState.isLoading -> {
-                Box(Modifier.fillMaxSize().padding(innerPadding), Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center,
+                ) {
                     CircularProgressIndicator()
                 }
             }
+
             uiState.user == null -> {
-                Box(Modifier.fillMaxSize().padding(innerPadding), Alignment.Center) {
-                    Text("Vui lòng đăng nhập để xem hồ sơ")
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text("Please sign in to view your profile")
                 }
             }
+
             else -> {
                 val user = uiState.user!!
                 val unlockedBadges = uiState.badges.filter { it.unlocked }
                 val allBadges = uiState.badges
+                val previewBadges = allBadges
+                    .sortedWith(
+                        compareByDescending<Badge> { badge ->
+                            badge.unlocked
+                        }.thenBy { badge -> badge.rarity.ordinal }
+                            .thenBy { badge -> badge.name },
+                    )
+                    .take(8)
 
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(innerPadding),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
                     contentPadding = PaddingValues(EzTechDimens.ScreenPadding),
                     verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceLarge),
                 ) {
-                    // ── Avatar + Name + Rank ─────────────────────────────
                     item {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
                             Box(
-                                Modifier.size(80.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primaryContainer),
-                                Alignment.Center,
+                                modifier = Modifier
+                                    .size(80.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.primaryContainer),
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Text(
-                                    user.name.take(1).uppercase(),
+                                    text = user.name.take(1).uppercase(),
                                     style = MaterialTheme.typography.headlineLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary,
                                 )
                             }
                             Spacer(Modifier.height(EzTechDimens.SpaceSmall))
-                            Text(user.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                             Text(
-                                "Level ${user.level}" + if (user.rank > 0) " · #${user.rank} Rank" else "",
+                                text = user.name,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Text(
+                                text = "Level ${user.level}" +
+                                    if (user.rank > 0) " | #${user.rank} Rank" else "",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                             )
                         }
                     }
 
-                    // ── Level Progress Bar ────────────────────────────────
                     item {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
@@ -134,39 +219,56 @@ fun ProfileScreen(
                         }
                     }
 
-                    // ── Stats Grid ────────────────────────────────────────
                     item {
                         StatsGrid(user = user, rank = user.rank)
                     }
 
-                    // ── Badges ─────────────────────────────────────────────
                     item {
-                        Text(
-                            "🏅 Huy hiệu (${unlockedBadges.size}/${allBadges.size})",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "Badges (${unlockedBadges.size}/${allBadges.size})",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            TextButton(onClick = onViewAllBadgesClick) {
+                                Text("View all")
+                                Icon(
+                                    imageVector = Icons.Rounded.ChevronRight,
+                                    contentDescription = null,
+                                )
+                            }
+                        }
                     }
                     item {
-                        // Fixed height grid for badges (non-scrollable inside lazy)
-                        val rows = (allBadges.size + 3) / 4
-                        val gridHeight = (rows * 100).dp
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(4),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(gridHeight),
-                            horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
-                            verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
-                            userScrollEnabled = false,
-                        ) {
-                            items(allBadges, key = { it.id }) { badge ->
-                                BadgeItem(badge = badge)
+                        if (previewBadges.isEmpty()) {
+                            Text(
+                                text = "No badges yet",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        } else {
+                            val rows = (previewBadges.size + 3) / 4
+                            val gridHeight = (rows * 100).dp
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(4),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(gridHeight),
+                                horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
+                                verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
+                                userScrollEnabled = false,
+                            ) {
+                                items(previewBadges, key = { it.id }) { badge ->
+                                    BadgeItem(badge = badge)
+                                }
                             }
                         }
                     }
 
-                    // Bottom spacer
                     item { Spacer(Modifier.height(80.dp)) }
                 }
             }

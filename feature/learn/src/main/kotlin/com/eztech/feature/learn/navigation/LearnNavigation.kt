@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.eztech.core.domain.model.LessonContentType
+import com.eztech.feature.learn.presentation.bookmarks.BookmarkedLessonsScreen
 import com.eztech.feature.learn.presentation.category.LessonCategoryScreen
 import com.eztech.feature.learn.presentation.list.LessonListScreen
 import com.eztech.feature.learn.presentation.tutorial.TutorialArticleScreen
@@ -23,6 +24,7 @@ object LearnRoutes {
         "$Root/{$LanguageIdArg}/category/{$CategoryIdArg}?$CategoryNameArg={$CategoryNameArg}"
     const val VideoPlayer = "$Root/lesson/{$LessonIdArg}"
     const val TutorialArticle = "$Root/tutorial/{$LessonIdArg}"
+    const val Bookmarks = "$Root/bookmarks"
 
     fun lessonList(
         languageId: String,
@@ -52,6 +54,9 @@ fun NavGraphBuilder.learnGraph(navController: NavHostController) {
             },
             onVideoClick = { lesson ->
                 navController.navigate(LearnRoutes.videoPlayer(lesson.id))
+            },
+            onBookmarksClick = {
+                navController.navigate(LearnRoutes.Bookmarks)
             },
         )
     }
@@ -92,5 +97,17 @@ fun NavGraphBuilder.learnGraph(navController: NavHostController) {
         ),
     ) {
         TutorialArticleScreen(onBackClick = navController::popBackStack)
+    }
+    composable(LearnRoutes.Bookmarks) {
+        BookmarkedLessonsScreen(
+            onBackClick = navController::popBackStack,
+            onLessonClick = { lesson ->
+                if (lesson.type == LessonContentType.TUTORIAL) {
+                    navController.navigate(LearnRoutes.tutorialArticle(lesson.id))
+                } else {
+                    navController.navigate(LearnRoutes.videoPlayer(lesson.id))
+                }
+            },
+        )
     }
 }

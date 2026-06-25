@@ -15,8 +15,17 @@ fun NavController.navigateToTopLevelDestination(destination: TopLevelDestination
 }
 
 fun NavController.navigateToMain() {
-    navigate(TopLevelDestination.Learn.route) {
+    navigate(TopLevelDestination.Home.route) {
         popUpTo(AuthRoutes.Login) {
+            inclusive = true
+        }
+        launchSingleTop = true
+    }
+}
+
+fun NavController.navigateToAuth() {
+    navigate(AuthRoutes.Login) {
+        popUpTo(graph.findStartDestination().id) {
             inclusive = true
         }
         launchSingleTop = true

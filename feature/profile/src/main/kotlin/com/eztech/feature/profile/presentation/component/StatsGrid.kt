@@ -1,7 +1,11 @@
 package com.eztech.feature.profile.presentation.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,7 +27,7 @@ fun StatsGrid(user: User, rank: Int, modifier: Modifier = Modifier) {
     ) {
         StatCard(value = "${user.solvedCount}", label = "Solved", modifier = Modifier.weight(1f))
         StatCard(value = "${user.exp}", label = "EXP", modifier = Modifier.weight(1f))
-        StatCard(value = "${user.currentStreak}🔥", label = "Streak", modifier = Modifier.weight(1f))
+        StatCard(value = "${user.currentStreak}", label = "Streak", modifier = Modifier.weight(1f))
         if (rank > 0) StatCard(value = "#$rank", label = "Rank", modifier = Modifier.weight(1f))
     }
 }

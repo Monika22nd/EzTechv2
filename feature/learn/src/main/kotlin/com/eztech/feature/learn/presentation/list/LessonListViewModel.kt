@@ -4,7 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eztech.core.common.Resource
+import com.eztech.core.domain.model.Lesson
+import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.usecase.GetLessonsByCategoryUseCase
+import com.eztech.core.domain.usecase.SetLessonBookmarkedUseCase
 import com.eztech.feature.learn.navigation.LearnRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,6 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,6 +23,8 @@ import kotlinx.coroutines.launch
 class LessonListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getLessonsByCategory: GetLessonsByCategoryUseCase,
+    private val setLessonBookmarked: SetLessonBookmarkedUseCase,
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val languageId = savedStateHandle.get<String>(LearnRoutes.LanguageIdArg).orEmpty()
     private val categoryId = savedStateHandle.get<String>(LearnRoutes.CategoryIdArg).orEmpty()
@@ -37,6 +43,39 @@ class LessonListViewModel @Inject constructor(
     }
 
     fun retry() = loadLessons()
+
+    fun toggleBookmark(lesson: Lesson) {
+        viewModelScope.launch {
+            val user = authRepository.observeCurrentUser().first()
+            if (user == null) {
+                _uiState.update { it.copy(message = "Sign in to save bookmarks.") }
+                return@launch
+            }
+            val bookmarked = !lesson.bookmarked
+            when (
+                val result = setLessonBookmarked(
+                    userId = user.uid,
+                    lessonId = lesson.id,
+                    bookmarked = bookmarked,
+                )
+            ) {
+                is Resource.Success -> _uiState.update { state ->
+                    state.copy(
+                        lessons = state.lessons.map { item ->
+                            if (item.id == lesson.id) item.copy(bookmarked = bookmarked) else item
+                        },
+                        message = if (bookmarked) "Bookmarked." else "Bookmark removed.",
+                    )
+                }
+                is Resource.Error -> _uiState.update { it.copy(message = result.message) }
+                Resource.Loading -> Unit
+            }
+        }
+    }
+
+    fun consumeMessage() {
+        _uiState.update { it.copy(message = null) }
+    }
 
     private fun loadLessons() {
         loadJob?.cancel()

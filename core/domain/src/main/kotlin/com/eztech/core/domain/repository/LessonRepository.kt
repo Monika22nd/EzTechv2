@@ -24,8 +24,16 @@ interface LessonRepository {
 
     fun observeLesson(lessonId: String): Flow<Resource<Lesson>>
 
+    fun observeBookmarkedLessons(languageId: String): Flow<Resource<List<Lesson>>>
+
     suspend fun markAsWatched(
         userId: String,
         lessonId: String,
+    ): Resource<Unit>
+
+    suspend fun setBookmarked(
+        userId: String,
+        lessonId: String,
+        bookmarked: Boolean,
     ): Resource<Unit>
 }

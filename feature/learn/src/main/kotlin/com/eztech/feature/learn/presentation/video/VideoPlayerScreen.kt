@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
+import com.eztech.feature.learn.presentation.component.BookmarkButton
 import com.eztech.feature.learn.presentation.component.LearnTopBar
 import com.eztech.feature.learn.presentation.component.YouTubeVideoPlayer
 import com.eztech.feature.learn.presentation.component.formatDuration
@@ -120,6 +121,10 @@ fun VideoPlayerScreen(
                                     tint = MaterialTheme.colorScheme.tertiary,
                                 )
                             }
+                            BookmarkButton(
+                                bookmarked = lesson.bookmarked,
+                                onClick = viewModel::toggleBookmark,
+                            )
                         }
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),

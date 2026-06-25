@@ -20,8 +20,13 @@ import kotlinx.coroutines.tasks.await
 internal class FirebaseLessonDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
 ) {
-    suspend fun getLanguages(): List<ProgrammingLanguage> =
-        firestore.collection(PROGRAMMING_LANGUAGES)
+    private var languageCache: List<ProgrammingLanguage>? = null
+    private val categoryCache = mutableMapOf<String, List<LessonCategory>>()
+    private val lessonCache = mutableMapOf<String, List<Lesson>>()
+
+    suspend fun getLanguages(): List<ProgrammingLanguage> {
+        languageCache?.let { return it }
+        return firestore.collection(PROGRAMMING_LANGUAGES)
             .orderBy(ORDER)
             .get()
             .await()
@@ -32,8 +37,11 @@ internal class FirebaseLessonDataSource @Inject constructor(
                 require(languages.isNotEmpty()) { "Firestore does not contain programming languages." }
                 Log.i(TAG, "Loaded ${languages.size} programming languages from Firestore.")
             }
+            .also { languages -> languageCache = languages }
+    }
 
     suspend fun getCategories(languageId: String): List<LessonCategory> {
+        categoryCache[languageId]?.let { return it }
         val lessons = getLessonsForLanguage(languageId)
         return firestore.collection(LESSON_CATEGORIES)
             .whereEqualTo(LANGUAGE_ID, languageId)
@@ -53,16 +61,23 @@ internal class FirebaseLessonDataSource @Inject constructor(
                 }
                 Log.i(TAG, "Loaded ${categories.size} lesson categories from Firestore.")
             }
+            .also { categories -> categoryCache[languageId] = categories }
     }
 
     suspend fun getLessons(
         languageId: String,
         categoryId: String,
         watchedLessonIds: Set<String>,
+        bookmarkedLessonIds: Set<String>,
     ): List<Lesson> = getLessonsForLanguage(languageId)
         .asSequence()
         .filter { lesson -> lesson.categoryId == categoryId }
-        .map { lesson -> lesson.copy(watched = lesson.id in watchedLessonIds) }
+        .map { lesson ->
+            lesson.copy(
+                watched = lesson.id in watchedLessonIds,
+                bookmarked = lesson.id in bookmarkedLessonIds,
+            )
+        }
         .sortedBy(Lesson::order)
         .toList()
 
@@ -70,29 +85,69 @@ internal class FirebaseLessonDataSource @Inject constructor(
         languageId: String,
         type: LessonContentType,
         watchedLessonIds: Set<String>,
+        bookmarkedLessonIds: Set<String>,
     ): List<Lesson> = getLessonsForLanguage(languageId)
         .asSequence()
         .filter { lesson -> lesson.type == type }
-        .map { lesson -> lesson.copy(watched = lesson.id in watchedLessonIds) }
+        .map { lesson ->
+            lesson.copy(
+                watched = lesson.id in watchedLessonIds,
+                bookmarked = lesson.id in bookmarkedLessonIds,
+            )
+        }
         .sortedWith(compareBy<Lesson> { it.categoryId }.thenBy(Lesson::order))
         .toList()
 
     suspend fun getLesson(
         lessonId: String,
         watchedLessonIds: Set<String>,
+        bookmarkedLessonIds: Set<String>,
     ): Lesson {
         val snapshot = firestore.collection(LESSONS)
             .document(lessonId)
             .get()
             .await()
         require(snapshot.exists()) { "Lesson '$lessonId' does not exist in Firestore." }
-        return snapshot.toLesson().copy(watched = lessonId in watchedLessonIds)
+        return snapshot.toLesson().copy(
+            watched = lessonId in watchedLessonIds,
+            bookmarked = lessonId in bookmarkedLessonIds,
+        )
     }
+
+    suspend fun getBookmarkedLessons(
+        languageId: String,
+        watchedLessonIds: Set<String>,
+        bookmarkedLessonIds: Set<String>,
+    ): List<Lesson> = getLessonsForLanguage(languageId)
+        .asSequence()
+        .filter { lesson -> lesson.id in bookmarkedLessonIds }
+        .map { lesson ->
+            lesson.copy(
+                watched = lesson.id in watchedLessonIds,
+                bookmarked = true,
+            )
+        }
+        .sortedWith(compareBy<Lesson> { it.type.ordinal }.thenBy { it.categoryId }.thenBy(Lesson::order))
+        .toList()
 
     fun observeWatchedLessonIds(userId: String): Flow<Set<String>> = callbackFlow {
         val registration = firestore.collection(USERS)
             .document(userId)
             .collection(LESSON_PROGRESS)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                trySend(snapshot?.documents?.mapTo(mutableSetOf()) { document -> document.id }.orEmpty())
+        }
+        awaitClose(registration::remove)
+    }
+
+    fun observeBookmarkedLessonIds(userId: String): Flow<Set<String>> = callbackFlow {
+        val registration = firestore.collection(USERS)
+            .document(userId)
+            .collection(LESSON_BOOKMARKS)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
                     close(error)
@@ -130,8 +185,49 @@ internal class FirebaseLessonDataSource @Inject constructor(
         batch.commit().await()
     }
 
-    private suspend fun getLessonsForLanguage(languageId: String): List<Lesson> =
-        firestore.collection(LESSONS)
+    suspend fun setBookmarked(
+        userId: String,
+        lessonId: String,
+        bookmarked: Boolean,
+    ) {
+        require(userId.isNotBlank()) { "A user ID is required to save bookmarks." }
+        require(lessonId.isNotBlank()) { "A lesson ID is required to save bookmarks." }
+
+        val lesson = firestore.collection(LESSONS).document(lessonId).get().await()
+        require(lesson.exists()) { "Lesson '$lessonId' does not exist in Firestore." }
+
+        val userRef = firestore.collection(USERS).document(userId)
+        val bookmarkRef = userRef.collection(LESSON_BOOKMARKS).document(lessonId)
+        val batch = firestore.batch()
+        if (bookmarked) {
+            batch.set(
+                bookmarkRef,
+                mapOf(
+                    "lessonId" to lessonId,
+                    "bookmarked" to true,
+                    "bookmarkedAt" to FieldValue.serverTimestamp(),
+                ),
+                SetOptions.merge(),
+            )
+            batch.set(
+                userRef,
+                mapOf("bookmarkedLessonIds" to FieldValue.arrayUnion(lessonId)),
+                SetOptions.merge(),
+            )
+        } else {
+            batch.delete(bookmarkRef)
+            batch.set(
+                userRef,
+                mapOf("bookmarkedLessonIds" to FieldValue.arrayRemove(lessonId)),
+                SetOptions.merge(),
+            )
+        }
+        batch.commit().await()
+    }
+
+    private suspend fun getLessonsForLanguage(languageId: String): List<Lesson> {
+        lessonCache[languageId]?.let { return it }
+        return firestore.collection(LESSONS)
             .whereEqualTo(LANGUAGE_ID, languageId)
             .get()
             .await()
@@ -141,6 +237,8 @@ internal class FirebaseLessonDataSource @Inject constructor(
                 require(lessons.isNotEmpty()) { "Firestore does not contain lessons for '$languageId'." }
                 Log.i(TAG, "Loaded ${lessons.size} lessons from Firestore.")
             }
+            .also { lessons -> lessonCache[languageId] = lessons }
+    }
 
     private fun DocumentSnapshot.toProgrammingLanguage() = ProgrammingLanguage(
         id = id,
@@ -197,6 +295,7 @@ internal class FirebaseLessonDataSource @Inject constructor(
         const val LESSONS = "lessons"
         const val USERS = "users"
         const val LESSON_PROGRESS = "lessonProgress"
+        const val LESSON_BOOKMARKS = "lessonBookmarks"
         const val LANGUAGE_ID = "languageId"
         const val CATEGORY_ID = "categoryId"
         const val NAME = "name"

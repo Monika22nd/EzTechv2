@@ -57,12 +57,39 @@ service cloud.firestore {
         allow delete: if owns(userId);
       }
 
+      match /lessonBookmarks/{lessonId} {
+        allow read: if owns(userId);
+        allow create, update: if owns(userId)
+          && request.resource.data.lessonId == lessonId
+          && request.resource.data.bookmarked == true;
+        allow delete: if owns(userId);
+      }
+
       match /badges/{badgeId} {
         allow read, write: if owns(userId);
       }
 
       match /solvedProblems/{problemId} {
         allow read, write: if owns(userId);
+      }
+
+      match /problemDrafts/{problemId} {
+        allow read: if owns(userId);
+        allow create, update: if owns(userId)
+          && request.resource.data.problemId == problemId;
+        allow delete: if owns(userId);
+      }
+
+      match /problemSubmissions/{problemId} {
+        allow read: if owns(userId);
+        allow write: if false;
+
+        match /items/{submissionId} {
+          allow read: if owns(userId);
+          allow create: if owns(userId)
+            && request.resource.data.problemId == problemId;
+          allow update, delete: if false;
+        }
       }
 
       match /expEvents/{eventId} {

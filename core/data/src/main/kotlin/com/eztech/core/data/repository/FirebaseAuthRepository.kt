@@ -52,18 +52,16 @@ internal class FirebaseAuthRepository(
                 .user ?: error("Firebase did not return a user after registration.")
 
             firebaseUser.updateProfile(
-                UserProfileChangeRequest.Builder().setDisplayName(cleanName).build()
+                UserProfileChangeRequest.Builder().setDisplayName(cleanName).build(),
             ).await()
 
             val user = firebaseUser.toDomainUser(name = cleanName)
 
-            // Write user profile doc
             firestore.collection(USERS_COLLECTION)
                 .document(user.uid)
                 .set(user.toFirestoreMap())
                 .await()
 
-            // Create leaderboard entry
             firestore.collection(LEADERBOARD_COLLECTION)
                 .document(user.uid)
                 .set(user.toLeaderboardMap())
@@ -87,8 +85,6 @@ internal class FirebaseAuthRepository(
     override suspend fun logout() {
         firebaseAuth.signOut()
     }
-
-    // ── Private helpers ────────────────────────────────────────────────────
 
     private fun ensureUserDocuments(firebaseUser: FirebaseUser) {
         val user = firebaseUser.toDomainUser(
@@ -180,6 +176,7 @@ internal class FirebaseAuthRepository(
         "hardSolvedCount" to 0,
         "solvedProblemIds" to emptyList<String>(),
         "watchedLessonIds" to emptyList<String>(),
+        "bookmarkedLessonIds" to emptyList<String>(),
         "currentStreak" to 0,
         "lastLoginDate" to "",
         "rank" to 0,

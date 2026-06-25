@@ -5,9 +5,11 @@ import androidx.compose.material.icons.automirrored.rounded.Assignment
 import androidx.compose.material.icons.automirrored.rounded.MenuBook
 import androidx.compose.material.icons.rounded.Code
 import androidx.compose.material.icons.rounded.EmojiEvents
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.eztech.core.ui.component.EzTechBottomBarItem
+import com.eztech.feature.home.navigation.HomeRoutes
 import com.eztech.feature.problems.navigation.ProblemsRoutes
 
 enum class TopLevelDestination(
@@ -15,6 +17,11 @@ enum class TopLevelDestination(
     val label: String,
     val icon: ImageVector,
 ) {
+    Home(
+        route = HomeRoutes.Root,
+        label = "Home",
+        icon = Icons.Rounded.Home,
+    ),
     Learn(
         route = "learn",
         label = "Learn",

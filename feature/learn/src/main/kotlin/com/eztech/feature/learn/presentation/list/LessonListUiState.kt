@@ -7,4 +7,5 @@ data class LessonListUiState(
     val isLoading: Boolean = true,
     val lessons: List<Lesson> = emptyList(),
     val errorMessage: String? = null,
+    val message: String? = null,
 )

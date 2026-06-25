@@ -1,21 +1,29 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep useful stack trace metadata for internal testing builds.
+-keepattributes SourceFile,LineNumberTable,*Annotation*
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Firebase and Google Play services use generated/runtime metadata.
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.firebase.**
+-dontwarn com.google.android.gms.**
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Hilt/Dagger generated classes and injection metadata.
+-keep class dagger.hilt.** { *; }
+-keep class hilt_aggregated_deps.** { *; }
+-keep class * extends dagger.hilt.android.internal.lifecycle.HiltViewModelFactory { *; }
+-dontwarn dagger.hilt.**
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Chaquopy loads Python runtime classes through native/runtime hooks.
+-keep class com.chaquo.python.** { *; }
+-keep class com.chaquo.python.android.** { *; }
+-dontwarn com.chaquo.python.**
+
+# Sora editor and TextMate grammars rely on reflective language/theme setup.
+-keep class io.github.rosemoe.sora.** { *; }
+-keep class org.eclipse.tm4e.** { *; }
+-dontwarn io.github.rosemoe.sora.**
+-dontwarn org.eclipse.tm4e.**
+
+# YouTube player is WebView-backed and uses JavaScript bridge internals.
+-keep class com.pierfrancescosoffritti.androidyoutubeplayer.** { *; }
+-dontwarn com.pierfrancescosoffritti.androidyoutubeplayer.**

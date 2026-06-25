@@ -23,7 +23,7 @@ class ProblemRepositoryImplTest {
 
         assertEquals(Resource.Loading, emissions[0])
         assertEquals(Resource.Success(problems), emissions[1])
-        assertEquals(Difficulty.EASY, dataSource.requestedDifficulty)
+        assertEquals(null, dataSource.requestedDifficulty)
     }
 
     @Test

@@ -27,6 +27,7 @@ import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.problems.presentation.component.ProblemCard
 import com.eztech.feature.problems.presentation.component.ProblemFilterRow
+import com.eztech.feature.problems.presentation.component.ProblemSearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,8 +67,10 @@ fun ProblemListScreen(
             ) {
                 EzTechEmptyState(
                     title = "Problems unavailable",
-                    message = state.errorMessage.orEmpty(),
+                    message = state.errorMessage ?: "Could not load the problem set.",
                     modifier = Modifier.padding(EzTechDimens.ScreenPadding),
+                    actionLabel = "Try again",
+                    onAction = viewModel::retry,
                 )
             }
             else -> LazyColumn(
@@ -81,16 +84,27 @@ fun ProblemListScreen(
                 verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceMedium),
             ) {
                 item {
+                    ProblemSearchBar(
+                        query = state.searchQuery,
+                        onQueryChanged = viewModel::onSearchQueryChanged,
+                    )
+                }
+                item {
                     ProblemFilterRow(
                         selectedDifficulty = state.selectedDifficulty,
                         onDifficultySelected = viewModel::selectDifficulty,
+                        availableTags = state.availableTags,
+                        selectedTag = state.selectedTag,
+                        onTagSelected = viewModel::selectTag,
+                        sortOption = state.sortOption,
+                        onSortOptionSelected = viewModel::selectSortOption,
                     )
                 }
                 if (state.problems.isEmpty()) {
                     item {
                         EzTechEmptyState(
                             title = "No matching problems",
-                            message = "Choose another difficulty.",
+                            message = "Try another search, difficulty, or tag.",
                             modifier = Modifier.fillMaxSize().padding(EzTechDimens.SpaceXLarge),
                         )
                     }

@@ -34,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.eztech.core.ui.component.EzTechButton
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
+import com.eztech.feature.learn.presentation.component.BookmarkButton
 import com.eztech.feature.learn.presentation.component.LearnTopBar
 
 @Composable
@@ -125,6 +126,10 @@ fun TutorialArticleScreen(
                                         tint = MaterialTheme.colorScheme.tertiary,
                                     )
                                 }
+                                BookmarkButton(
+                                    bookmarked = lesson.bookmarked,
+                                    onClick = viewModel::toggleBookmark,
+                                )
                             }
                             Text(
                                 text = lesson.description,

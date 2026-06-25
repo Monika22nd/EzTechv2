@@ -14,4 +14,5 @@ data class Lesson(
     val sourceName: String = "",
     val thumbnailUrl: String? = null,
     val watched: Boolean = false,
+    val bookmarked: Boolean = false,
 )

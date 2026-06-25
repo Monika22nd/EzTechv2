@@ -17,6 +17,9 @@ internal class ProblemRepositoryImpl(
     private val remoteDataSource: ProblemDataSource,
     private val localDataSource: ProblemDataSource,
 ) : ProblemRepository {
+    private var cachedProblems: List<Problem>? = null
+    private val cachedTestCases = mutableMapOf<String, List<TestCase>>()
+
     internal constructor(localDataSource: ProblemDataSource) : this(
         remoteDataSource = localDataSource,
         localDataSource = localDataSource,
@@ -26,16 +29,34 @@ internal class ProblemRepositoryImpl(
         difficulty: Difficulty?,
     ): Flow<Resource<List<Problem>>> = flow<Resource<List<Problem>>> {
         emit(Resource.Loading)
-        emit(Resource.Success(remoteFirst { dataSource -> dataSource.getProblems(difficulty) }))
+        emit(
+            Resource.Success(
+                getCachedProblems()
+                    .filter { problem -> difficulty == null || problem.difficulty == difficulty }
+                    .sortedBy(Problem::order),
+            ),
+        )
     }.catch { error ->
         emit(error.toResourceError())
     }
 
     override suspend fun getProblemById(problemId: String): Resource<Problem> =
-        resourceCall { remoteFirst { dataSource -> dataSource.getProblem(problemId) } }
+        resourceCall {
+            cachedProblems
+                ?.firstOrNull { problem -> problem.id == problemId }
+                ?: remoteFirst { dataSource -> dataSource.getProblem(problemId) }
+        }
 
     override suspend fun getTestCases(problemId: String): Resource<List<TestCase>> =
-        resourceCall { remoteFirst { dataSource -> dataSource.getTestCases(problemId) } }
+        resourceCall {
+            cachedTestCases[problemId]
+                ?: remoteFirst { dataSource -> dataSource.getTestCases(problemId) }
+                    .also { testCases -> cachedTestCases[problemId] = testCases }
+        }
+
+    private suspend fun getCachedProblems(): List<Problem> =
+        cachedProblems ?: remoteFirst { dataSource -> dataSource.getProblems(null) }
+            .also { problems -> cachedProblems = problems }
 
     private suspend fun <T> remoteFirst(block: suspend (ProblemDataSource) -> T): T =
         try {
