@@ -64,8 +64,8 @@ internal fun AuthScreenLayout(
                 Surface(
                     modifier = Modifier.size(64.dp),
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.primary,
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(

@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,10 +82,15 @@ fun SettingsScreen(
         modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
                 title = {
                     Text(
                         text = "Settings",
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.SemiBold,
                     )
                 },
                 navigationIcon = {

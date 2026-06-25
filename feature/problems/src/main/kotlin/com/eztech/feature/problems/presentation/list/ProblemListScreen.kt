@@ -14,12 +14,15 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,6 +31,7 @@ import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.problems.presentation.component.ProblemCard
 import com.eztech.feature.problems.presentation.component.ProblemFilterRow
 import com.eztech.feature.problems.presentation.component.ProblemSearchBar
+import com.eztech.feature.problems.presentation.component.ProblemTypeTabs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +47,17 @@ fun ProblemListScreen(
         modifier = modifier,
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Python problems") },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                    navigationIconContentColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = "Python problems",
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                },
                 navigationIcon = {
                     if (onBackClick != null) {
                         IconButton(onClick = onBackClick) {
@@ -84,6 +98,14 @@ fun ProblemListScreen(
                 verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceMedium),
             ) {
                 item {
+                    ProblemTypeTabs(
+                        types = state.availableProblemTypes,
+                        selectedType = state.selectedProblemType,
+                        totalCount = state.allProblems.size,
+                        onTypeSelected = viewModel::selectProblemType,
+                    )
+                }
+                item {
                     ProblemSearchBar(
                         query = state.searchQuery,
                         onQueryChanged = viewModel::onSearchQueryChanged,
@@ -93,9 +115,6 @@ fun ProblemListScreen(
                     ProblemFilterRow(
                         selectedDifficulty = state.selectedDifficulty,
                         onDifficultySelected = viewModel::selectDifficulty,
-                        availableProblemTypes = state.availableProblemTypes,
-                        selectedProblemType = state.selectedProblemType,
-                        onProblemTypeSelected = viewModel::selectProblemType,
                         sortOption = state.sortOption,
                         onSortOptionSelected = viewModel::selectSortOption,
                     )

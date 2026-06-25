@@ -1,5 +1,6 @@
 package com.eztech.feature.problems.presentation.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.eztech.core.domain.model.Problem
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.problems.presentation.model.ProblemTypeCatalog
@@ -35,6 +37,8 @@ fun ProblemCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
     ) {
         Row(
             modifier = Modifier.padding(EzTechDimens.SpaceMedium),
