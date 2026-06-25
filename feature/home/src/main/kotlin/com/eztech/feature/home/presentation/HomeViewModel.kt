@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eztech.core.common.Resource
 import com.eztech.core.domain.usecase.GetDashboardSummaryUseCase
+import com.eztech.core.domain.usecase.recommendation.GetRecommendationsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -16,16 +17,22 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getDashboardSummary: GetDashboardSummaryUseCase,
+    private val getRecommendations: GetRecommendationsUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     private var loadJob: Job? = null
+    private var recommendationJob: Job? = null
 
     init {
         loadDashboard()
+        loadRecommendations()
     }
 
-    fun retry() = loadDashboard()
+    fun retry() {
+        loadDashboard()
+        loadRecommendations()
+    }
 
     private fun loadDashboard() {
         loadJob?.cancel()
@@ -37,9 +44,10 @@ class HomeViewModel @Inject constructor(
                             isLoading = current.summary == null,
                             errorMessage = null,
                         )
-                        is Resource.Success -> HomeUiState(
+                        is Resource.Success -> current.copy(
                             summary = result.data,
                             isLoading = false,
+                            errorMessage = null,
                         )
                         is Resource.Error -> current.copy(
                             isLoading = false,
@@ -49,5 +57,34 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun loadRecommendations() {
+        recommendationJob?.cancel()
+        recommendationJob = viewModelScope.launch {
+            getRecommendations(maxResults = MAX_RECOMMENDATIONS).collect { result ->
+                _uiState.update { current ->
+                    when (result) {
+                        Resource.Loading -> current.copy(
+                            isLoadingRecommendations = current.recommendations.isEmpty(),
+                            recommendationErrorMessage = null,
+                        )
+                        is Resource.Success -> current.copy(
+                            recommendations = result.data,
+                            isLoadingRecommendations = false,
+                            recommendationErrorMessage = null,
+                        )
+                        is Resource.Error -> current.copy(
+                            isLoadingRecommendations = false,
+                            recommendationErrorMessage = result.message,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private companion object {
+        const val MAX_RECOMMENDATIONS = 5
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import com.eztech.core.domain.model.LessonContentType
 import com.eztech.feature.auth.navigation.AuthRoutes
 import com.eztech.feature.auth.navigation.authGraph
+import com.eztech.feature.home.navigation.HomeRoutes
 import com.eztech.feature.home.navigation.homeGraph
 import com.eztech.feature.ide.navigation.ideGraph
 import com.eztech.feature.learn.navigation.learnGraph
@@ -37,6 +38,12 @@ fun EzTechNavHost(
             },
             onProblemsClick = {
                 navController.navigateToTopLevelDestination(TopLevelDestination.Problems)
+            },
+            onRecommendationsClick = {
+                navController.navigate(HomeRoutes.Recommendations)
+            },
+            onBackClick = {
+                navController.popBackStack()
             },
             onLessonClick = { lesson ->
                 val route = if (lesson.type == LessonContentType.TUTORIAL) {

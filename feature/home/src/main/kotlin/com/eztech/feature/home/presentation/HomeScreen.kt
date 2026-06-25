@@ -51,8 +51,10 @@ import com.eztech.core.domain.model.DashboardSummary
 import com.eztech.core.domain.model.Lesson
 import com.eztech.core.domain.model.LessonContentType
 import com.eztech.core.domain.model.Problem
+import com.eztech.core.domain.model.Recommendation
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
+import com.eztech.feature.home.presentation.component.RecommendationSection
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,6 +62,7 @@ fun HomeScreen(
     onLearnClick: () -> Unit,
     onIdeClick: () -> Unit,
     onProblemsClick: () -> Unit,
+    onRecommendationsClick: () -> Unit,
     onLessonClick: (Lesson) -> Unit,
     onProblemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -90,9 +93,12 @@ fun HomeScreen(
 
             state.summary != null -> DashboardContent(
                 summary = state.summary!!,
+                recommendations = state.recommendations,
+                isLoadingRecommendations = state.isLoadingRecommendations,
                 onLearnClick = onLearnClick,
                 onIdeClick = onIdeClick,
                 onProblemsClick = onProblemsClick,
+                onRecommendationsClick = onRecommendationsClick,
                 onLessonClick = onLessonClick,
                 onProblemClick = onProblemClick,
                 modifier = Modifier
@@ -106,9 +112,12 @@ fun HomeScreen(
 @Composable
 private fun DashboardContent(
     summary: DashboardSummary,
+    recommendations: List<Recommendation>,
+    isLoadingRecommendations: Boolean,
     onLearnClick: () -> Unit,
     onIdeClick: () -> Unit,
     onProblemsClick: () -> Unit,
+    onRecommendationsClick: () -> Unit,
     onLessonClick: (Lesson) -> Unit,
     onProblemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -128,6 +137,20 @@ private fun DashboardContent(
         }
         item {
             ProgressOverviewCard(summary = summary)
+        }
+        if (recommendations.isNotEmpty() || isLoadingRecommendations) {
+            item {
+                RecommendationSection(
+                    recommendations = recommendations,
+                    isLoading = isLoadingRecommendations,
+                    onViewAllClick = onRecommendationsClick,
+                    onRecommendationClick = { recommendation ->
+                        recommendation.problem?.let { problem ->
+                            onProblemClick(problem.id)
+                        } ?: recommendation.lesson?.let(onLessonClick)
+                    },
+                )
+            }
         }
         item {
             QuickActions(
