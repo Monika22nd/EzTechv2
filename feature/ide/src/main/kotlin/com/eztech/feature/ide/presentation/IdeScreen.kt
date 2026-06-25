@@ -1,7 +1,5 @@
 package com.eztech.feature.ide.presentation
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,11 +16,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.eztech.core.ui.file.readUtf8Text
-import com.eztech.core.ui.file.writeUtf8Text
+import com.eztech.core.ui.file.rememberCodeFileActions
 import com.eztech.feature.ide.presentation.component.CodeEditorComposable
 import com.eztech.feature.ide.presentation.component.ConsoleOutputView
 import com.eztech.feature.ide.presentation.component.EditorToolbar
@@ -34,9 +30,8 @@ import kotlinx.coroutines.launch
 /**
  * Main in-app Python IDE screen.
  *
- * Besides editing/running code, this screen owns the Android Storage Access Framework launchers for
- * importing and exporting `.py` files. File IO is kept in small helpers so this composable only
- * coordinates picker results, editor state, and snackbars.
+ * Besides editing/running code, this screen wires shared import/export actions to the editor state
+ * and snackbar feedback.
  */
 @Composable
 fun IdeScreen(
@@ -46,7 +41,6 @@ fun IdeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val editorController = rememberCodeEditorController()
     var fontSizeSp by rememberSaveable { mutableFloatStateOf(14f) }
-    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
@@ -55,33 +49,12 @@ fun IdeScreen(
         scope.launch { snackbarHostState.showSnackbar(message) }
     }
 
-    /** Opens a text/Python file and replaces the current editor content with its UTF-8 text. */
-    val importLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument(),
-    ) { uri ->
-        uri ?: return@rememberLauncherForActivityResult
-        context.contentResolver.readUtf8Text(uri)
-            .onSuccess { code ->
-                viewModel.onCodeChanged(code)
-                editorController.requestFocus()
-                showFileMessage("File imported.")
-            }
-            .onFailure { error ->
-                showFileMessage(error.localizedMessage ?: "Unable to import file.")
-            }
-    }
-
-    /** Creates a document and writes the current editor content into it. */
-    val exportLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("text/plain"),
-    ) { uri ->
-        uri ?: return@rememberLauncherForActivityResult
-        context.contentResolver.writeUtf8Text(uri, uiState.code)
-            .onSuccess { showFileMessage("File exported.") }
-            .onFailure { error ->
-                showFileMessage(error.localizedMessage ?: "Unable to export file.")
-            }
-    }
+    val codeFileActions = rememberCodeFileActions(
+        code = uiState.code,
+        onCodeImported = viewModel::onCodeChanged,
+        onImportSuccess = editorController::requestFocus,
+        onMessage = ::showFileMessage,
+    )
 
     Scaffold(
         modifier = modifier,
@@ -101,12 +74,8 @@ fun IdeScreen(
                     fontSizeSp = fontSizeSp,
                     controller = editorController,
                     onRun = viewModel::runCode,
-                    onImport = {
-                        importLauncher.launch(arrayOf("text/*", "application/octet-stream"))
-                    },
-                    onExport = {
-                        exportLauncher.launch("eztech_code.py")
-                    },
+                    onImport = codeFileActions.importCode,
+                    onExport = { codeFileActions.exportCode("pyquest_code.py") },
                     onClear = viewModel::clearEditor,
                     onFontSizeChange = { fontSizeSp = it },
                 )

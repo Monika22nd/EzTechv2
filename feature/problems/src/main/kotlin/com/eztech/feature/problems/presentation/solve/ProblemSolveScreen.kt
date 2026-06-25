@@ -1,7 +1,5 @@
 package com.eztech.feature.problems.presentation.solve
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,7 +40,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -53,8 +50,7 @@ import com.eztech.core.domain.model.ProblemSubmission
 import com.eztech.core.domain.model.SubmissionStatus
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.component.EzTechTopBar
-import com.eztech.core.ui.file.readUtf8Text
-import com.eztech.core.ui.file.writeUtf8Text
+import com.eztech.core.ui.file.rememberCodeFileActions
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.ide.presentation.component.CodeEditorComposable
 import com.eztech.feature.ide.presentation.component.rememberCodeEditorController
@@ -82,7 +78,6 @@ fun ProblemSolveScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val editorController = rememberCodeEditorController()
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     /** Shows non-blocking feedback for import/export and problem errors. */
@@ -90,33 +85,12 @@ fun ProblemSolveScreen(
         scope.launch { snackbarHostState.showSnackbar(message) }
     }
 
-    /** Imports a selected UTF-8 text/Python file into the current solution draft. */
-    val importLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument(),
-    ) { uri ->
-        uri ?: return@rememberLauncherForActivityResult
-        context.contentResolver.readUtf8Text(uri)
-            .onSuccess { code ->
-                viewModel.onCodeChanged(code)
-                editorController.requestFocus()
-                showFileMessage("File imported.")
-            }
-            .onFailure { error ->
-                showFileMessage(error.localizedMessage ?: "Unable to import file.")
-            }
-    }
-
-    /** Exports the current solution code to a user-created `.py` document. */
-    val exportLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("text/plain"),
-    ) { uri ->
-        uri ?: return@rememberLauncherForActivityResult
-        context.contentResolver.writeUtf8Text(uri, state.code)
-            .onSuccess { showFileMessage("File exported.") }
-            .onFailure { error ->
-                showFileMessage(error.localizedMessage ?: "Unable to export file.")
-            }
-    }
+    val codeFileActions = rememberCodeFileActions(
+        code = state.code,
+        onCodeImported = viewModel::onCodeChanged,
+        onImportSuccess = editorController::requestFocus,
+        onMessage = ::showFileMessage,
+    )
 
     LaunchedEffect(state.errorMessage) {
         state.errorMessage?.let { message -> snackbarHostState.showSnackbar(message) }
@@ -140,17 +114,13 @@ fun ProblemSolveScreen(
                 onBackClick = onBackClick,
                 actions = {
                     IconButton(
-                        onClick = {
-                            importLauncher.launch(arrayOf("text/*", "application/octet-stream"))
-                        },
+                        onClick = codeFileActions.importCode,
                         enabled = !state.isSubmitting && state.problem != null,
                     ) {
                         Icon(Icons.Rounded.FileOpen, contentDescription = "Import Python file")
                     }
                     IconButton(
-                        onClick = {
-                            exportLauncher.launch(state.exportFileName())
-                        },
+                        onClick = { codeFileActions.exportCode(state.exportFileName()) },
                         enabled = !state.isSubmitting && state.problem != null,
                     ) {
                         Icon(Icons.Rounded.SaveAlt, contentDescription = "Export Python file")
