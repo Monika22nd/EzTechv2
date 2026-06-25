@@ -4,8 +4,18 @@
 
 - File APK debug để cài lên điện thoại/emulator: [PyQuest-debug.apk](./PyQuest-debug.apk)
 - Bản debug dùng Firebase project `eztech-v2` đã cấu hình trong `app/google-services.json`.
+- Bản final demo đã build thành công bằng `.\gradlew.bat :app:assembleDebug` vào ngày 25/06/2026.
 
 PyQuest là ứng dụng Android học lập trình Python. App có bài học dạng tutorial, video tutorial, danh sách bài tập Python, màn hình giải bài có editor, IDE Python trong app, hệ thống gợi ý học tập, EXP, level, streak, badge, leaderboard, bookmark, profile và lưu tiến độ bằng Firebase.
+
+## Trạng thái final demo
+
+- App đã đổi tên hiển thị thành `PyQuest`; package nội bộ vẫn giữ `com.eztech...` để ổn định Firebase config và tránh phải tạo app Firebase mới.
+- Firestore là nguồn dữ liệu chính cho lessons, problems, test cases, user progress, draft, submissions, leaderboard và gamification.
+- Local seed vẫn được đóng gói trong APK để app có dữ liệu fallback nếu Firestore lỗi/mất mạng.
+- Firebase Storage không dùng trong bản này, vì Storage yêu cầu nâng cấp gói Firebase; app không cần upload file media.
+- Google Sign-In và release signing chính thức không nằm trong phạm vi bản final demo hiện tại; app dùng Email/Password Firebase Auth và APK debug để nộp/test.
+- APK debug mới nhất nằm ngay ở gốc repo: [PyQuest-debug.apk](./PyQuest-debug.apk).
 
 ## Chức năng chính
 
@@ -158,7 +168,8 @@ EzTechv2/
 │       └── src/main/kotlin/com/eztech/core/ui/
 │           ├── component/                                        # Component dùng chung: empty state, cards, loading
 │           ├── file/
-│           │   └── CodeFileIo.kt                                 # Import/export text UTF-8 qua Android document picker
+│           │   ├── CodeFileIo.kt                                 # Đọc/ghi text UTF-8 qua Android ContentResolver
+│           │   └── CodeFilePicker.kt                             # Shared import/export picker cho IDE và Solve screen
 │           └── theme/                                            # Material 3 colors, typography, dimens, theme
 │
 ├── feature/                                                      # Các module tính năng độc lập theo màn hình
@@ -317,6 +328,14 @@ Logic:
 - Card hiển thị lý do gợi ý và các thông số như Stage solved, Difficulty, Path, Weak area.
 
 ## Dữ liệu
+
+### Trạng thái dữ liệu bản final
+
+- Firestore đã được thiết kế là nguồn dữ liệu chính.
+- Seed local gồm `973` bài MBPP Python và `1` bài test PyQuest để demo nhanh chức năng Problems.
+- Lessons seed gồm tutorial dạng bài viết và video tutorial Python.
+- Problems được sắp xếp lại theo lộ trình học Python bằng `PythonProblemCurriculum`, ví dụ Syntax/Operators trước rồi mới đến Loops, Strings, Lists và các dạng nâng cao.
+- Problems có filter theo dạng bài thông qua `ProblemTypeCatalog`, giúp demo tìm kiếm/lọc bài dễ hơn.
 
 ### Firestore collections chính
 
