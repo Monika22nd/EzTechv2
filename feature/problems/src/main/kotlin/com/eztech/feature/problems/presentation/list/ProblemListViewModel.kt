@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.eztech.core.common.Resource
 import com.eztech.core.domain.model.Difficulty
 import com.eztech.core.domain.model.Problem
+import com.eztech.core.domain.model.PythonProblemCurriculum
 import com.eztech.core.domain.usecase.problem.GetProblemsUseCase
 import com.eztech.feature.problems.presentation.model.ProblemTypeCatalog
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the Problems list.
+ *
+ * It owns search, difficulty filters, type filters, and sort order. Filtering is performed in
+ * memory after repository loading so all controls update immediately without new Firestore reads.
+ */
 @HiltViewModel
 class ProblemListViewModel @Inject constructor(
     private val getProblems: GetProblemsUseCase,
@@ -28,6 +35,7 @@ class ProblemListViewModel @Inject constructor(
         loadProblems()
     }
 
+    /** Applies or clears the selected Easy/Medium/Hard filter. */
     fun selectDifficulty(difficulty: Difficulty?) {
         if (_uiState.value.selectedDifficulty == difficulty) return
         _uiState.update { state ->
@@ -35,12 +43,14 @@ class ProblemListViewModel @Inject constructor(
         }
     }
 
+    /** Updates keyword search across title, description, tags, order, and curriculum labels. */
     fun onSearchQueryChanged(query: String) {
         _uiState.update { state ->
             state.copy(searchQuery = query).withFilteredProblems()
         }
     }
 
+    /** Applies a topic/curriculum filter such as loops, strings, lists, or algorithms. */
     fun selectProblemType(problemType: String?) {
         if (_uiState.value.selectedProblemType == problemType) return
         _uiState.update { state ->
@@ -48,6 +58,7 @@ class ProblemListViewModel @Inject constructor(
         }
     }
 
+    /** Changes ordering between curriculum order, Easy first, and Hard first. */
     fun selectSortOption(option: ProblemSortOption) {
         if (_uiState.value.sortOption == option) return
         _uiState.update { state ->
@@ -55,8 +66,10 @@ class ProblemListViewModel @Inject constructor(
         }
     }
 
+    /** Reloads repository data after an error. */
     fun retry() = loadProblems()
 
+    /** Collects problems once and derives the available topic filters from the loaded dataset. */
     private fun loadProblems() {
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
@@ -80,6 +93,12 @@ class ProblemListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Produces the visible list after applying all active filters.
+     *
+     * Search includes curriculum labels so users can type "loop" or "syntax" even if the raw MBPP
+     * task title does not contain that exact word.
+     */
     private fun ProblemListUiState.withFilteredProblems(): ProblemListUiState {
         val query = searchQuery.trim()
         val filtered = allProblems
@@ -104,21 +123,17 @@ class ProblemListViewModel @Inject constructor(
         return copy(problems = filtered)
     }
 
+    /** Maps UI sort options to the shared curriculum comparator. */
     private val ProblemSortOption.comparator: Comparator<Problem>
         get() = when (this) {
-            ProblemSortOption.ORDER -> compareByOrder()
+            ProblemSortOption.ORDER -> PythonProblemCurriculum.comparator()
             ProblemSortOption.EASY_FIRST -> compareBy<Problem> { problem ->
                 problem.difficulty.rank
-            }.then(compareByOrder())
+            }.then(PythonProblemCurriculum.comparator())
             ProblemSortOption.HARD_FIRST -> compareByDescending<Problem> { problem ->
                 problem.difficulty.rank
-            }.then(compareByOrder())
+            }.then(PythonProblemCurriculum.comparator())
         }
-
-    private fun compareByOrder(): Comparator<Problem> =
-        compareBy<Problem> { problem ->
-            problem.order.takeIf { it > 0 } ?: Int.MAX_VALUE
-        }.thenBy { problem -> problem.title }
 
     private val Difficulty.rank: Int
         get() = when (this) {

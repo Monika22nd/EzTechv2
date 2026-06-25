@@ -6,6 +6,7 @@ import com.eztech.core.domain.model.Lesson
 import com.eztech.core.domain.model.LessonContentType
 import com.eztech.core.domain.model.LeaderboardEntry
 import com.eztech.core.domain.model.Problem
+import com.eztech.core.domain.model.PythonProblemCurriculum
 import com.eztech.core.domain.model.User
 import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.repository.GamificationRepository
@@ -18,6 +19,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 
+/**
+ * Builds the Home dashboard summary from independent domain streams.
+ *
+ * The dashboard intentionally has one use case instead of letting UI combine repositories, because
+ * rank, next lesson, next problem, and progress counts must be calculated consistently.
+ */
 class GetDashboardSummaryUseCase(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
@@ -26,6 +33,7 @@ class GetDashboardSummaryUseCase(
     private val gamificationRepository: GamificationRepository,
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
+    /** Observes the signed-in user's dashboard and keeps it live as Firestore data changes. */
     operator fun invoke(languageId: String = PYTHON_LANGUAGE_ID): Flow<Resource<DashboardSummary>> =
         authRepository.observeCurrentUser().flatMapLatest { authUser ->
             if (authUser == null) {
@@ -49,6 +57,12 @@ class GetDashboardSummaryUseCase(
             }
         }
 
+    /**
+     * Merges resource states and computes a display-ready DashboardSummary.
+     *
+     * Blocking errors from user/lesson/problem data are returned immediately. Leaderboard errors are
+     * treated as non-blocking by falling back to the rank stored on the user profile.
+     */
     private fun buildSummary(
         userResource: Resource<User>,
         videosResource: Resource<List<Lesson>>,
@@ -108,22 +122,18 @@ class GetDashboardSummaryUseCase(
                 nextLesson = lessons.firstOrNull { lesson ->
                     !lesson.watched && lesson.id !in watchedLessonIds
                 },
-                nextProblem = problems.sortedProblemsByOrder().firstOrNull { problem ->
+                nextProblem = PythonProblemCurriculum.sorted(problems).firstOrNull { problem ->
                     problem.id !in solvedProblemIds
                 },
             ),
         )
     }
 
+    /** Keeps lesson continuation deterministic even if Firestore returns documents unordered. */
     private fun List<Lesson>.sortedLessonsByOrder(): List<Lesson> =
         sortedWith(compareBy<Lesson> { lesson ->
             lesson.order.takeIf { it > 0 } ?: Int.MAX_VALUE
         }.thenBy { lesson -> lesson.title })
-
-    private fun List<Problem>.sortedProblemsByOrder(): List<Problem> =
-        sortedWith(compareBy<Problem> { problem ->
-            problem.order.takeIf { it > 0 } ?: Int.MAX_VALUE
-        }.thenBy { problem -> problem.title })
 
     private companion object {
         const val PYTHON_LANGUAGE_ID = "python"

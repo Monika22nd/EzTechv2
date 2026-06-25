@@ -1,16 +1,24 @@
 package com.eztech.feature.problems.presentation.model
 
 import com.eztech.core.domain.model.Problem
+import com.eztech.core.domain.model.PythonProblemCurriculum
 
 data class ProblemTypeFilter(
     val key: String,
     val label: String,
     val count: Int,
 ) {
+    /** Text shown in filter chips, e.g. "Loops (42)". */
     val displayLabel: String
         get() = "$label ($count)"
 }
 
+/**
+ * Creates and matches problem topic filters.
+ *
+ * Curriculum stages are placed before raw MBPP tags so the first filters follow a teaching order
+ * instead of a dataset order. Detailed tags remain available for more specific searching.
+ */
 object ProblemTypeCatalog {
     private const val GENERAL_KEY = "general"
 
@@ -103,7 +111,19 @@ object ProblemTypeCatalog {
 
     private val specificTags = definitions.flatMap(ProblemTypeDefinition::tags).toSet()
 
+    /** Builds visible filter chips from the currently loaded problem set. */
     fun filtersFor(problems: List<Problem>): List<ProblemTypeFilter> {
+        val stageFilters = PythonProblemCurriculum.stages.mapNotNull { stage ->
+            val count = problems.count { problem ->
+                PythonProblemCurriculum.stageFor(problem).key == stage.key
+            }
+            if (count == 0) return@mapNotNull null
+            ProblemTypeFilter(
+                key = stage.key,
+                label = stage.label,
+                count = count,
+            )
+        }
         val filters = definitions.mapNotNull { definition ->
             val count = problems.count { problem -> problem.matchesDefinition(definition) }
             if (count == 0) return@mapNotNull null
@@ -125,26 +145,35 @@ object ProblemTypeCatalog {
         } else {
             emptyList()
         }
-        return filters + generalFilter
+        return stageFilters + filters.filterNot { filter ->
+            stageFilters.any { stageFilter -> stageFilter.key == filter.key }
+        } + generalFilter
     }
 
+    /** Returns labels shown on a problem card, always starting with the curriculum stage. */
     fun labelsFor(problem: Problem): List<String> {
+        val stage = PythonProblemCurriculum.stageFor(problem)
         val labels = definitions
             .filter { definition -> problem.matchesDefinition(definition) }
             .map(ProblemTypeDefinition::label)
-        return labels.ifEmpty { listOf("General") }
+            .filterNot { label -> label == stage.label }
+        return (listOf(stage.label) + labels).distinct().ifEmpty { listOf("General") }
     }
 
+    /** Checks whether a problem belongs to the selected filter chip. */
     fun matches(problem: Problem, selectedTypeKey: String?): Boolean =
         when (selectedTypeKey) {
             null -> true
             GENERAL_KEY -> isGeneralProblem(problem)
+            in PythonProblemCurriculum.stages.map { stage -> stage.key } ->
+                PythonProblemCurriculum.stageFor(problem).key == selectedTypeKey
             else -> definitions
                 .firstOrNull { definition -> definition.key == selectedTypeKey }
                 ?.let { definition -> problem.matchesDefinition(definition) }
                 ?: true
         }
 
+    /** Adds topic-aware search beyond plain title/description matching. */
     fun matchesSearch(problem: Problem, query: String): Boolean {
         val normalizedQuery = query.trim().lowercase()
         if (normalizedQuery.isBlank()) return true
@@ -152,7 +181,11 @@ object ProblemTypeCatalog {
         val problemDefinitions = definitions.filter { definition ->
             problem.matchesDefinition(definition)
         }
+        val stage = PythonProblemCurriculum.stageFor(problem)
         val searchValues = mutableListOf<String>().apply {
+            add(stage.key)
+            add(stage.label)
+            add(stage.description)
             problemDefinitions.forEach { definition ->
                 add(definition.label)
                 add(definition.key)
@@ -170,9 +203,11 @@ object ProblemTypeCatalog {
         }
     }
 
+    /** Problems with no known specific tag are grouped under the General filter. */
     private fun isGeneralProblem(problem: Problem): Boolean =
         problem.tags.map(String::lowercase).none { tag -> tag in specificTags }
 
+    /** Matches one raw tag definition against a problem's imported tags. */
     private fun Problem.matchesDefinition(definition: ProblemTypeDefinition): Boolean {
         val normalizedTags = tags.map(String::lowercase).toSet()
         return normalizedTags.any { tag -> tag in definition.tags }

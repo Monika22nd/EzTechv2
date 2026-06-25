@@ -29,7 +29,15 @@ import com.eztech.core.domain.model.Recommendation
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.home.presentation.component.RecommendationCard
+import com.eztech.feature.home.presentation.component.RecommendationStatsCard
 
+/**
+ * Full-page recommendation list.
+ *
+ * The screen mirrors the Home recommendation cards but gives more vertical space for the stats panel
+ * and all ranked recommendations. Tapping a card routes either to a problem solve/detail flow or to
+ * a lesson, depending on the card target.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecommendationsScreen(
@@ -104,6 +112,11 @@ fun RecommendationsScreen(
                 ),
                 verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceMedium),
             ) {
+                state.stats?.let { stats ->
+                    item {
+                        RecommendationStatsCard(stats = stats)
+                    }
+                }
                 items(state.recommendations, key = Recommendation::id) { recommendation ->
                     RecommendationCard(
                         recommendation = recommendation,

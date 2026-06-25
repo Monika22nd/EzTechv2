@@ -1,6 +1,33 @@
 {
   "problems": [
     {
+      "id": "eztech_test_0001",
+      "title": "Test 1: Sum numbers from 1 to n",
+      "description": "Write a function sum_to_n(n) that returns the sum of all integers from 1 to n.\n\nThis beginner problem is used to test the Problems flow: search, filter, bookmark, edit code, import/export a .py file, submit visible and hidden test cases, and save progress.",
+      "difficulty": "EASY",
+      "constraints": [
+        "Function name must be sum_to_n.",
+        "Return the result as an integer.",
+        "Use a loop so this problem stays in the early Python curriculum."
+      ],
+      "starterCode": "def sum_to_n(n):\n    # TODO: return 1 + 2 + ... + n\n    pass\n",
+      "solutionCode": "def sum_to_n(n):\n    total = 0\n    for number in range(1, n + 1):\n        total += number\n    return total\n",
+      "tags": [
+        "syntax",
+        "variables",
+        "operators",
+        "loops",
+        "functions",
+        "test-problem"
+      ],
+      "source": {
+        "name": "EzTech manual test problem",
+        "taskId": "test-0001",
+        "url": "local",
+        "license": "Project demo data"
+      }
+    },
+    {
       "id": "mbpp_0001",
       "title": "MBPP 1: Find the minimum cost path to reach (m, n) from (0, 0) for the given...",
       "description": "Write a function to find the minimum cost path to reach (m, n) from (0, 0) for the given cost matrix cost[][] and a position (m, n) in cost[][].\n\nWrite the required Python function in the starter code. The judge will run assert-based examples against your function.",
@@ -22752,6 +22779,27 @@
     }
   ],
   "testCases": [
+    {
+      "id": "eztech_test_0001_case_1",
+      "problemId": "eztech_test_0001",
+      "input": "assert sum_to_n(1) == 1",
+      "expectedOutput": "Assertion passes",
+      "isHidden": false
+    },
+    {
+      "id": "eztech_test_0001_case_2",
+      "problemId": "eztech_test_0001",
+      "input": "assert sum_to_n(5) == 15",
+      "expectedOutput": "Assertion passes",
+      "isHidden": false
+    },
+    {
+      "id": "eztech_test_0001_case_3",
+      "problemId": "eztech_test_0001",
+      "input": "assert sum_to_n(10) == 55",
+      "expectedOutput": "Assertion passes",
+      "isHidden": true
+    },
     {
       "id": "mbpp_0001_case_1",
       "problemId": "mbpp_0001",

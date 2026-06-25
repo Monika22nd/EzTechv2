@@ -91,7 +91,7 @@ class ProblemsViewModelTest {
         assertEquals("strings", viewModel.uiState.value.selectedProblemType)
         assertEquals(listOf("hard"), viewModel.uiState.value.problems.map(Problem::id))
         assertEquals(
-            listOf("Lists", "Strings"),
+            listOf("Strings", "Lists"),
             viewModel.uiState.value.availableProblemTypes.map { type -> type.label },
         )
     }

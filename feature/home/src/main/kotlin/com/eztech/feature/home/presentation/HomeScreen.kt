@@ -52,10 +52,17 @@ import com.eztech.core.domain.model.Lesson
 import com.eztech.core.domain.model.LessonContentType
 import com.eztech.core.domain.model.Problem
 import com.eztech.core.domain.model.Recommendation
+import com.eztech.core.domain.model.RecommendationStats
 import com.eztech.core.ui.component.EzTechEmptyState
 import com.eztech.core.ui.theme.EzTechDimens
 import com.eztech.feature.home.presentation.component.RecommendationSection
 
+/**
+ * Home dashboard route.
+ *
+ * It observes HomeViewModel and chooses between loading, error, and dashboard content states while
+ * delegating navigation actions back to the app-level NavHost.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -94,6 +101,7 @@ fun HomeScreen(
             state.summary != null -> DashboardContent(
                 summary = state.summary!!,
                 recommendations = state.recommendations,
+                recommendationStats = state.recommendationStats,
                 isLoadingRecommendations = state.isLoadingRecommendations,
                 onLearnClick = onLearnClick,
                 onIdeClick = onIdeClick,
@@ -109,10 +117,12 @@ fun HomeScreen(
     }
 }
 
+/** Scrollable dashboard body containing progress, recommendations, actions, and next activities. */
 @Composable
 private fun DashboardContent(
     summary: DashboardSummary,
     recommendations: List<Recommendation>,
+    recommendationStats: RecommendationStats?,
     isLoadingRecommendations: Boolean,
     onLearnClick: () -> Unit,
     onIdeClick: () -> Unit,
@@ -142,6 +152,7 @@ private fun DashboardContent(
             item {
                 RecommendationSection(
                     recommendations = recommendations,
+                    stats = recommendationStats,
                     isLoading = isLoadingRecommendations,
                     onViewAllClick = onRecommendationsClick,
                     onRecommendationClick = { recommendation ->
@@ -186,6 +197,7 @@ private fun DashboardContent(
     }
 }
 
+/** Greeting card with username, current level, streak, and leaderboard rank. */
 @Composable
 private fun WelcomeCard(
     summary: DashboardSummary,
@@ -264,6 +276,7 @@ private fun WelcomeCard(
     }
 }
 
+/** Shows lesson/problem progress and EXP toward the next level. */
 @Composable
 private fun ProgressOverviewCard(
     summary: DashboardSummary,
@@ -316,6 +329,7 @@ private fun ProgressOverviewCard(
     }
 }
 
+/** Three large shortcuts to Learn, IDE, and Problems. */
 @Composable
 private fun QuickActions(
     onLearnClick: () -> Unit,
@@ -355,6 +369,7 @@ private fun QuickActions(
     }
 }
 
+/** Continue-learning card for the next unwatched lesson. */
 @Composable
 private fun ContinueLessonCard(
     lesson: Lesson,
@@ -424,6 +439,7 @@ private fun ContinueLessonCard(
     }
 }
 
+/** Card for the next unsolved problem in curriculum order. */
 @Composable
 private fun NextProblemCard(
     problem: Problem,
@@ -498,6 +514,7 @@ private fun NextProblemCard(
     }
 }
 
+/** Reusable completion message when all lessons/problems are finished. */
 @Composable
 private fun CompletedCard(
     title: String,
@@ -538,6 +555,7 @@ private fun CompletedCard(
     }
 }
 
+/** Button-like card used in the QuickActions row. */
 @Composable
 private fun ActionTile(
     label: String,
@@ -576,6 +594,7 @@ private fun ActionTile(
     }
 }
 
+/** Small statistic tile for dashboard progress numbers. */
 @Composable
 private fun MetricTile(
     value: String,
@@ -606,6 +625,7 @@ private fun MetricTile(
     }
 }
 
+/** Pill used inside the welcome card for level/streak/rank. */
 @Composable
 private fun SummaryChip(
     icon: ImageVector,
@@ -642,6 +662,7 @@ private fun SummaryChip(
     }
 }
 
+/** Linear progress bar with a stable background/foreground shape. */
 @Composable
 private fun ProgressBar(
     progress: Float,
@@ -686,6 +707,7 @@ private fun ProgressBar(
     }
 }
 
+/** Centered loading spinner shown before dashboard data is available. */
 @Composable
 private fun LoadingContent(modifier: Modifier = Modifier) {
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
@@ -693,6 +715,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
     }
 }
 
+/** Error state with retry action for blocking dashboard failures. */
 @Composable
 private fun ErrorContent(
     message: String,
@@ -717,5 +740,6 @@ private fun ErrorContent(
     }
 }
 
+/** Human-readable label for tutorial/video lesson cards. */
 private fun lessonTypeLabel(lesson: Lesson): String =
     if (lesson.type == LessonContentType.VIDEO) "Video lesson" else "Tutorial lesson"

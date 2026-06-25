@@ -13,6 +13,13 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.withTimeout
 
+/**
+ * Repository implementation for Python problems and test cases.
+ *
+ * It tries Firestore first for real demo data, then falls back to bundled seed data when offline or
+ * when remote data times out. Results are cached in memory so returning to Problems does not trigger
+ * repeated Firestore reads during one app session.
+ */
 internal class ProblemRepositoryImpl(
     private val remoteDataSource: ProblemDataSource,
     private val localDataSource: ProblemDataSource,
@@ -25,6 +32,12 @@ internal class ProblemRepositoryImpl(
         localDataSource = localDataSource,
     )
 
+    /**
+     * Emits the full problem list filtered by difficulty.
+     *
+     * The list is loaded once through getCachedProblems(), so all screens share the same remote/local
+     * fallback behavior and the manual EzTech test problem can be merged consistently.
+     */
     override fun observeProblems(
         difficulty: Difficulty?,
     ): Flow<Resource<List<Problem>>> = flow<Resource<List<Problem>>> {
@@ -40,6 +53,7 @@ internal class ProblemRepositoryImpl(
         emit(error.toResourceError())
     }
 
+    /** Loads one problem from cache when possible, otherwise through remote-first lookup. */
     override suspend fun getProblemById(problemId: String): Resource<Problem> =
         resourceCall {
             cachedProblems
@@ -47,6 +61,7 @@ internal class ProblemRepositoryImpl(
                 ?: remoteFirst { dataSource -> dataSource.getProblem(problemId) }
         }
 
+    /** Loads visible/hidden test cases and caches them per problem for repeated submits. */
     override suspend fun getTestCases(problemId: String): Resource<List<TestCase>> =
         resourceCall {
             cachedTestCases[problemId]
@@ -54,10 +69,36 @@ internal class ProblemRepositoryImpl(
                     .also { testCases -> cachedTestCases[problemId] = testCases }
         }
 
+    /** Returns the cached list or creates it from remote/local data. */
     private suspend fun getCachedProblems(): List<Problem> =
         cachedProblems ?: remoteFirst { dataSource -> dataSource.getProblems(null) }
+            .withLocalTestProblems()
             .also { problems -> cachedProblems = problems }
 
+    /**
+     * Adds local-only demo problems when Firestore does not contain them yet.
+     *
+     * This keeps the test problem available in APK installs without requiring a Firestore import
+     * every time a new demo-only problem is added.
+     */
+    private suspend fun List<Problem>.withLocalTestProblems(): List<Problem> {
+        val existingIds = mapTo(mutableSetOf(), Problem::id)
+        val localTestProblems = runCatching {
+            localDataSource.getProblems(null)
+                .filter { problem ->
+                    problem.id.startsWith(LOCAL_TEST_PROBLEM_PREFIX) &&
+                        problem.id !in existingIds
+                }
+        }.getOrDefault(emptyList())
+
+        return if (localTestProblems.isEmpty()) {
+            this
+        } else {
+            (this + localTestProblems).sortedBy(Problem::order)
+        }
+    }
+
+    /** Executes a data-source call against Firestore first and falls back to local seed data. */
     private suspend fun <T> remoteFirst(block: suspend (ProblemDataSource) -> T): T =
         try {
             withTimeout(REMOTE_TIMEOUT_MS) { block(remoteDataSource) }
@@ -69,12 +110,14 @@ internal class ProblemRepositoryImpl(
             block(localDataSource)
         }
 
+    /** Wraps repository exceptions into the shared Resource error type consumed by ViewModels. */
     private suspend fun <T> resourceCall(block: suspend () -> T): Resource<T> =
         runCatching { block() }.fold(
             onSuccess = { value -> Resource.Success(value) },
             onFailure = { error -> error.toResourceError() },
         )
 
+    /** Preserves the original cause while exposing a user-readable message to the UI layer. */
     private fun Throwable.toResourceError() = Resource.Error(
         message = localizedMessage ?: "Unable to load problem data.",
         cause = this,
@@ -82,5 +125,6 @@ internal class ProblemRepositoryImpl(
 
     private companion object {
         const val REMOTE_TIMEOUT_MS = 8_000L
+        const val LOCAL_TEST_PROBLEM_PREFIX = "eztech_test_"
     }
 }

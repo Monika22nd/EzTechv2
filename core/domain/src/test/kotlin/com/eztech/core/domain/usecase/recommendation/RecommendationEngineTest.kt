@@ -31,7 +31,7 @@ class RecommendationEngineTest {
 
     @Test
     fun `user who solved enough easy problems receives medium recommendation`() {
-        val solvedEasy = (1..5).map { index ->
+        val solvedEasy = (1..8).map { index ->
             problem(id = "easy_$index", difficulty = Difficulty.EASY, order = index)
         }
         val medium = problem(
@@ -51,8 +51,45 @@ class RecommendationEngineTest {
         assertTrue(
             recommendations.any { item ->
                 item.problem?.id == "medium" &&
-                    item.reason.contains("You solved 5 Easy")
+                    item.reason.contains("You solved 8 Easy")
             },
+        )
+    }
+
+    @Test
+    fun `new user receives Python curriculum before strings and lists`() {
+        val syntax = problem(
+            id = "syntax",
+            tags = listOf("functions"),
+            order = 4,
+        )
+        val loops = problem(
+            id = "loops",
+            tags = listOf("functions"),
+            solutionCode = "def count():\n    for number in range(3):\n        print(number)",
+            order = 3,
+        )
+        val strings = problem(
+            id = "strings",
+            tags = listOf("strings"),
+            order = 1,
+        )
+        val lists = problem(
+            id = "lists",
+            tags = listOf("lists"),
+            order = 2,
+        )
+
+        val recommendations = engine.generateRecommendations(
+            user = user(),
+            problems = listOf(strings, lists, loops, syntax),
+            lessons = emptyList(),
+            maxResults = 4,
+        )
+
+        assertEquals(
+            listOf("syntax", "loops", "strings", "lists"),
+            recommendations.map { item -> item.problem?.id },
         )
     }
 
@@ -132,6 +169,7 @@ class RecommendationEngineTest {
         difficulty: Difficulty = Difficulty.EASY,
         tags: List<String> = listOf("lists"),
         order: Int = 1,
+        solutionCode: String = "def solve():\n    return True",
     ) = Problem(
         id = id,
         title = id,
@@ -139,7 +177,7 @@ class RecommendationEngineTest {
         difficulty = difficulty,
         constraints = emptyList(),
         starterCode = "def solve():\n    pass",
-        solutionCode = "def solve():\n    return True",
+        solutionCode = solutionCode,
         tags = tags,
         order = order,
     )

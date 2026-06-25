@@ -14,6 +14,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the Home dashboard.
+ *
+ * It keeps dashboard summary and recommendation cards in separate jobs so a recommendation failure
+ * does not block the main dashboard statistics from rendering.
+ */
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getDashboardSummary: GetDashboardSummaryUseCase,
@@ -29,11 +35,13 @@ class HomeViewModel @Inject constructor(
         loadRecommendations()
     }
 
+    /** Reloads both dashboard and recommendation streams after a visible error state. */
     fun retry() {
         loadDashboard()
         loadRecommendations()
     }
 
+    /** Observes summary data such as level, lesson counts, solved problems, and next activity. */
     private fun loadDashboard() {
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
@@ -59,6 +67,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /** Observes recommendation cards and stats shown in the Home recommendation section. */
     private fun loadRecommendations() {
         recommendationJob?.cancel()
         recommendationJob = viewModelScope.launch {
@@ -70,7 +79,8 @@ class HomeViewModel @Inject constructor(
                             recommendationErrorMessage = null,
                         )
                         is Resource.Success -> current.copy(
-                            recommendations = result.data,
+                            recommendations = result.data.recommendations,
+                            recommendationStats = result.data.stats,
                             isLoadingRecommendations = false,
                             recommendationErrorMessage = null,
                         )

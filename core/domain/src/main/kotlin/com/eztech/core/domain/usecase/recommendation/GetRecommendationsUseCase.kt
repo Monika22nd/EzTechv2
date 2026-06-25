@@ -4,7 +4,7 @@ import com.eztech.core.common.Resource
 import com.eztech.core.domain.model.Lesson
 import com.eztech.core.domain.model.LessonContentType
 import com.eztech.core.domain.model.Problem
-import com.eztech.core.domain.model.Recommendation
+import com.eztech.core.domain.model.RecommendationDashboard
 import com.eztech.core.domain.model.User
 import com.eztech.core.domain.repository.AuthRepository
 import com.eztech.core.domain.repository.LessonRepository
@@ -16,6 +16,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 
+/**
+ * Combines user progress, lessons, and problems before delegating ranking to RecommendationEngine.
+ *
+ * This use case belongs to the domain layer, so UI only observes a Flow<Resource<...>> and does not
+ * need to know whether the data came from Firestore, local seed data, or cached repository results.
+ */
 class GetRecommendationsUseCase(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
@@ -24,10 +30,16 @@ class GetRecommendationsUseCase(
     private val engine: RecommendationEngine,
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
+    /**
+     * Emits loading/error/success recommendation dashboard states for the signed-in user.
+     *
+     * If no user is signed in, the stream returns a friendly error instead of trying to read private
+     * progress collections.
+     */
     operator fun invoke(
         languageId: String = PYTHON_LANGUAGE_ID,
         maxResults: Int = DEFAULT_MAX_RESULTS,
-    ): Flow<Resource<List<Recommendation>>> =
+    ): Flow<Resource<RecommendationDashboard>> =
         authRepository.observeCurrentUser().flatMapLatest { authUser ->
             if (authUser == null) {
                 flowOf(Resource.Error("Please sign in to view recommendations."))
@@ -49,13 +61,19 @@ class GetRecommendationsUseCase(
             }
         }
 
+    /**
+     * Converts the four repository resources into one recommendation dashboard.
+     *
+     * Any required loading/error state blocks calculation. Once all data is ready, video and
+     * tutorial lessons are merged so the engine can recommend either learning format.
+     */
     private fun buildRecommendations(
         userResource: Resource<User>,
         videosResource: Resource<List<Lesson>>,
         tutorialsResource: Resource<List<Lesson>>,
         problemsResource: Resource<List<Problem>>,
         maxResults: Int,
-    ): Resource<List<Recommendation>> {
+    ): Resource<RecommendationDashboard> {
         val blockingError = listOf(
             userResource,
             videosResource,
@@ -79,7 +97,7 @@ class GetRecommendationsUseCase(
         val lessons = (videos + tutorials).distinctBy(Lesson::id)
 
         return Resource.Success(
-            engine.generateRecommendations(
+            engine.generateDashboard(
                 user = user,
                 problems = problems,
                 lessons = lessons,

@@ -27,6 +27,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for solving one problem.
+ *
+ * It coordinates loading problem data, autosaving code drafts, running custom input, submitting test
+ * cases, recording submission history, and awarding progress when a solution is accepted.
+ */
 @HiltViewModel
 class ProblemSolveViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -53,6 +59,7 @@ class ProblemSolveViewModel @Inject constructor(
         load()
     }
 
+    /** Updates editor code and schedules an autosave draft after a short debounce. */
     fun onCodeChanged(code: String) {
         _uiState.update {
             it.copy(
@@ -69,6 +76,7 @@ class ProblemSolveViewModel @Inject constructor(
         scheduleDraftSave(code)
     }
 
+    /** Updates stdin text for the Custom Input tab. */
     fun onCustomInputChanged(input: String) {
         _uiState.update {
             it.copy(
@@ -79,16 +87,20 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Switches between examples, custom input, results, and history panels. */
     fun selectPanelTab(tab: SolvePanelTab) {
         _uiState.update { it.copy(selectedPanelTab = tab) }
     }
 
+    /** Reloads problem details and visible test cases after a load error. */
     fun retry() = load()
 
+    /** Hides the accepted-solution dialog after the learner closes it. */
     fun dismissCompletionDialog() {
         _uiState.update { it.copy(showCompletionDialog = false) }
     }
 
+    /** Restores starter code and immediately saves it as the active draft. */
     fun resetCode() {
         val starterCode = _uiState.value.problem?.starterCode ?: return
         _uiState.update {
@@ -106,6 +118,12 @@ class ProblemSolveViewModel @Inject constructor(
         scheduleDraftSave(starterCode, delayMillis = 0L)
     }
 
+    /**
+     * Runs the current editor code with custom stdin.
+     *
+     * This does not grade the problem; it is a practice console so users can quickly inspect stdout
+     * and stderr before submitting official tests.
+     */
     fun runCustomInput() {
         val state = _uiState.value
         if (state.isRunningCustomInput) return
@@ -136,6 +154,12 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Runs all official test cases and records the attempt.
+     *
+     * Accepted submissions trigger gamification progress; failed submissions still appear in history
+     * so the user can review attempts.
+     */
     fun submit() {
         val state = _uiState.value
         if (state.isSubmitting) return
@@ -173,6 +197,7 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Persists solved-problem progress, EXP, level, streak, and newly unlocked badges. */
     private suspend fun saveAcceptedProblem() {
         val problem = _uiState.value.problem
         val user = authRepository.observeCurrentUser().first()
@@ -208,6 +233,7 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Loads problem detail, visible examples, current user, draft code, and history stream. */
     private fun load() {
         viewModelScope.launch {
             val user = authRepository.observeCurrentUser().first()
@@ -251,6 +277,7 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Subscribes to submission history for this problem and user. */
     private fun observeHistory(userId: String?) {
         historyJob?.cancel()
         if (userId == null) return
@@ -275,6 +302,7 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Debounces draft writes to avoid saving on every keystroke. */
     private fun scheduleDraftSave(
         code: String,
         delayMillis: Long = DRAFT_SAVE_DELAY_MS,
@@ -286,6 +314,7 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Writes the current solution draft to the signed-in user's Firestore draft document. */
     private suspend fun saveDraftNow(code: String) {
         val userId = currentUserId
         if (userId == null) {
@@ -310,6 +339,7 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Stores one submission attempt for the History tab. */
     private suspend fun recordSubmission(submission: SubmissionResult) {
         val userId = currentUserId ?: return
         when (
@@ -327,6 +357,7 @@ class ProblemSolveViewModel @Inject constructor(
         }
     }
 
+    /** Extracts non-blank draft code only when the draft resource loaded successfully. */
     private fun Resource<com.eztech.core.domain.model.ProblemDraft?>?.savedDraftCode(): String? =
         (this as? Resource.Success)
             ?.data

@@ -1,5 +1,6 @@
 package com.eztech.feature.home.presentation.component
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Assignment
@@ -30,12 +32,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.eztech.core.domain.model.Recommendation
+import com.eztech.core.domain.model.RecommendationMetric
+import com.eztech.core.domain.model.RecommendationStats
 import com.eztech.core.domain.model.RecommendationType
 import com.eztech.core.ui.theme.EzTechDimens
 
+/**
+ * Compact recommendation block used on the Home dashboard.
+ *
+ * It shows the learning stats card first, then a horizontal list of recommendation cards. The same
+ * card component is reused by the dedicated Recommendations page for visual consistency.
+ */
 @Composable
 fun RecommendationSection(
     recommendations: List<Recommendation>,
+    stats: RecommendationStats?,
     isLoading: Boolean,
     onRecommendationClick: (Recommendation) -> Unit,
     onViewAllClick: () -> Unit,
@@ -66,6 +77,9 @@ fun RecommendationSection(
                 Text("View all")
             }
         }
+        stats?.let { recommendationStats ->
+            RecommendationStatsCard(stats = recommendationStats)
+        }
 
         when {
             isLoading -> RecommendationLoadingCard()
@@ -84,6 +98,7 @@ fun RecommendationSection(
     }
 }
 
+/** Card for one recommended problem or lesson, including explanation text and metric chips. */
 @Composable
 fun RecommendationCard(
     recommendation: Recommendation,
@@ -124,12 +139,29 @@ fun RecommendationCard(
                     )
                 }
             }
-            Text(
-                text = "Why recommended",
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary,
-            )
+            if (recommendation.sequenceLabel.isNotBlank() || recommendation.stageLabel.isNotBlank()) {
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceXSmall),
+                ) {
+                    if (recommendation.sequenceLabel.isNotBlank()) {
+                        MetricChip(
+                            metric = RecommendationMetric(
+                                label = "Order",
+                                value = recommendation.sequenceLabel,
+                            ),
+                        )
+                    }
+                    if (recommendation.stageLabel.isNotBlank()) {
+                        MetricChip(
+                            metric = RecommendationMetric(
+                                label = "Stage",
+                                value = recommendation.stageLabel,
+                            ),
+                        )
+                    }
+                }
+            }
             Text(
                 text = recommendation.reason,
                 style = MaterialTheme.typography.bodySmall,
@@ -137,10 +169,112 @@ fun RecommendationCard(
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
+            if (recommendation.metrics.isNotEmpty()) {
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceXSmall),
+                ) {
+                    recommendation.metrics.take(3).forEach { metric ->
+                        MetricChip(metric = metric)
+                    }
+                }
+            }
         }
     }
 }
 
+/** Summary card showing the statistics that drive recommendation decisions. */
+@Composable
+fun RecommendationStatsCard(
+    stats: RecommendationStats,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.52f),
+        ),
+    ) {
+        Column(
+            modifier = Modifier.padding(EzTechDimens.SpaceMedium),
+            verticalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceSmall),
+        ) {
+            Text(
+                text = "Learning signal",
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary,
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceXSmall),
+            ) {
+                MetricChip(RecommendationMetric("Solved", "${stats.solvedProblems}/${stats.totalProblems}"))
+                MetricChip(RecommendationMetric("Progress", "${stats.progressPercent}%"))
+                MetricChip(RecommendationMetric("Stage", stats.currentStage))
+                MetricChip(RecommendationMetric("Stage solved", stats.stageProgressText))
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(EzTechDimens.SpaceXSmall),
+            ) {
+                MetricChip(
+                    RecommendationMetric(
+                        "Next",
+                        stats.nextDifficulty.name.lowercase().replaceFirstChar(Char::uppercase),
+                    ),
+                )
+                MetricChip(RecommendationMetric("Weak area", stats.weakestArea))
+                MetricChip(RecommendationMetric("Easy", stats.solvedEasy.toString()))
+                MetricChip(RecommendationMetric("Medium", stats.solvedMedium.toString()))
+                MetricChip(RecommendationMetric("Hard", stats.solvedHard.toString()))
+            }
+        }
+    }
+}
+
+/** Small horizontal metric chip used for solved counts, current stage, and difficulty signals. */
+@Composable
+private fun MetricChip(
+    metric: RecommendationMetric,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.small,
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        tonalElevation = 1.dp,
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                horizontal = EzTechDimens.SpaceSmall,
+                vertical = EzTechDimens.SpaceXSmall,
+            ),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = metric.label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+            )
+            Text(
+                text = metric.value,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+            )
+        }
+    }
+}
+
+/** Chooses the card icon based on whether the recommendation opens a problem or lesson. */
 @Composable
 private fun RecommendationIcon(type: RecommendationType) {
     val icon = when (type) {
@@ -163,6 +297,7 @@ private fun RecommendationIcon(type: RecommendationType) {
     }
 }
 
+/** Placeholder card while the recommendation stream is still loading. */
 @Composable
 private fun RecommendationLoadingCard() {
     Card(

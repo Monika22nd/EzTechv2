@@ -13,6 +13,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the full Recommendations page.
+ *
+ * It requests more cards than Home and exposes both the ranked list and the recommendation stats
+ * card so users can understand why the list changes over time.
+ */
 @HiltViewModel
 class RecommendationsViewModel @Inject constructor(
     private val getRecommendations: GetRecommendationsUseCase,
@@ -25,8 +31,10 @@ class RecommendationsViewModel @Inject constructor(
         loadRecommendations()
     }
 
+    /** Manual retry entry point used by the empty/error state action. */
     fun retry() = loadRecommendations()
 
+    /** Starts a fresh recommendation stream and maps Resource states into Compose UI state. */
     private fun loadRecommendations() {
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
@@ -38,7 +46,8 @@ class RecommendationsViewModel @Inject constructor(
                             errorMessage = null,
                         )
                         is Resource.Success -> state.copy(
-                            recommendations = result.data,
+                            recommendations = result.data.recommendations,
+                            stats = result.data.stats,
                             isLoading = false,
                             errorMessage = null,
                         )

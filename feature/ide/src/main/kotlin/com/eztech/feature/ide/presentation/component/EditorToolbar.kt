@@ -14,7 +14,9 @@ import androidx.compose.material.icons.automirrored.rounded.Redo
 import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.rounded.ContentPaste
 import androidx.compose.material.icons.rounded.DeleteSweep
+import androidx.compose.material.icons.rounded.FileOpen
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.SaveAlt
 import androidx.compose.material.icons.rounded.TextIncrease
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
@@ -30,12 +32,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.unit.dp
 
+/**
+ * Toolbar for the Python editor.
+ *
+ * Buttons are intentionally icon-based for repeated use: run, undo/redo, import/export, clear,
+ * paste, and font-size cycling. The parent screen supplies callbacks so the toolbar stays UI-only.
+ */
 @Composable
 fun EditorToolbar(
     isRunning: Boolean,
     fontSizeSp: Float,
     controller: CodeEditorController,
     onRun: () -> Unit,
+    onImport: () -> Unit,
+    onExport: () -> Unit,
     onClear: () -> Unit,
     onFontSizeChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
@@ -82,6 +92,12 @@ fun EditorToolbar(
             }
             IconButton(onClick = controller::redo, enabled = !isRunning) {
                 Icon(Icons.AutoMirrored.Rounded.Redo, contentDescription = "Redo")
+            }
+            IconButton(onClick = onImport, enabled = !isRunning) {
+                Icon(Icons.Rounded.FileOpen, contentDescription = "Import Python file")
+            }
+            IconButton(onClick = onExport, enabled = !isRunning) {
+                Icon(Icons.Rounded.SaveAlt, contentDescription = "Export Python file")
             }
             IconButton(onClick = onClear, enabled = !isRunning) {
                 Icon(Icons.Rounded.DeleteSweep, contentDescription = "Clear editor")

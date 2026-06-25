@@ -12,6 +12,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the standalone Python IDE.
+ *
+ * It stores editor/stdin/console state and delegates execution to ExecuteCodeUseCase, which is
+ * backed by the Chaquopy Python runtime in the data layer.
+ */
 @HiltViewModel
 class IdeViewModel @Inject constructor(
     private val executeCode: ExecuteCodeUseCase,
@@ -20,14 +26,17 @@ class IdeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(IdeUiState())
     val uiState: StateFlow<IdeUiState> = _uiState.asStateFlow()
 
+    /** Updates the editor content as the user types or imports a file. */
     fun onCodeChanged(code: String) {
         _uiState.update { it.copy(code = code) }
     }
 
+    /** Updates stdin used by the next Run action. */
     fun onStdinChanged(stdin: String) {
         _uiState.update { it.copy(stdin = stdin) }
     }
 
+    /** Executes the current code and writes stdout/stderr/timing back to UI state. */
     fun runCode() {
         val request = _uiState.value
         if (request.isRunning) return
@@ -67,6 +76,7 @@ class IdeViewModel @Inject constructor(
         }
     }
 
+    /** Clears both code and console output. */
     fun clearEditor() {
         _uiState.update {
             it.copy(
@@ -79,6 +89,7 @@ class IdeViewModel @Inject constructor(
         }
     }
 
+    /** Clears only console output while leaving editor code intact. */
     fun clearConsole() {
         _uiState.update {
             it.copy(
