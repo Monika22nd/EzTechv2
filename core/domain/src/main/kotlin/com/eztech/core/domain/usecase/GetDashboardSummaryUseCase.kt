@@ -13,10 +13,12 @@ import com.eztech.core.domain.repository.GamificationRepository
 import com.eztech.core.domain.repository.LessonRepository
 import com.eztech.core.domain.repository.ProblemRepository
 import com.eztech.core.domain.repository.UserRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.flowOf
 
 /**
@@ -55,7 +57,7 @@ class GetDashboardSummaryUseCase(
                     )
                 }
             }
-        }
+        }.flowOn(Dispatchers.Default)
 
     /**
      * Merges resource states and computes a display-ready DashboardSummary.

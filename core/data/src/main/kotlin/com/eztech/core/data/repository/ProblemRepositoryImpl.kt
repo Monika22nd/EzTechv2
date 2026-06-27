@@ -6,11 +6,15 @@ import com.eztech.core.domain.model.Difficulty
 import com.eztech.core.domain.model.Problem
 import com.eztech.core.domain.model.TestCase
 import com.eztech.core.domain.repository.ProblemRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 
 /**
@@ -26,6 +30,8 @@ internal class ProblemRepositoryImpl(
 ) : ProblemRepository {
     private var cachedProblems: List<Problem>? = null
     private val cachedTestCases = mutableMapOf<String, List<TestCase>>()
+    private val problemCacheMutex = Mutex()
+    private val testCaseCacheMutex = Mutex()
 
     internal constructor(localDataSource: ProblemDataSource) : this(
         remoteDataSource = localDataSource,
@@ -42,13 +48,12 @@ internal class ProblemRepositoryImpl(
         difficulty: Difficulty?,
     ): Flow<Resource<List<Problem>>> = flow<Resource<List<Problem>>> {
         emit(Resource.Loading)
-        emit(
-            Resource.Success(
-                getCachedProblems()
-                    .filter { problem -> difficulty == null || problem.difficulty == difficulty }
-                    .sortedBy(Problem::order),
-            ),
-        )
+        val problems = withContext(Dispatchers.Default) {
+            getCachedProblems()
+                .filter { problem -> difficulty == null || problem.difficulty == difficulty }
+                .sortedBy(Problem::order)
+        }
+        emit(Resource.Success(problems))
     }.catch { error ->
         emit(error.toResourceError())
     }
@@ -64,16 +69,20 @@ internal class ProblemRepositoryImpl(
     /** Loads visible/hidden test cases and caches them per problem for repeated submits. */
     override suspend fun getTestCases(problemId: String): Resource<List<TestCase>> =
         resourceCall {
-            cachedTestCases[problemId]
-                ?: remoteFirst { dataSource -> dataSource.getTestCases(problemId) }
-                    .also { testCases -> cachedTestCases[problemId] = testCases }
+            cachedTestCases[problemId] ?: testCaseCacheMutex.withLock {
+                cachedTestCases[problemId]
+                    ?: remoteFirst { dataSource -> dataSource.getTestCases(problemId) }
+                        .also { testCases -> cachedTestCases[problemId] = testCases }
+            }
         }
 
     /** Returns the cached list or creates it from remote/local data. */
     private suspend fun getCachedProblems(): List<Problem> =
-        cachedProblems ?: remoteFirst { dataSource -> dataSource.getProblems(null) }
-            .withLocalTestProblems()
-            .also { problems -> cachedProblems = problems }
+        cachedProblems ?: problemCacheMutex.withLock {
+            cachedProblems ?: remoteFirst { dataSource -> dataSource.getProblems(null) }
+                .withLocalTestProblems()
+                .also { problems -> cachedProblems = problems }
+        }
 
     /**
      * Adds local-only demo problems when Firestore does not contain them yet.
@@ -124,7 +133,7 @@ internal class ProblemRepositoryImpl(
     )
 
     private companion object {
-        const val REMOTE_TIMEOUT_MS = 8_000L
+        const val REMOTE_TIMEOUT_MS = 4_000L
         const val LOCAL_TEST_PROBLEM_PREFIX = "eztech_test_"
     }
 }

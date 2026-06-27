@@ -7,15 +7,18 @@ import com.eztech.core.domain.model.Difficulty
 import com.eztech.core.domain.model.Problem
 import com.eztech.core.domain.model.PythonProblemCurriculum
 import com.eztech.core.domain.usecase.problem.GetProblemsUseCase
+import com.eztech.feature.problems.di.ProblemsDefaultDispatcher
 import com.eztech.feature.problems.presentation.model.ProblemTypeCatalog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Problems list.
@@ -26,10 +29,12 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ProblemListViewModel @Inject constructor(
     private val getProblems: GetProblemsUseCase,
+    @param:ProblemsDefaultDispatcher private val computeDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProblemListUiState())
     val uiState: StateFlow<ProblemListUiState> = _uiState.asStateFlow()
     private var loadJob: Job? = null
+    private var filterJob: Job? = null
 
     init {
         loadProblems()
@@ -38,32 +43,28 @@ class ProblemListViewModel @Inject constructor(
     /** Applies or clears the selected Easy/Medium/Hard filter. */
     fun selectDifficulty(difficulty: Difficulty?) {
         if (_uiState.value.selectedDifficulty == difficulty) return
-        _uiState.update { state ->
-            state.copy(selectedDifficulty = difficulty).withFilteredProblems()
-        }
+        _uiState.update { state -> state.copy(selectedDifficulty = difficulty) }
+        scheduleFilter()
     }
 
     /** Updates keyword search across title, description, tags, order, and curriculum labels. */
     fun onSearchQueryChanged(query: String) {
-        _uiState.update { state ->
-            state.copy(searchQuery = query).withFilteredProblems()
-        }
+        _uiState.update { state -> state.copy(searchQuery = query) }
+        scheduleFilter()
     }
 
     /** Applies a topic/curriculum filter such as loops, strings, lists, or algorithms. */
     fun selectProblemType(problemType: String?) {
         if (_uiState.value.selectedProblemType == problemType) return
-        _uiState.update { state ->
-            state.copy(selectedProblemType = problemType).withFilteredProblems()
-        }
+        _uiState.update { state -> state.copy(selectedProblemType = problemType) }
+        scheduleFilter()
     }
 
     /** Changes ordering between curriculum order, Easy first, and Hard first. */
     fun selectSortOption(option: ProblemSortOption) {
         if (_uiState.value.sortOption == option) return
-        _uiState.update { state ->
-            state.copy(sortOption = option).withFilteredProblems()
-        }
+        _uiState.update { state -> state.copy(sortOption = option) }
+        scheduleFilter()
     }
 
     /** Reloads repository data after an error. */
@@ -74,20 +75,48 @@ class ProblemListViewModel @Inject constructor(
         loadJob?.cancel()
         loadJob = viewModelScope.launch {
             getProblems().collect { result ->
-                _uiState.update { state ->
-                    when (result) {
-                        Resource.Loading -> state.copy(isLoading = true, errorMessage = null)
-                        is Resource.Success -> state.copy(
+                when (result) {
+                    Resource.Loading -> _uiState.update { state ->
+                        state.copy(isLoading = true, errorMessage = null)
+                    }
+                    is Resource.Success -> {
+                        filterJob?.cancel()
+                        val baseState = _uiState.value.copy(
                             allProblems = result.data,
-                            availableProblemTypes = ProblemTypeCatalog.filtersFor(result.data),
+                            availableProblemTypes = withContext(computeDispatcher) {
+                                ProblemTypeCatalog.filtersFor(result.data)
+                            },
                             isLoading = false,
                             errorMessage = null,
-                        ).withFilteredProblems()
-                        is Resource.Error -> state.copy(
+                        )
+                        _uiState.value = withContext(computeDispatcher) {
+                            baseState.withFilteredProblems()
+                        }
+                    }
+                    is Resource.Error -> _uiState.update { state ->
+                        state.copy(
                             isLoading = false,
                             errorMessage = result.message,
                         )
                     }
+                }
+            }
+        }
+    }
+
+    /** Recomputes visible problems away from the main thread and drops stale filter results. */
+    private fun scheduleFilter() {
+        filterJob?.cancel()
+        val snapshot = _uiState.value
+        filterJob = viewModelScope.launch {
+            val filtered = withContext(computeDispatcher) {
+                snapshot.withFilteredProblems().problems
+            }
+            _uiState.update { current ->
+                if (current.hasSameFiltersAs(snapshot)) {
+                    current.copy(problems = filtered)
+                } else {
+                    current
                 }
             }
         }
@@ -122,6 +151,13 @@ class ProblemListViewModel @Inject constructor(
 
         return copy(problems = filtered)
     }
+
+    private fun ProblemListUiState.hasSameFiltersAs(other: ProblemListUiState): Boolean =
+        allProblems === other.allProblems &&
+            selectedDifficulty == other.selectedDifficulty &&
+            selectedProblemType == other.selectedProblemType &&
+            sortOption == other.sortOption &&
+            searchQuery == other.searchQuery
 
     /** Maps UI sort options to the shared curriculum comparator. */
     private val ProblemSortOption.comparator: Comparator<Problem>

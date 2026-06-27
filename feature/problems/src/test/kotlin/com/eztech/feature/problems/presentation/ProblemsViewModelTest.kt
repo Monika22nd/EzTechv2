@@ -67,7 +67,7 @@ class ProblemsViewModelTest {
     @Test
     fun `list loads and applies difficulty filter`() = runTest(dispatcher) {
         val repository = FakeProblemRepository()
-        val viewModel = ProblemListViewModel(GetProblemsUseCase(repository))
+        val viewModel = ProblemListViewModel(GetProblemsUseCase(repository), dispatcher)
         advanceUntilIdle()
 
         assertEquals(2, viewModel.uiState.value.problems.size)
@@ -82,7 +82,7 @@ class ProblemsViewModelTest {
     @Test
     fun `list applies problem type filter`() = runTest(dispatcher) {
         val repository = FakeProblemRepository()
-        val viewModel = ProblemListViewModel(GetProblemsUseCase(repository))
+        val viewModel = ProblemListViewModel(GetProblemsUseCase(repository), dispatcher)
         advanceUntilIdle()
 
         viewModel.selectProblemType("strings")

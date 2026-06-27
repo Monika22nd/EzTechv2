@@ -404,14 +404,61 @@ File copy dễ tải ở gốc repo:
 PyQuest-debug.apk
 ```
 
-## Test
+## Unit test
 
-Các lệnh test thường dùng:
+Project hiện có **36 unit test** trong **11 file test**. Unit test tập trung vào các logic chính như repository, use case, recommendation engine, submit solution, gamification, IDE, Problems và Profile. Các test dùng fake repository/fake engine để không phụ thuộc Firebase thật hoặc mạng.
+
+| File test | Số test | Chức năng được kiểm thử |
+|---|---:|---|
+| `app/src/test/java/com/example/eztechv2/ExampleUnitTest.kt` | 1 | Test mẫu mặc định của Android |
+| `core/data/src/test/kotlin/com/eztech/core/data/repository/CodeExecutionRepositoryImplTest.kt` | 2 | Kiểm tra repository chạy code delegate sang Python engine và trả lỗi khi engine lỗi |
+| `core/data/src/test/kotlin/com/eztech/core/data/repository/ProblemRepositoryImplTest.kt` | 5 | Kiểm tra load problems, lấy problem detail, remote-first, fallback local và lỗi test cases |
+| `core/domain/src/test/kotlin/com/eztech/core/domain/usecase/ExecuteCodeUseCaseTest.kt` | 2 | Kiểm tra code rỗng và việc gọi repository khi code hợp lệ |
+| `core/domain/src/test/kotlin/com/eztech/core/domain/usecase/gamification/CompleteProblemUseCaseTest.kt` | 3 | Kiểm tra cộng EXP lần đầu, không cộng lại khi solve lại và daily login |
+| `core/domain/src/test/kotlin/com/eztech/core/domain/usecase/problem/ProblemQueryUseCasesTest.kt` | 3 | Kiểm tra get problems, get problem detail và lọc visible test cases |
+| `core/domain/src/test/kotlin/com/eztech/core/domain/usecase/problem/SubmitSolutionUseCaseTest.kt` | 7 | Kiểm tra submit solution: accepted, wrong answer, assertion harness, runtime error và timeout |
+| `core/domain/src/test/kotlin/com/eztech/core/domain/usecase/recommendation/RecommendationEngineTest.kt` | 5 | Kiểm tra thuật toán recommendation theo learning path, độ khó, curriculum và lesson liên quan |
+| `feature/ide/src/test/kotlin/com/eztech/feature/ide/presentation/IdeViewModelTest.kt` | 2 | Kiểm tra IDE ViewModel khi run code thành công và khi repository lỗi |
+| `feature/problems/src/test/kotlin/com/eztech/feature/problems/presentation/ProblemsViewModelTest.kt` | 3 | Kiểm tra Problems list filter và solve accepted result |
+| `feature/profile/src/test/kotlin/com/eztech/feature/profile/presentation/ProfileViewModelTest.kt` | 3 | Kiểm tra settings, edit profile và validate tên |
+
+Chạy tất cả unit test:
 
 ```powershell
-.\gradlew.bat :core:domain:test --tests "*RecommendationEngineTest*"
+.\gradlew.bat test
+```
+
+Chạy nhóm test quan trọng khi demo/bảo vệ:
+
+```powershell
+.\gradlew.bat :core:data:testDebugUnitTest :core:domain:test :feature:problems:testDebugUnitTest
+```
+
+Chạy test theo từng chức năng:
+
+```powershell
+# Problems
+.\gradlew.bat :feature:problems:testDebugUnitTest
+
+# IDE
+.\gradlew.bat :feature:ide:testDebugUnitTest
+
+# Profile
+.\gradlew.bat :feature:profile:testDebugUnitTest
+
+# Data repository
 .\gradlew.bat :core:data:testDebugUnitTest
-.\gradlew.bat :feature:home:testDebugUnitTest :feature:problems:testDebugUnitTest
+
+# Domain use cases và recommendation
+.\gradlew.bat :core:domain:test
+```
+
+Chạy riêng một file test:
+
+```powershell
+.\gradlew.bat :core:domain:test --tests "*SubmitSolutionUseCaseTest"
+.\gradlew.bat :core:domain:test --tests "*RecommendationEngineTest"
+.\gradlew.bat :feature:problems:testDebugUnitTest --tests "*ProblemsViewModelTest"
 ```
 
 ## Test nhanh chức năng Problems

@@ -98,11 +98,17 @@ object PythonProblemCurriculum {
     }
 
     /** Comparator used by lists and dashboards to show easier curriculum stages before later ones. */
-    fun comparator(): Comparator<Problem> =
-        compareBy<Problem> { problem -> stageFor(problem).order }
+    fun comparator(): Comparator<Problem> {
+        val stageCache = mutableMapOf<String, PythonProblemStage>()
+
+        fun cachedStage(problem: Problem): PythonProblemStage =
+            stageCache.getOrPut(problem.id) { stageFor(problem) }
+
+        return compareBy<Problem> { problem -> cachedStage(problem).order }
             .thenBy { problem -> problem.difficulty.rank }
             .thenBy { problem -> problem.order.takeIf { it > 0 } ?: Int.MAX_VALUE }
             .thenBy { problem -> problem.title }
+    }
 
     /** Convenience wrapper for applying the shared curriculum comparator. */
     fun sorted(problems: List<Problem>): List<Problem> =
